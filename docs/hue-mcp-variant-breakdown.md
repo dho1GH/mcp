@@ -225,6 +225,8 @@ Identical copies of each other. Predecessors of Huey-hue-variant with a simpler 
 | **Retry/timeout** | none | none | 8s / 2 retries | none | 15s timeout |
 | **Caching** | none | none | 4s in-memory | none | none |
 | **1Password** | yes | no | no | no | yes |
+| **Light resolver** | no | yes (v2/v1 id/name) | yes (v2/v1 id/name) | no (raw id) | no (raw id) |
+| **Scene resolver** | no | no | yes (id/name) | no (raw id) | no |
 | **Read-after-write** | N/A | no | no | no | YES |
 | **MCP annotations** | N/A | yes | yes | no | N/A |
 | **Scene recall** | no | no | yes | yes (Huey) | no |
