@@ -1,0 +1,1478 @@
+Core Open Plan
+Alpha Bedroom
+Beta Bedroom
+Beta Walk-in
+Pass Hallway
+Splash Bathroom
+Throne Bathroom
+Chaos Utility
+Core 01-02 = pathway to balcony
+Core 03-08 = living area
+Core 09-10 = kitchen area
+So individual Hue names should be:
+Core Ceiling 01
+Core Ceiling 02
+Core Ceiling 03
+Core Ceiling 04
+Core Ceiling 05
+Core Ceiling 06
+Core Ceiling 07
+Core Ceiling 08
+Core Ceiling 09
+Core Ceiling 10
+Hue zones / HA groups:
+Core Path      = Core Ceiling 01-02
+Core Living    = Core Ceiling 03-08
+Core Kitchen   = Core Ceiling 09-10
+Core Ceiling   = Core Ceiling 01-10
+Core All       = Core Ceiling + Core lamps/strips/ambient
+schema": "openplan.spatial_baseline.v1.1",
+  "plan_name": "Open Plan Spatial Baseline — v1.1",
+  "supersedes": "openplan.spatial_baseline.v1",
+
+  "reference_frame": {
+    "compass_locked": true,
+    "walls": [
+      { "id": "north", "label": "Entry Wall", "clock": "6pm" },
+      { "id": "east",  "label": "Window/Balcony Wall", "clock": "9pm" },
+      { "id": "south", "label": "Green Accent Wall", "clock": "12pm" },
+      { "id": "west",  "label": "Kitchen Cabinet Wall", "clock": "3pm" }
+    ],
+    "orientation_clock_map": {
+      "north": "6pm",
+      "east": "9pm",
+      "south": "12pm",
+      "west": "3pm"
+    }
+  },
+
+  "segments": [
+    { "id": "A-A1", "wall": "north", "length_cm": 175 },
+    { "id": "A1-B", "wall": "north", "length_cm": 100 },
+
+    { "id": "B-B1", "wall": "east", "length_cm": 100 },
+    { "id": "B1-B2", "wall": "east", "length_cm": 105 },
+    { "id": "B2-B3", "wall": "east", "length_cm": 250 },
+    { "id": "B3-D", "wall": "east", "length_cm": 105 },
+
+    { "id": "D-C", "wall": "south", "length_cm": 210 },
+
+    { "id": "A-C1", "wall": "west", "length_cm": 120 },
+    { "id": "C1-C2", "wall": "west", "length_cm": 300 }
+  ],
+
+  "anchors": [
+    {
+      "id": "anchor.threshold",
+      "type": "boundary",
+      "description": "Entry threshold from hallway into open plan",
+      "from": { "wall": "north", "segment": "A-A1", "offset_cm": 0 },
+      "to":   { "wall": "west",  "segment": "A-C1", "offset_cm": 0 }
+    },
+
+    {
+      "id": "anchor.kitchen_run",
+      "type": "fixed_element",
+      "description": "Kitchen cabinet run",
+      "wall": "west",
+      "segment": "C1-C2",
+      "length_cm": 300
+    },
+
+    {
+      "id": "anchor.balcony_door",
+      "type": "fixed_element",
+      "description": "Balcony door on east wall",
+      "wall": "east",
+      "segment": "B-B1",
+      "length_cm": 100
+    },
+
+    {
+      "id": "anchor.window_stretch",
+      "type": "fixed_element",
+      "description": "Window glazing on east wall (B2-B3)",
+      "wall": "east",
+      "segment": "B2-B3",
+      "length_cm": 250
+    },
+
+    {
+      "id": "anchor.curtain_track",
+      "type": "fixed_element",
+      "description": "Curtain track spanning B–B3",
+      "wall": "east",
+      "segments": ["B-B1", "B1-B2", "B2-B3"]
+    },
+
+    {
+      "id": "anchor.radiator.north",
+      "type": "fixed_element",
+      "description": "Radiator on north wall A1–B",
+      "wall": "north",
+      "segment": "A1-B",
+      "dimensions_cm": { "width": 110, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.radiator.south",
+      "type": "fixed_element",
+      "description": "Radiator on south wall at C",
+      "wall": "south",
+      "segment": "D-C",
+      "offset_cm": 120,
+      "dimensions_cm": { "width": 120, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.se_angled_corner",
+      "type": "visual_anchor",
+      "description": "Angled corner where south wall meets east wall",
+      "wall_intersection": ["south", "east"]
+    }
+  ],
+
+  "quadrants": [
+    {
+      "id": "NW",
+      "description": "Entry-side north-west zone",
+      "bounds": {
+        "north_segments": ["A-A1"],
+        "west_segments": ["A-C1"]
+      }
+    },
+    {
+      "id": "NE",
+      "description": "Balcony door and north-east zone",
+      "bounds": {
+        "north_segments": ["A1-B"],
+        "east_segments": ["B-B1", "B1-B2"]
+      }
+    },
+    {
+      "id": "SW",
+      "description": "Kitchen zone and south radiator zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "west_segments": ["C1-C2"]
+      }
+    },
+    {
+      "id": "SE",
+      "description": "Angled corner and window-south transition zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "east_segments": ["B2-B3", "B3-D"],
+        "anchors": ["anchor.se_angled_corner"]
+      }
+    }
+  ],
+
+  "flows": [
+    {
+      "id": "flow.entry_to_open_plan",
+      "from": "hallway",
+      "to": "open_plan",
+      "via": "anchor.threshold",
+      "description": "Primary movement from hallway into open plan"
+    }
+  ],
+
+  "source": {
+    "file": "Open Plan with Anchor Labels.png",
+    "version_created": "v1.1"
+  }
+}
+"rooms": {
+"room.open_plan": {
+"name": "Open Plan",
+"aliases": ["Core", "Living Room", "Kitchen", "Dining"],
+"kind": ["open_plan", "living", "kitchen", "dining"],
+"subzones": [
+"open_plan.kitchen",
+"open_plan.dining",
+"open_plan.lounge"
+],
+"zones": ["zone.open_plan_fp2"]
+},
+
+"room.bedroom1": {
+"name": "Bedroom 1",
+"aliases": ["Alpha Bedroom", "Primary Bedroom"],
+"kind": ["bedroom"],
+"subzones": [
+"bedroom1.bed_area",
+"bedroom1.flex_area"
+],
+"zones": ["zone.bedroom1_fp2"]
+},
+
+"room.bathroom_mid": {
+"name": "Mid Bathroom",
+"aliases": ["Throne (if ensuite)", "Bathroom 1"],
+"kind": ["bathroom"],
+"zones": ["zone.bathroom_mid"]
+},
+
+"room.hallway": {
+"name": "Hallway",
+"aliases": ["Pass"],
+"kind": ["hallway"],
+"subzones": [
+"hallway.front",
+"hallway.mid",
+"hallway.rear"
+],
+"zones": [
+"zone.hallway_front",
+"zone.hallway_mid",
+"zone.hallway_rear"
+]
+},
+
+"room.laundry_utility": {
+"name": "Laundry / Utility",
+"aliases": ["Chaos", "Utility Room"],
+"kind": ["utility_storage"],
+"zones": ["zone.laundry"]
+},
+
+"room.bathroom_rear": {
+"name": "Rear Bathroom",
+"aliases": ["Splash", "Bathroom 2"],
+"kind": ["bathroom"],
+"zones": ["zone.bathroom_rear"]
+},
+
+"room.bedroom2": {
+"name": "Bedroom 2",
+"aliases": ["Beta Bedroom", "Secondary Bedroom"],
+"kind": ["bedroom"],
+"subzones": [
+"bedroom2.bed_area",
+"bedroom2.flex_area"
+],
+"zones": ["zone.bedroom2_fp2"]
+},
+
+"room.bedroom2_walkin": {
+"name": "Walk-in Wardrobe",
+"aliases": ["Walk-in", "7i"],
+"kind": ["closet", "wardrobe"],
+"zones": ["zone.walkin_fp1e"]
+}
+},
+
+"zones": {
+"zone.open_plan_fp2": {
+"name": "Open Plan FP2 Zone",
+"belongs_to": ["room.open_plan"],
+"sensor_roles": ["presence", "illuminance"]
+},
+"zone.bedroom1_fp2": {
+"name": "Bedroom 1 FP2 Zone",
+"belongs_to": ["room.bedroom1"],
+"sensor_roles": ["presence", "illuminance"]
+},
+"zone.bedroom2_fp2": {
+"name": "Bedroom 2 FP2 Zone",
+"belongs_to": ["room.bedroom2"],
+"sensor_roles": ["presence", "illuminance"]
+},
+"zone.walkin_fp1e": {
+"name": "Walk-in FP1E Zone",
+"belongs_to": ["room.bedroom2_walkin"],
+"sensor_roles": ["presence"]
+},
+"zone.bathroom_mid": {
+"name": "Mid Bathroom Zone",
+"belongs_to": ["room.bathroom_mid"],
+"sensor_roles": ["presence", "humidity"]
+},
+"zone.bathroom_rear": {
+"name": "Rear Bathroom Zone",
+"belongs_to": ["room.bathroom_rear"],
+"sensor_roles": ["presence", "humidity"]
+},
+"zone.hallway_front": {
+"name": "Hallway Front",
+"belongs_to": ["room.hallway"],
+"sensor_roles": ["motion"]
+},
+"zone.hallway_mid": {
+"name": "Hallway Mid",
+"belongs_to": ["room.hallway"],
+"sensor_roles": ["motion"]
+},
+"zone.hallway_rear": {
+"name": "Hallway Rear",
+"belongs_to": ["room.hallway"],
+"sensor_roles": ["motion"]
+},
+"zone.laundry": {
+"name": "Laundry/Utility Zone",
+"belongs_to": ["room.laundry_utility"],
+"sensor_roles": []
+}
+},
+
+"infrastructure": {
+"router": {
+"id": "infra.unifi_gateway",
+"name": "Unifi Cloud Gateway Ultra",
+"location": "room.laundry_utility",
+"roles": ["network_core"]
+},
+"ha_server": {
+"id": "infra.ha_server",
+"name": "GMKtec Mini PC",
+"location": "room.laundry_utility",
+"roles": ["home_assistant_core", "docker_host"]
+},
+"hubs": {
+"hue_bridge": {
+"name": "Philips Hue Bridge Pro",
+"location": "room.laundry_utility"
+},
+"aqara_m3": {
+"name": "Aqara M3 Hub",
+"location": "room.laundry_utility"
+},
+"switchbot_hub3": {
+"name": "Switchbot Hub 3",
+"location": "room.laundry_utility"
+}
+}
+},
+
+"device_index_strategy": "Devices are stored in an external file for clarity. Device-to-room mappings are anchored to this registry using 'room_id' links."
+}
+{
+"rooms": {
+"Core": {
+"type": "open_plan",
+"approx_area_sqft": 310,
+"neighbors": ["Pass"],
+"faces": ["East"],
+"subzones": ["Core_NE", "Core_NW", "Core_SE", "Core_SW", "Kitchen"]
+},
+"Alpha": {
+"type": "bedroom",
+"approx_area_sqft": 140,
+"neighbors": ["Pass", "Throne"],
+"subzones": ["Alpha_Bed", "Alpha_Flex"]
+},
+"Throne": {
+"type": "bathroom_ensuite",
+"neighbors": ["Alpha", "Pass"]
+},
+"Beta": {
+"type": "bedroom",
+"approx_area_sqft": 163,
+"neighbors": ["Pass", "Splash"],
+"subzones": ["Beta_Bed", "Beta_Flex"]
+},
+"Splash": {
+"type": "bathroom_rear",
+"neighbors": ["Pass", "Beta"]
+},
+"Pass": {
+"type": "hall",
+"neighbors": ["Core", "Alpha", "Beta", "Throne", "Splash", "Chaos"],
+"subzones": ["Vault", "Alpha_Pass", "Beta_Pass", "Splash_Pass", "Chaos_Pass"]
+},
+"Chaos": {
+"type": "utility_storage",
+"neighbors": ["Pass"]
+}
+}
+}
+room.hallway": {
+"name": "Hallway",
+"aliases": ["Pass"],
+"kind": ["hallway"],
+"subzones": [
+"hallway.front",
+"hallway.mid",
+"hallway.rear"
+"wall": "...",
+"clock": "...",
+"quadrant": "..."
+{
+  "id": "anchor.balcony_door",
+  "name": "Balcony Door",
+  "fixed": true,
+
+  "spatial_identity": {
+    "canonical": "east_wall",
+
+    "aliases": [
+      "9pm",
+      "B–B1 segment",
+      "balcony_entry_point",
+      "east_glazing_start",
+      "NE-facing access opening",
+      "window-wall door"
+    ],
+
+    "explanations": {
+      "quadrant_context": {
+        "NE": "Primary zone. The balcony door opens into the NE quadrant, forming its anchor feature.",
+        "SE": "Adjacent influence zone downward as the glazing continues toward the angled corner (B1–B3)."
+      },
+
+      "relational_notes": [
+        "Forms the first architectural break in the east window wall.",
+        "Defines the NE anchor for circulation flow (A → B path).",
+        "Curtain track spans over its upper boundary (B → B3).",
+        "Sits immediately ahead when entering from the threshold, establishing the room’s primary orientation."
+      ]
+    }
+  },
+
+  "geometry_cm": {
+    "width": 100,
+    "height": "standard door height",
+    "position_on_wall": {
+      "segment": "B–B1",
+      "offset_from_B_cm": 0
+    }
+  }
+}
+"spatial_identity": {
+  "canonical": "east_wall",
+  "aliases": ["9pm", "NE quadrant", "B–B1 segment", "balcony_door_zone"]
+}
+{
+  "id": "anchor.kitchen_run",
+  "name": "Kitchen Cabinet Run",
+  "fixed": true,
+
+  "spatial_identity": {
+    "canonical": "west_wall",
+
+    "aliases": [
+      "3pm",
+      "C1–C2 segment",
+      "kitchen_run",
+      "west-wall 12–6pm axis",
+      "NW–SW west-side span"
+    ],
+
+    "explanations": {
+      "quadrant_context": {
+        "NW": "upper entry-side section between A–A1 and first half of run",
+        "SW": "lower section running to south-wall radiator termination point"
+      },
+      "relation_notes": [
+        "NW section borders threshold gap (A–C and A–A1)",
+        "SW section meets south-wall corner (kitchen L-turn)"
+      ]
+    }
+  },
+
+  "geometry_cm": {
+    "length": 300,
+    "depth": 60,
+    "height": 90
+  }
+}
+{
+  "id": "anchor.kitchen_run",
+  "type": "fixed_element",
+  "name": "Kitchen Cabinet Run",
+  "wall": "west_wall",
+  "segment": "C1–C2",
+  "dimensions_cm": {
+    "length": 300,
+    "depth": 60,
+    "height": 90
+  },
+  "clock_reference": "3pm",
+  "notes": [
+    "This is a permanent architectural element.",
+    "Defines the western boundary of the open plan.",
+    "Acts as a spatial anchor for SW quadrant and entry-side NW subzone."
+  ]
+}
+Code	Full Name	Details
+Core	Openplan	Living/Dining/Kitchen - 310 ft², East facing window.
+Alpha	Bedroom	140 ft² bedroom (Adjacent to Openplan). Architectually secondary bedroom but functionally serves as the user’s primary bedroom. Rationale was to align with the users movement and flow (closer to Core instead of distinct ends) but serves as user’s primary bedroom. 163 ft², includes ensuite access
+Beta	Secondary Bedroom	163 ft² bedroom, includes walk-in closet and ensuite access with tub (Splash). Also contains two entry ways - via Hall & via Secondary Bathroom
+Throne	Ensuite Bathroom	Connected to Alpha
+Splash	Guest Bathroom	Connected to Hall & Walk-incloset leading to Beta Bedroom.
+Pass	Central Hallway	Connects all rooms
+Chaos	Utility/Laundry	Storage and services - subzone of Pass.
+Whole House	System-wide	Multi-room, Flat-wide.
+
+2. Project Context — Open Plan Anchor Map (310 ft²)
+
+Room Overview
+	•	Shape: Rectangular with angled SE corner
+	•	Orientation: North wall = top
+
+Walls & Segments (clockwise)
+	•	North wall (A–A1–B): 275 cm total
+	•	A–A1 = 175 cm (Entry into the open plan is at A, bedroom door is just before point A)
+	•	A1–B = 100 cm (slight upward angle)
+
+	•Features: radiator 110×5×60 along A1–B
+
+	•	East wall (B–B1–B2–B3–D): 555 cm total
+	•	B–B1 = 100 cm (balcony door, fixed)
+	•	B1–B2 = 105 cm (solid wall)
+	•	B2–B3 = 250 cm (window stretch)
+	•	B3–D = 105 cm (solid wall)
+	•	Curtain track spans B-B1 & B2–B3 (fixed)
+	•	South wall (D–C): 210 cm
+	•	Radiator intrusion at C (120×5×60 cm, fixed)
+	•	West wall C3–C): 420 cm total
+	•	A–C3 = 120 cm (entry threshold gap)
+	•	C3-C2 = 300 cm (kitchen run west run, fixed)
+	•	C2-C1= 175 cm (Turn towards east wall)
+   •	C1-C‎ =  60cm (turn towards south wall
+
+Quadrants/Zones
+	•	A-A1 (NW): entry 
+	•	A1-B-B1-B2 (NE): balcony door + wall gap
+	•	B2-B3-D (SE): East Window + SE angled corner 
+	•	C2 (SW): lower kitchen run + sw radiator corner 
+
+Flow Paths
+	•	Entry threshold → A → B (besides balcony north wall )
+	•	Entry → A → C (towards kitchen)
+
+Fixed Anchors
+	•	Kitchen L-run run (C)
+	•	Radiator on South wall (C, SW) & North wall (A1)
+	•	Balcony door (B-B1) & East window (B2-B3)
+	•	Curtain track B-B1 & B2-B3)
+
+Movable Anchors (inventory, placement flexible)
+    * Sofa = 160 cm length grey habitat Aida 
+    * TV = 50” ivy green Samsung serif 2024
+    * Rug(s) = 200x300cm bean kidney asymmetrical rug (x2 identical - 127asymmetrical rug
+    * 	•	ikea Skafet Arc lamp with naked Philips Hue ellipse white colour bulb 
+    * Habitat max Coffee table. 
+    * Stevie 3 door metal locker in greeen 
+    * Arcuva William wood mirror 
+    * This list is not all - I got bored of doing it lmfaoo 
+
+#design-style_language
+
+{
+  "schema": "openplan.spatial_baseline.v1.1",
+  "plan_name": "Open Plan Spatial Baseline — v1.1",
+  "supersedes": "openplan.spatial_baseline.v1",
+
+  "reference_frame": {
+    "compass_locked": true,
+    "walls": [
+      { "id": "north", "label": "Entry Wall", "clock": "6pm" },
+      { "id": "east",  "label": "Window/Balcony Wall", "clock": "9pm" },
+      { "id": "south", "label": "Green Accent Wall", "clock": "12pm" },
+      { "id": "west",  "label": "Kitchen Cabinet Wall", "clock": "3pm" }
+    ],
+    "orientation_clock_map": {
+      "north": "6pm",
+      "east": "9pm",
+      "south": "12pm",
+      "west": "3pm"
+    }
+  },
+
+  "segments": [
+    { "id": "A-A1", "wall": "north", "length_cm": 175 },
+    { "id": "A1-B", "wall": "north", "length_cm": 100 },
+
+    { "id": "B-B1", "wall": "east", "length_cm": 100 },
+    { "id": "B1-B2", "wall": "east", "length_cm": 105 },
+    { "id": "B2-B3", "wall": "east", "length_cm": 250 },
+    { "id": "B3-D", "wall": "east", "length_cm": 105 },
+
+    { "id": "D-C", "wall": "south", "length_cm": 210 },
+
+    { "id": "A-C1", "wall": "west", "length_cm": 120 },
+    { "id": "C1-C2", "wall": "west", "length_cm": 300 }
+  ],
+
+  "anchors": [
+    {
+      "id": "anchor.threshold",
+      "type": "boundary",
+      "description": "Entry threshold from hallway into open plan",
+      "from": { "wall": "north", "segment": "A-A1", "offset_cm": 0 },
+      "to":   { "wall": "west",  "segment": "A-C1", "offset_cm": 0 }
+    },
+
+    {
+      "id": "anchor.kitchen_run",
+      "type": "fixed_element",
+      "description": "Kitchen cabinet run",
+      "wall": "west",
+      "segment": "C1-C2",
+      "length_cm": 300
+    },
+
+    {
+      "id": "anchor.balcony_door",
+      "type": "fixed_element",
+      "description": "Balcony door on east wall",
+      "wall": "east",
+      "segment": "B-B1",
+      "length_cm": 100
+    },
+
+    {
+      "id": "anchor.window_stretch",
+      "type": "fixed_element",
+      "description": "Window glazing on east wall (B2-B3)",
+      "wall": "east",
+      "segment": "B2-B3",
+      "length_cm": 250
+    },
+
+    {
+      "id": "anchor.curtain_track",
+      "type": "fixed_element",
+      "description": "Curtain track spanning B–B3",
+      "wall": "east",
+      "segments": ["B-B1", "B1-B2", "B2-B3"]
+    },
+
+    {
+      "id": "anchor.radiator.north",
+      "type": "fixed_element",
+      "description": "Radiator on north wall A1–B",
+      "wall": "north",
+      "segment": "A1-B",
+      "dimensions_cm": { "width": 110, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.radiator.south",
+      "type": "fixed_element",
+      "description": "Radiator on south wall at C",
+      "wall": "south",
+      "segment": "D-C",
+      "offset_cm": 120,
+      "dimensions_cm": { "width": 120, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.se_angled_corner",
+      "type": "visual_anchor",
+      "description": "Angled corner where south wall meets east wall",
+      "wall_intersection": ["south", "east"]
+    }
+  ],
+
+  "quadrants": [
+    {
+      "id": "NW",
+      "description": "Entry-side north-west zone",
+      "bounds": {
+        "north_segments": ["A-A1"],
+        "west_segments": ["A-C1"]
+      }
+    },
+    {
+      "id": "NE",
+      "description": "Balcony door and north-east zone",
+      "bounds": {
+        "north_segments": ["A1-B"],
+        "east_segments": ["B-B1", "B1-B2"]
+      }
+    },
+    {
+      "id": "SW",
+      "description": "Kitchen zone and south radiator zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "west_segments": ["C1-C2"]
+      }
+    },
+    {
+      "id": "SE",
+      "description": "Angled corner and window-south transition zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "east_segments": ["B2-B3", "B3-D"],
+        "anchors": ["anchor.se_angled_corner"]
+      }
+    }
+  ],
+
+  "flows": [
+    {
+      "id": "flow.entry_to_open_plan",
+      "from": "hallway",
+      "to": "open_plan",
+      "via": "anchor.threshold",
+      "description": "Primary movement from hallway into open plan"
+    }
+  ],
+
+
+{
+  "schema": "openplan.spatial_baseline.v1.1",
+  "plan_name": "Open Plan Spatial Baseline — v1.1",
+  "supersedes": "openplan.spatial_baseline.v1",
+
+  "reference_frame": {
+    "compass_locked": true,
+    "walls": [
+      { "id": "north", "label": "Entry Wall", "clock": "6pm" },
+      { "id": "east",  "label": "Window/Balcony Wall", "clock": "9pm" },
+      { "id": "south", "label": "Green Accent Wall", "clock": "12pm" },
+      { "id": "west",  "label": "Kitchen Cabinet Wall", "clock": "3pm" }
+    ],
+    "orientation_clock_map": {
+      "north": "6pm",
+      "east": "9pm",
+      "south": "12pm",
+      "west": "3pm"
+    }
+  },
+
+  "segments": [
+    { "id": "A-A1", "wall": "north", "length_cm": 175 },
+    { "id": "A1-B", "wall": "north", "length_cm": 100 },
+
+    { "id": "B-B1", "wall": "east", "length_cm": 100 },
+    { "id": "B1-B2", "wall": "east", "length_cm": 105 },
+    { "id": "B2-B3", "wall": "east", "length_cm": 250 },
+    { "id": "B3-D", "wall": "east", "length_cm": 105 },
+
+    { "id": "D-C", "wall": "south", "length_cm": 210 },
+
+    { "id": "A-C1", "wall": "west", "length_cm": 120 },
+    { "id": "C1-C2", "wall": "west", "length_cm": 300 }
+  ],
+
+  "anchors": [
+    {
+      "id": "anchor.threshold",
+      "type": "boundary",
+      "description": "Entry threshold from hallway into open plan",
+      "from": { "wall": "north", "segment": "A-A1", "offset_cm": 0 },
+      "to":   { "wall": "west",  "segment": "A-C1", "offset_cm": 0 }
+    },
+
+    {
+      "id": "anchor.kitchen_run",
+      "type": "fixed_element",
+      "description": "Kitchen cabinet run",
+      "wall": "west",
+      "segment": "C1-C2",
+      "length_cm": 300
+    },
+
+    {
+      "id": "anchor.balcony_door",
+      "type": "fixed_element",
+      "description": "Balcony door on east wall",
+      "wall": "east",
+      "segment": "B-B1",
+      "length_cm": 100
+    },
+
+    {
+      "id": "anchor.window_stretch",
+      "type": "fixed_element",
+      "description": "Window glazing on east wall (B2-B3)",
+      "wall": "east",
+      "segment": "B2-B3",
+      "length_cm": 250
+    },
+
+    {
+      "id": "anchor.curtain_track",
+      "type": "fixed_element",
+      "description": "Curtain track spanning B–B3",
+      "wall": "east",
+      "segments": ["B-B1", "B1-B2", "B2-B3"]
+    },
+
+    {
+      "id": "anchor.radiator.north",
+      "type": "fixed_element",
+      "description": "Radiator on north wall A1–B",
+      "wall": "north",
+      "segment": "A1-B",
+      "dimensions_cm": { "width": 110, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.radiator.south",
+      "type": "fixed_element",
+      "description": "Radiator on south wall at C",
+      "wall": "south",
+      "segment": "D-C",
+      "offset_cm": 120,
+      "dimensions_cm": { "width": 120, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.se_angled_corner",
+      "type": "visual_anchor",
+      "description": "Angled corner where south wall meets east wall",
+      "wall_intersection": ["south", "east"]
+    }
+  ],
+
+  "quadrants": [
+    {
+      "id": "NW",
+      "description": "Entry-side north-west zone",
+      "bounds": {
+        "north_segments": ["A-A1"],
+        "west_segments": ["A-C1"]
+      }
+    },
+    {
+      "id": "NE",
+      "description": "Balcony door and north-east zone",
+      "bounds": {
+        "north_segments": ["A1-B"],
+        "east_segments": ["B-B1", "B1-B2"]
+      }
+    },
+    {
+      "id": "SW",
+      "description": "Kitchen zone and south radiator zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "west_segments": ["C1-C2"]
+      }
+    },
+    {
+      "id": "SE",
+      "description": "Angled corner and window-south transition zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "east_segments": ["B2-B3", "B3-D"],
+        "anchors": ["anchor.se_angled_corner"]
+      }
+    }
+  ],
+
+{
+  "plan_id": "open_plan_v1",
+  "orientation": {
+    "north": "image_up",
+    "east": "image_right",
+    "source": "east-facing window (B–B4)"
+  },
+  "threshold": {
+    "description": "Open plan begins at wall A north and kitchen run start at C",
+    "excludes": ["hallway"]
+  },
+  "walls": {
+    "north": "A–B",
+    "east": "B–B4 (windows + balcony)",
+    "south": "green accent wall",
+    "west": "C (kitchen cabinet run)"
+  },
+  "quadrants": {
+    "NW": "north side near kitchen",
+    "NE": "north side near balcony",
+    "SW": "south side kitchen/radiator",
+    "SE": "south wall meets window at angled corner"
+  }
+}
+Flat Breakdjwn 
+🚪 Entry Zone:
+	•	Front door located in corner of hallway, not center.
+	•	Hallway extends forward to open plan and backward to Bedroom 1.
+
+⸻
+
+🛏 from front door to Rear Half (Guest Wing):
+	•	Bedroom 1 located behind entry door.
+	•	Walk-in wardrobe sits between Bedroom 1 and Bathroom 1 and is connected to the bathroom with a door and the bedroom with a gap in the bedroom wall. 
+	•	Bathroom 1 has two doors (one to Bedroom 1 via wardrobe and another door to hallway & front door).
+	•	Two storage rooms in the path from front door to rear half
+	•	Storage 1: down the path to bedroom 1, it the room sits on right as you approach Bedroom 1.
+	•	Storage 2: left-hand side of the front door, located to right of bathroom door.
+
+⸻
+
+🚶‍♂️ Front Half (Open Plan Approach):
+	•	Walking forward from entry: you look towards the balcony door and approach the other bedroom entry but before then: 
+	•	Storage 3: right-hand side.
+	•	Storage 4: left-hand side, opposite Storage 3.
+	•	After Storage 3 & 4, hallway opens fully into Open Plan zone.
+
+⸻
+
+🍳 Open Plan Zone:
+	•	Rectangular layout but with outward lean on balcony wall.
+	•	Kitchen located immediately right upon entering open plan.
+	•	Balcony doors directly ahead.
+	•	Bedroom 2 door positioned to the left after entering open plan.
+
+⸻
+
+🧠 Key Zones Recap:
+	•	Entry → Storage 1 & 2 → Bathroom → Laundry → Bedroom 1 + Walk-In (rear end) 
+	•	Entry → Storage 3 & 4 → Open Plan → Living Room / Kitchen / Dining / Bedroom 2 (front end) 
+_______
+2. Open Plan Anchor Map (310 ft²)
+
+Room Overview
+	•	Shape: Rectangular with angled SE corner
+	•	Orientation: North wall = top
+
+Walls & Segments (clockwise)
+North wall (A–A1–B): 275 cm total
+	•	A–A1 = 175 cm (Entry into the open plan is at A, bedroom door is just before point A)
+	•	A1–B = 100 cm (slight upward angle)
+
+	•Features: radiator 110×5×60 along A1–B
+
+East wall (B–B1–B2–B3–D): 555 cm total
+	•	B–B1 = 100 cm (balcony door, fixed)
+	•	B1–B2 = 105 cm (solid wall)
+	•	B2–B3 = 250 cm (window stretch)
+	•	B3–D = 105 cm (solid wall)
+	•	Curtain track spans B–B1 & again B2-B3 (fixed)
+
+South wall (D–C): 210 cm 
+	•	Radiator intrusion at C (120×5×60 cm, fixed)
+
+West wall (A–C1–C2): 420 cm total
+	•	A–C1 = 120 cm (entry gap)
+	•	C1–C2 = 300 cm (kitchen run, fixed)
+	•	C2 = 175 cm intrusion into south wall
+
+Quadrants/Zones
+	•	A (NW): open plan entry path 
+	•	B (NE): balcony door + curtain track zone
+	•	C (SW): kitchen corner + radiator 
+	•	D (SE): angled corner (green wall)
+
+Flow Paths
+	•	Entry → A → B (balcony circulation)
+	•	Entry → A → C (kitchen access)
+
+Fixed Anchors
+	•	Kitchen run (C)
+	•	Radiator on South wall (C, SW) & North wall (A1-B, NE))
+	•	Balcony door (B)
+window (B-B1)
+	•	Curtain track (B1 & B2–B3, east wall)
+
+Movable Anchors (inventory, placement flexible)
+	•	Sofa = 160 cm length
+	•	TV = 50 cm width
+	•	Dining table = [xx × xx cm]
+	•	Rug(s) = 200x300 beige kidney asymmetrical rug (2x 200x300 cm)
+	•	ikea skaftet Arc lamp with Philips hue elipse bulb bare 
+
+.
+
+{
+  "schema": "openplan.spatial_baseline.v1",
+  "plan_name": "Open Plan Spatial Baseline — Locked Reference",
+  "scope": {
+    "included_area": "open_plan",
+    "excluded_areas": ["hallway"],
+    "threshold": {
+      "name": "open_plan_threshold",
+      "definition": "Invisible entry line separating hallway from open plan",
+      "notes": [
+        "Front door opens into hallway",
+        "Open plan threshold begins at start of wall A (north) and start of kitchen run on west wall"
+      ]
+    }
+  },
+  "reference_frame": {
+    "compass_locked": true,
+    "compass_definition": {
+      "north": {
+        "label": "A–B",
+        "description": "Upper wall, entry-facing"
+      },
+      "east": {
+        "label": "B–B4",
+        "description": "Window and balcony door stretch",
+        "anchors": ["east_facing_window", "balcony_door"]
+      },
+      "south": {
+        "label": "green_wall",
+        "description": "Accent wall; ends at kitchen run corner"
+      },
+      "west": {
+        "label": "C",
+        "description": "Kitchen cabinet run"
+      }
+    },
+    "orientation_anchor": {
+      "type": "window",
+      "name": "east_facing_window",
+      "assertion": "East wall is the window/balcony stretch (B–B4)"
+    }
+  },
+  "anchors": [
+    {
+      "id": "anchor.threshold",
+      "type": "boundary",
+      "name": "Threshold & Entry",
+      "fixed": true,
+      "description": "Hallway excluded; threshold marks entry line between A and C"
+    },
+    {
+      "id": "anchor.kitchen_run",
+      "type": "fixed_element",
+      "name": "Kitchen cabinet run",
+      "fixed": true,
+      "wall_ref": "west",
+      "wall_label": "C",
+      "shape_hint": "L-shape"
+    },
+    {
+      "id": "anchor.east_glazing",
+      "type": "fixed_element",
+      "name": "Window & balcony stretch",
+      "fixed": true,
+      "wall_ref": "east",
+      "wall_label": "B–B4"
+    },
+    {
+      "id": "anchor.south_accent",
+      "type": "fixed_element",
+      "name": "South accent wall",
+      "fixed": true,
+      "wall_ref": "south",
+      "wall_label": "green_wall"
+    },
+    {
+      "id": "anchor.se_angled_corner",
+      "type": "visual_anchor",
+      "name": "SE angled corner",
+      "fixed": true,
+      "description": "South wall meets window stretch at angled corner"
+    }
+  ],
+  "quadrants": {
+    "system": "compass_quadrants",
+    "definitions": {
+      "NE": {
+        "description": "North side, near balcony",
+        "labels": ["A1–B"]
+      },
+      "NW": {
+        "description": "North side near kitchen",
+        "labels": ["A–A1"]
+      },
+      "SW": {
+        "description": "South side, kitchen/radiator zone",
+        "labels": []
+      },
+      "SE": {
+        "description": "South wall meets window stretch at angled corner",
+        "labels": [],
+        "anchors": ["anchor.se_angled_corner"]
+      }
+    }
+  },
+  "flow_language": {
+    "notes": [
+      "Compass & Quadrants act as shared spatial language for alignment",
+      "Use quadrants and wall labels in all spatial references"
+    ],
+    "typical_flow": [
+      {
+        "id": "flow.entry_to_openplan",
+        "from": "hallway",
+        "to": "open_plan",
+        "via": "anchor.threshold",
+        "description": "Entry transition into open plan"
+      }
+    ]
+  },
+  "source": {
+    "file": "Open Plan (in relation to full flat & with Anchor labels).pdf",
+    "page": 1
+  }
+}
+ROOMS
+
+{
+  "rooms": {
+    "room.open_plan": {
+      "name": "Open Plan",
+      "aliases": ["Core", "Living Room", "Kitchen", "Dining"],
+      "kind": ["living", "kitchen", "dining"],
+      "area_sqft": 310,
+      "neighbors": ["room.hallway", "room.bedroom1"],
+      "zones": ["zone.open_plan_fp2"],
+      "subzones": ["Core_NE", "Core_NW", "Core_SE", "Core_SW"],
+      "windows": ["East"]
+    },
+    "room.bedroom1": {
+      "name": "Bedroom 1 (Alpha)",
+      "aliases": ["Alpha Bedroom", "Primary Bedroom"],
+      "kind": ["bedroom"],
+      "area_sqft": 140,
+      "neighbors": ["room.hallway", "room.bathroom_throne"],
+      "zones": ["zone.bedroom1_fp2"],
+      "subzones": ["Alpha_Bed", "Alpha_Flex"],
+      "windows": ["East"]
+    },
+    "room.bedroom2": {
+      "name": "Bedroom 2 (Beta)",
+      "aliases": ["Beta Bedroom"],
+      "kind": ["bedroom"],
+      "area_sqft": 163,
+      "neighbors": ["room.hallway", "room.bathroom_secondary"],
+      "zones": ["zone.bedroom2_fp2"],
+      "subzones": ["Beta_Bed", "Beta_Flex"]
+    },
+    "room.hallway": {
+      "name": "Hallway (Pass)",
+      "aliases": ["Pass"],
+      "kind": ["hallway"],
+      "neighbors": ["room.open_plan", "room.bedroom1", "room.bedroom2", "room.bathroom_secondary"],
+      "zones": ["zone.hallway_fp2"],
+      "subzones": ["Vault", "Alpha_Pass", "Beta_Pass", "Splash_Pass", "Chaos_Pass"]
+    },
+    "room.bathroom_throne": {
+      "name": "Ensuite Bathroom (Throne)",
+      "aliases": ["Throne"],
+      "kind": ["bathroom"],
+      "neighbors": ["room.bedroom1"]
+    },
+    "room.bathroom_secondary": {
+      "name": "Rear Bathroom (Splash)",
+      "aliases": ["Splash"],
+      "kind": ["bathroom"],
+      "neighbors": ["room.hallway", "room.bedroom2"]
+    },
+    "room.laundry_utility": {
+      "name": "Laundry / Utility (Chaos)",
+      "aliases": ["Chaos"],
+      "kind": ["utility"],
+      "neighbors": ["room.hallway"]
+    }
+  }
+}
+
+
+⸻
+
+2. ZONES
+
+{
+  "zones": {
+    "zone.open_plan_fp2": {
+      "sensors": ["sensor.fp2_open_plan_presence", "sensor.fp2_open_plan_lux"]
+    },
+    "zone.bedroom1_fp2": {
+      "sensors": ["sensor.fp2_bedroom1_presence", "sensor.fp2_bedroom1_lux"]
+    },
+    "zone.bedroom2_fp2": {
+      "sensors": ["sensor.fp2_bedroom2_presence", "sensor.fp2_bedroom2_lux"]
+    },
+    "zone.hallway_fp2": {
+      "sensors": ["sensor.motion_hallway_1", "sensor.motion_hallway_2"]
+    }
+  }
+}
+
+
+⸻
+
+3. INFRASTRUCTURE MAP
+
+Compute & Networking
+
+{
+  "infrastructure": {
+    "server": {
+      "name": "GMKtec Mini PC",
+      "role": "automation_core",
+      "os": "Ubuntu 24.04",
+      "containers": ["homeassistant", "portainer", "postgres"],
+      "location": "room.laundry_utility"
+    },
+    "network": {
+      "router": "Unifi Cloud Gateway Ultra",
+      "ap": "Unifi 6+",
+      "topology": "flat LAN",
+      "cloudflare_tunnel": true
+    },
+    "bridges": {
+      "hue": "Philips Hue Bridge Pro",
+      "aqara": "Aqara M3 Hub",
+      "switchbot": "Switchbot Hub 3"
+    }
+  }
+}
+
+
+⸻
+
+4. DEVICES (MERGED + CLEANED)
+
+Each device maps to:
+	•	room
+	•	capabilities
+	•	HA entities
+	•	presence in scenes or automations
+
+(Only a representative truncated sample shown here — I can produce a complete list if you want.)
+
+{
+  "devices": {
+    "device.open_plan_ceiling_group": {
+      "type": "light_group",
+      "room": "room.open_plan",
+      "entities": ["light.open_plan_ceiling", "light.open_plan_all_lights"],
+      "capabilities": ["on_off", "brightness", "color_temp"]
+    },
+    "device.open_plan_curtains": {
+      "type": "window_treatment",
+      "entities": ["cover.openplan_curtains"],
+      "capabilities": ["open", "close", "set_position"]
+    },
+    "device.bedroom1_ceiling_lights": {
+      "type": "light_group",
+      "entities": [
+        "light.alpha_ceiling_1",
+        "light.alpha_ceiling_2",
+        "light.alpha_ceiling_3",
+        "light.alpha_ceiling_4",
+        "light.alpha_ceiling_5",
+        "light.alpha_ceiling_6"
+      ]
+    }
+  }
+}
+
+(Full expansion available on request.)
+
+⸻
+
+5. AUTOMATION STRUCTURE (IDEAL)
+
+{
+  "automations": {
+    "lighting": {
+      "blueprints": [
+        "daily_rhythm",
+        "follow_me_presence",
+        "night_path_bathroom"
+      ],
+      "instances_by_room": {
+        "room.open_plan": ["follow_me_presence", "daily_rhythm"],
+        "room.bedroom1": ["daily_rhythm"],
+        "room.hallway": ["night_path_bathroom"]
+      }
+    }
+  }
+}
+
+
+⸻
+
+6. DIGITAL TWIN GRAPH (MERGED FOR SHIP)
+
+Graph nodes:
+	•	rooms
+	•	zones
+	•	devices
+	•	sensors
+	•	automations
+
+Edges:
+	•	device → room
+	•	sensor → zone
+	•	automation → devices
+	•	infrastructure → room
+	•	network → infrastructure
+
+I can export this as:
+	•	JSON
+	•	Graphviz
+	•	Neo4j cypher
+	•	Mermaid diagram
+
+Just tell me the format.
+
+⸻
+
+🎯 Done — You Now Have:
+
+1. A complete cleanup plan to unify, normalise, and de-rust the system
+
+2. A consolidated canonical digital-twin map
+
+If you want next steps, I can produce:
+	•	A single canonical home_model.json ready for SHIP ingestion
+	•	A rebuild of your automations as generated blueprints using the registry
+	•	A visual map of the home (floorplan + devices + zones)
+	•	A drift detector script to ensure YAML ↔ registry consistency
+
+---
+
+{
+  "schema": "openplan.spatial_baseline.v1.1",
+  "plan_name": "Open Plan Spatial Baseline — v1.1",
+  "supersedes": "openplan.spatial_baseline.v1",
+
+  "reference_frame": {
+    "compass_locked": true,
+    "walls": [
+      { "id": "north", "label": "Entry Wall", "clock": "6pm" },
+      { "id": "east",  "label": "Window/Balcony Wall", "clock": "9pm" },
+      { "id": "south", "label": "Green Accent Wall", "clock": "12pm" },
+      { "id": "west",  "label": "Kitchen Cabinet Wall", "clock": "3pm" }
+    ],
+    "orientation_clock_map": {
+      "north": "6pm",
+      "east": "9pm",
+      "south": "12pm",
+      "west": "3pm"
+    }
+  },
+
+  "segments": [
+    { "id": "A-A1", "wall": "north", "length_cm": 175 },
+    { "id": "A1-B", "wall": "north", "length_cm": 100 },
+
+    { "id": "B-B1", "wall": "east", "length_cm": 100 },
+    { "id": "B1-B2", "wall": "east", "length_cm": 105 },
+    { "id": "B2-B3", "wall": "east", "length_cm": 250 },
+    { "id": "B3-D", "wall": "east", "length_cm": 105 },
+
+    { "id": "D-C", "wall": "south", "length_cm": 210 },
+
+    { "id": "A-C1", "wall": "west", "length_cm": 120 },
+    { "id": "C1-C2", "wall": "west", "length_cm": 300 }
+  ],
+
+  "anchors": [
+    {
+      "id": "anchor.threshold",
+      "type": "boundary",
+      "description": "Entry threshold from hallway into open plan",
+      "from": { "wall": "north", "segment": "A-A1", "offset_cm": 0 },
+      "to":   { "wall": "west",  "segment": "A-C1", "offset_cm": 0 }
+    },
+
+    {
+      "id": "anchor.kitchen_run",
+      "type": "fixed_element",
+      "description": "Kitchen cabinet run",
+      "wall": "west",
+      "segment": "C1-C2",
+      "length_cm": 300
+    },
+
+    {
+      "id": "anchor.balcony_door",
+      "type": "fixed_element",
+      "description": "Balcony door on east wall",
+      "wall": "east",
+      "segment": "B-B1",
+      "length_cm": 100
+    },
+
+    {
+      "id": "anchor.window_stretch",
+      "type": "fixed_element",
+      "description": "Window glazing on east wall (B2-B3)",
+      "wall": "east",
+      "segment": "B2-B3",
+      "length_cm": 250
+    },
+
+    {
+      "id": "anchor.curtain_track",
+      "type": "fixed_element",
+      "description": "Curtain track spanning B–B3",
+      "wall": "east",
+      "segments": ["B-B1", "B1-B2", "B2-B3"]
+    },
+
+    {
+      "id": "anchor.radiator.north",
+      "type": "fixed_element",
+      "description": "Radiator on north wall A1–B",
+      "wall": "north",
+      "segment": "A1-B",
+      "dimensions_cm": { "width": 110, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.radiator.south",
+      "type": "fixed_element",
+      "description": "Radiator on south wall at C",
+      "wall": "south",
+      "segment": "D-C",
+      "offset_cm": 120,
+      "dimensions_cm": { "width": 120, "depth": 5, "height": 60 }
+    },
+
+    {
+      "id": "anchor.se_angled_corner",
+      "type": "visual_anchor",
+      "description": "Angled corner where south wall meets east wall",
+      "wall_intersection": ["south", "east"]
+    }
+  ],
+
+  "quadrants": [
+    {
+      "id": "NW",
+      "description": "Entry-side north-west zone",
+      "bounds": {
+        "north_segments": ["A-A1"],
+        "west_segments": ["A-C1"]
+      }
+    },
+    {
+      "id": "NE",
+      "description": "Balcony door and north-east zone",
+      "bounds": {
+        "north_segments": ["A1-B"],
+        "east_segments": ["B-B1", "B1-B2"]
+      }
+    },
+    {
+      "id": "SW",
+      "description": "Kitchen zone and south radiator zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "west_segments": ["C1-C2"]
+      }
+    },
+    {
+      "id": "SE",
+      "description": "Angled corner and window-south transition zone",
+      "bounds": {
+        "south_segments": ["D-C"],
+        "east_segments": ["B2-B3", "B3-D"],
+        "anchors": ["anchor.se_angled_corner"]
+      }
+    }
+  ],
+
+  "flows": [
+    {
+      "id": "flow.entry_to_open_plan",
+      "from": "hallway",
+      "to": "open_plan",
+      "via": "anchor.threshold",
+      "description": "Primary movement from hallway into open plan"
+    }
+  ],
+
+  "source": {
+    "file": "Open Plan with Anchor Labels.png",
+    "version_created": "v1.1"
+  }
+}
+

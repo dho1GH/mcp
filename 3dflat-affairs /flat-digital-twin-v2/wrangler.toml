@@ -1,0 +1,14 @@
+name = "flat-digital-twin"
+main = "src/worker-v2.ts"
+compatibility_date = "2024-09-01"
+
+[site]
+bucket = "./public"
+
+# KV for live state (light toggles, sensor readings)
+# [[kv_namespaces]]
+# binding = "FLAT_STATE"
+# id = "your-kv-namespace-id"
+
+[build]
+command = "echo 'no build step'"

@@ -1,0 +1,630 @@
+{
+  "schema": "flat_twin.spatial_graph.v2",
+  "source": "Merged from home_graph_seed.cypher, Spatial.txt, hallway_layout.json, and USDZ scans",
+  "rooms": {
+    "room.open_plan": {
+      "name": "Open Plan",
+      "code": "Core",
+      "aliases": [
+        "Core",
+        "Living Room",
+        "Kitchen",
+        "Dining"
+      ],
+      "kind": [
+        "living",
+        "kitchen",
+        "dining"
+      ],
+      "area_sqft": 310,
+      "faces": "East",
+      "subzones": [
+        "Core_NE",
+        "Core_NW",
+        "Core_SE",
+        "Core_SW",
+        "Kitchen"
+      ],
+      "ceiling_height_m": 2.5,
+      "walls": {
+        "north": {
+          "label": "Entry Wall",
+          "clock": "6pm",
+          "segments": [
+            {
+              "id": "seg.core.A-A1",
+              "length_cm": 175,
+              "description": "Entry side"
+            },
+            {
+              "id": "seg.core.A1-B",
+              "length_cm": 100,
+              "description": "Angled outward 20-30\u00b0, radiator here"
+            }
+          ],
+          "total_cm": 275
+        },
+        "east": {
+          "label": "Window/Balcony Wall",
+          "clock": "9pm",
+          "segments": [
+            {
+              "id": "seg.core.B-B1",
+              "length_cm": 100,
+              "description": "Balcony door"
+            },
+            {
+              "id": "seg.core.B1-B2",
+              "length_cm": 105,
+              "description": "Solid wall"
+            },
+            {
+              "id": "seg.core.B2-B3",
+              "length_cm": 250,
+              "description": "Window stretch"
+            },
+            {
+              "id": "seg.core.B3-D",
+              "length_cm": 105,
+              "description": "Solid wall"
+            }
+          ],
+          "total_cm": 560
+        },
+        "south": {
+          "label": "Green Accent Wall",
+          "clock": "12pm",
+          "segments": [
+            {
+              "id": "seg.core.D-C",
+              "length_cm": 210,
+              "description": "Radiator at C end"
+            }
+          ],
+          "total_cm": 210
+        },
+        "west": {
+          "label": "Kitchen Cabinet Wall",
+          "clock": "3pm",
+          "segments": [
+            {
+              "id": "seg.core.A-C1",
+              "length_cm": 120,
+              "description": "Entry threshold gap"
+            },
+            {
+              "id": "seg.core.C1-C2",
+              "length_cm": 300,
+              "description": "Kitchen cabinet run"
+            }
+          ],
+          "total_cm": 420
+        }
+      },
+      "anchors": [
+        {
+          "id": "anchor.threshold",
+          "type": "boundary",
+          "name": "Open Plan Threshold"
+        },
+        {
+          "id": "anchor.balcony_door",
+          "type": "fixed_element",
+          "name": "Balcony Door",
+          "wall": "east",
+          "segment": "B-B1",
+          "width_cm": 100
+        },
+        {
+          "id": "anchor.window_stretch",
+          "type": "fixed_element",
+          "name": "East Window Stretch",
+          "wall": "east",
+          "segment": "B2-B3",
+          "length_cm": 250
+        },
+        {
+          "id": "anchor.curtain_track",
+          "type": "fixed_element",
+          "name": "Curtain Track",
+          "wall": "east",
+          "segments": [
+            "B-B1",
+            "B1-B2",
+            "B2-B3"
+          ]
+        },
+        {
+          "id": "anchor.kitchen_run",
+          "type": "fixed_element",
+          "name": "Kitchen Cabinet Run",
+          "wall": "west",
+          "segment": "C1-C2",
+          "length_cm": 300,
+          "depth_cm": 60,
+          "height_cm": 90
+        },
+        {
+          "id": "anchor.radiator.north",
+          "type": "fixed_element",
+          "name": "North Wall Radiator",
+          "wall": "north",
+          "segment": "A1-B",
+          "width_cm": 110,
+          "depth_cm": 5,
+          "height_cm": 60
+        },
+        {
+          "id": "anchor.radiator.south",
+          "type": "fixed_element",
+          "name": "South Wall Radiator",
+          "wall": "south",
+          "segment": "D-C",
+          "width_cm": 120,
+          "depth_cm": 5,
+          "height_cm": 60
+        },
+        {
+          "id": "anchor.se_angled_corner",
+          "type": "visual_anchor",
+          "name": "SE Angled Corner"
+        }
+      ],
+      "quadrants": {
+        "NW": "Entry-side north-west zone",
+        "NE": "Balcony door and north-east zone",
+        "SW": "Kitchen zone and south radiator zone",
+        "SE": "Angled corner and window-south transition"
+      },
+      "vertices_cm": [
+        {
+          "label": "A",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "label": "A1",
+          "x": 175,
+          "y": 0
+        },
+        {
+          "label": "B",
+          "x": 275,
+          "y": 0
+        },
+        {
+          "label": "B1",
+          "x": 275,
+          "y": 100
+        },
+        {
+          "label": "B2",
+          "x": 275,
+          "y": 205
+        },
+        {
+          "label": "B3",
+          "x": 275,
+          "y": 455
+        },
+        {
+          "label": "D",
+          "x": 275,
+          "y": 560
+        },
+        {
+          "label": "C",
+          "x": 65,
+          "y": 560
+        },
+        {
+          "label": "C2",
+          "x": 0,
+          "y": 420
+        },
+        {
+          "label": "C1",
+          "x": 0,
+          "y": 120
+        }
+      ],
+      "devices": [
+        "device.core_ceiling_group",
+        "device.core_curtains",
+        "device.core_tv",
+        "device.core_apple_tv",
+        "device.core_homepod_full",
+        "device.core_soundbar",
+        "device.core_ac",
+        "device.core_humidifier"
+      ],
+      "sensors": [
+        "sensor.fp2_open_plan_presence"
+      ],
+      "actuators": [
+        "actuator.core_hue_tap_dial"
+      ],
+      "lights": {
+        "Core Ceiling 01": {
+          "zone": "Core_Path",
+          "position_approx": "NW entry"
+        },
+        "Core Ceiling 02": {
+          "zone": "Core_Path",
+          "position_approx": "NW entry"
+        },
+        "Core Ceiling 03": {
+          "zone": "Core_Living",
+          "position_approx": "center"
+        },
+        "Core Ceiling 04": {
+          "zone": "Core_Living",
+          "position_approx": "center"
+        },
+        "Core Ceiling 05": {
+          "zone": "Core_Living",
+          "position_approx": "center"
+        },
+        "Core Ceiling 06": {
+          "zone": "Core_Living",
+          "position_approx": "NE"
+        },
+        "Core Ceiling 07": {
+          "zone": "Core_Living",
+          "position_approx": "SE"
+        },
+        "Core Ceiling 08": {
+          "zone": "Core_Living",
+          "position_approx": "SE"
+        },
+        "Core Ceiling 09": {
+          "zone": "Core_Kitchen",
+          "position_approx": "SW kitchen"
+        },
+        "Core Ceiling 10": {
+          "zone": "Core_Kitchen",
+          "position_approx": "SW kitchen"
+        }
+      }
+    },
+    "room.bedroom1": {
+      "name": "Bedroom 1 (Alpha)",
+      "code": "Alpha",
+      "aliases": [
+        "Alpha Bedroom",
+        "Primary Bedroom"
+      ],
+      "kind": [
+        "bedroom"
+      ],
+      "area_sqft": 140,
+      "subzones": [
+        "Alpha_Bed",
+        "Alpha_Flex"
+      ],
+      "ceiling_height_m": 2.5,
+      "notes": "Architecturally secondary but functionally primary \u2014 closer to Core",
+      "floor_extent_m": {
+        "width": 6.52,
+        "depth": 3.58
+      },
+      "devices": [
+        "device.alpha_ceiling_lights",
+        "device.alpha_bedside_lamp",
+        "device.alpha_floor_spot",
+        "device.alpha_tv",
+        "device.alpha_apple_tv",
+        "device.alpha_homepod_mini",
+        "device.alpha_purifier",
+        "device.alpha_humidifier",
+        "device.alpha_ac",
+        "device.alpha_blinds"
+      ],
+      "sensors": [
+        "sensor.fp2_bedroom1_presence",
+        "sensor.alpha_sleep_mat"
+      ],
+      "actuators": [
+        "actuator.alpha_hue_dial",
+        "actuator.alpha_smart_button"
+      ],
+      "lights": {
+        "Alpha Ceiling 1-6": {
+          "count": 6,
+          "type": "white+colour"
+        },
+        "Alpha Bedside": {
+          "type": "white_ambiance"
+        },
+        "Alpha Floor Spot": {
+          "type": "white_ambiance"
+        }
+      }
+    },
+    "room.bathroom_throne": {
+      "name": "Ensuite Bathroom (Throne)",
+      "code": "Throne",
+      "aliases": [
+        "Throne",
+        "Throne Bathroom",
+        "Primary Bathroom"
+      ],
+      "kind": [
+        "bathroom"
+      ],
+      "ceiling_height_m": 2.4,
+      "devices": [
+        "device.throne_ceiling_lights"
+      ],
+      "sensors": [
+        "sensor.throne_motion",
+        "sensor.throne_door"
+      ],
+      "actuators": [
+        "actuator.throne_ceiling_switch"
+      ],
+      "lights": {
+        "Throne Ceiling 1-4": {
+          "count": 4,
+          "type": "white_ambiance"
+        }
+      }
+    },
+    "room.hallway": {
+      "name": "Hallway (Pass)",
+      "code": "Pass",
+      "aliases": [
+        "Pass",
+        "Pass Hallway"
+      ],
+      "kind": [
+        "hallway"
+      ],
+      "subzones": [
+        "Vault",
+        "Alpha_Pass",
+        "Beta_Pass",
+        "Splash_Pass",
+        "Chaos_Pass"
+      ],
+      "ceiling_height_m": 2.4,
+      "floor_extent_m": {
+        "width": 8.48,
+        "depth": 3.08
+      },
+      "segments_from_hallway_layout": {
+        "entry_node": {
+          "length_m": 1.3,
+          "width_m": 1.1,
+          "features": [
+            "Front Door (900mm)"
+          ]
+        },
+        "front_stretch": {
+          "length_m": 2.1,
+          "width_m": 1.3,
+          "connects": [
+            "Open Plan (open)",
+            "Beta (door)"
+          ]
+        },
+        "rear_stretch": {
+          "length_m": 2.8,
+          "width_m": 1.05,
+          "connects": [
+            "Splash (door)",
+            "Alpha (door)"
+          ]
+        }
+      },
+      "devices": [
+        "device.pass_ceiling_lights"
+      ],
+      "sensors": [
+        "sensor.pass_motion_1",
+        "sensor.pass_motion_2",
+        "sensor.pass_fp1e",
+        "sensor.front_door_fp2"
+      ],
+      "actuators": [
+        "actuator.pass_dimmer"
+      ],
+      "lights": {
+        "Pass Ceiling 1-5": {
+          "count": 5,
+          "type": "white_ambiance",
+          "distribution": "2 front stretch, 3 rear stretch"
+        }
+      }
+    },
+    "room.bedroom2": {
+      "name": "Bedroom 2 (Beta)",
+      "code": "Beta",
+      "aliases": [
+        "Beta Bedroom",
+        "Secondary Bedroom"
+      ],
+      "kind": [
+        "bedroom"
+      ],
+      "area_sqft": 163,
+      "subzones": [
+        "Beta_Bed",
+        "Beta_Flex"
+      ],
+      "ceiling_height_m": 2.4,
+      "notes": "Two entry points \u2014 via hallway and via Splash bathroom. Dimensions: 4.1m wide",
+      "devices": [
+        "device.beta_ceiling_lights",
+        "device.beta_signe_floor_lamp",
+        "device.beta_bed_lightstrip"
+      ],
+      "sensors": [
+        "sensor.fp1e_bedroom2_presence"
+      ],
+      "actuators": [
+        "actuator.beta_hue_dial"
+      ],
+      "lights": {
+        "Beta Ceiling 1-4": {
+          "count": 4,
+          "type": "white_ambiance",
+          "location": "bedroom"
+        },
+        "Beta Walk-in 1-2": {
+          "count": 2,
+          "type": "white_ambiance",
+          "location": "walk-in"
+        },
+        "Beta Signe": {
+          "type": "gradient_color"
+        },
+        "Beta Bed Lightstrip": {
+          "type": "color"
+        }
+      }
+    },
+    "room.bedroom2_walkin": {
+      "name": "Walk-in Wardrobe (Betaflex)",
+      "code": "Beta_Walkin",
+      "aliases": [
+        "Beta Walk-in",
+        "Walk-in",
+        "Betaflex",
+        "7i"
+      ],
+      "kind": [
+        "wardrobe",
+        "closet"
+      ],
+      "ceiling_height_m": 2.4,
+      "notes": "No physical boundary separating from Beta \u2014 2 lights share Beta light group",
+      "lights": {
+        "shared with Beta": true
+      }
+    },
+    "room.bathroom_secondary": {
+      "name": "Secondary Bathroom (Splash)",
+      "code": "Splash",
+      "aliases": [
+        "Splash",
+        "Splash Bathroom",
+        "Guest Bathroom"
+      ],
+      "kind": [
+        "bathroom"
+      ],
+      "ceiling_height_m": 2.4,
+      "notes": "Connected to hallway AND walk-in wardrobe leading to Beta",
+      "devices": [
+        "device.splash_ceiling_lights"
+      ],
+      "sensors": [
+        "sensor.splash_motion",
+        "sensor.splash_door_hallway",
+        "sensor.splash_door_walkin"
+      ],
+      "actuators": [
+        "actuator.splash_dimmer"
+      ],
+      "lights": {
+        "Splash Ceiling 1-5": {
+          "count": 5,
+          "type": "white_ambiance"
+        }
+      }
+    },
+    "room.laundry_utility": {
+      "name": "Laundry / Utility (Chaos)",
+      "code": "Chaos",
+      "aliases": [
+        "Chaos",
+        "Utility",
+        "Laundry"
+      ],
+      "kind": [
+        "utility"
+      ],
+      "subzones": [
+        "laundry.hub_wall",
+        "laundry.storage"
+      ],
+      "ceiling_height_m": 2.4,
+      "notes": "All hubs and infrastructure located here",
+      "devices": [
+        "device.eufy_s1_omni_pro",
+        "device.chaos_ceiling_light"
+      ],
+      "infrastructure": [
+        "infra.unifi_gateway",
+        "infra.hue_bridge_pro",
+        "infra.aqara_m3",
+        "infra.switchbot_hub3",
+        "infra.ha_server",
+        "infra.unifi_ap"
+      ]
+    }
+  },
+  "adjacency": [
+    {
+      "from": "room.open_plan",
+      "to": "room.hallway",
+      "type": "open",
+      "notes": "Threshold at A"
+    },
+    {
+      "from": "room.bedroom1",
+      "to": "room.hallway",
+      "type": "door"
+    },
+    {
+      "from": "room.bedroom1",
+      "to": "room.bathroom_throne",
+      "type": "door",
+      "via": "wardrobe"
+    },
+    {
+      "from": "room.bedroom2",
+      "to": "room.hallway",
+      "type": "door"
+    },
+    {
+      "from": "room.bedroom2",
+      "to": "room.bathroom_secondary",
+      "type": "door",
+      "via": "walk-in"
+    },
+    {
+      "from": "room.bedroom2",
+      "to": "room.bedroom2_walkin",
+      "type": "open",
+      "notes": "Gap, no door"
+    },
+    {
+      "from": "room.bedroom2_walkin",
+      "to": "room.bathroom_secondary",
+      "type": "door"
+    },
+    {
+      "from": "room.bathroom_secondary",
+      "to": "room.hallway",
+      "type": "door"
+    },
+    {
+      "from": "room.bathroom_throne",
+      "to": "room.hallway",
+      "type": "door"
+    },
+    {
+      "from": "room.laundry_utility",
+      "to": "room.hallway",
+      "type": "door"
+    }
+  ],
+  "usdz_scan_mapping": {
+    "V1.usdz": "room.open_plan",
+    "3D-alpha.usdz": "room.bedroom1 + room.bathroom_throne",
+    "3D-hall_.usdz": "room.hallway",
+    "3D-Throne_.usdz": "room.bedroom2"
+  }
+}

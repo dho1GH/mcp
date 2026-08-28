@@ -1,0 +1,43 @@
+{
+  "space_name": "Hallway",
+  "ceiling_height_mm": 2400,
+  "segments": [
+    {
+      "id": "entry_node",
+      "role": "intersection",
+      "dimensions_mm": {"length": 1300, "width": 1100},
+      "features": [
+        {"type": "door", "name": "Front Door", "position_mm": {"x": 0, "y": 0}, "width_mm": 900, "hinge_side": "right", "opening_direction": "inward"},
+        {"type": "light", "mount": "ceiling", "position_mm": {"x": 650, "y": 550}}
+      ]
+    },
+    {
+      "id": "front_stretch",
+      "role": "corridor",
+      "dimensions_mm": {"length": 2100, "width": 1300},
+      "features": [
+        {"type": "light", "mount": "ceiling", "position_mm": {"x": 1050, "y": 650}}
+      ],
+      "connected_spaces": [
+        {"space": "Open Plan Kitchen/Living", "connection_type": "open"},
+        {"space": "Secondary Bedroom", "connection_type": "door"}
+      ]
+    },
+    {
+      "id": "rear_stretch",
+      "role": "corridor",
+      "dimensions_mm": {"length": 2800, "width": 1050},
+      "features": [
+        {"type": "light", "mount": "ceiling", "position_mm": {"x": 1400, "y": 525}}
+      ],
+      "connected_spaces": [
+        {"space": "Bathroom", "connection_type": "door"},
+        {"space": "Bedroom", "connection_type": "door"}
+      ]
+    }
+  ],
+  "internal_connections": [
+    {"from": "Bathroom", "to": "Walk-in Closet", "connection_type": "door"},
+    {"from": "Walk-in Closet", "to": "Bedroom", "connection_type": "open"}
+  ]
+}
