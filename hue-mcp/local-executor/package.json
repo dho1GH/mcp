@@ -1,0 +1,20 @@
+{
+  "name": "hue-local-executor",
+  "version": "1.0.0",
+  "description": "Local HTTP bridge to the Philips Hue Bridge. Runs on the LAN, called by the CF Worker through a tunnel.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "dev": "tsx --watch src/server.ts"
+  },
+  "dependencies": {
+    "@1password/sdk": "^0.3.1",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
