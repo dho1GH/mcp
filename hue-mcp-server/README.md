@@ -1,0 +1,103 @@
+# hue-mcp-server
+
+A remote MCP server exposing your Philips Hue bridge as tools, following the
+exact pattern of `nodered-mcp-server`: typed tools with `readOnlyHint`/
+`destructiveHint` annotations, a bearer-token gate, and every call written to
+an append-only audit log before it returns.
+
+## What's different from nodered-mcp-server
+
+Node-RED's admin API sits behind your Cloudflare Tunnel, so a *deployed*
+Worker can reach it from Cloudflare's cloud. The Hue Bridge uses a
+self-signed local certificate and has no tunnel in front of it here, so:
+
+- **Local dev (`npm run dev` / `wrangler dev`) works today** — it runs as a
+  process on your machine, on your LAN, and can reach the bridge directly at
+  `https://<bridge-ip>`, same as `hue_v2_rename_lights.py` does.
+- **A deployed Worker cannot reach the bridge** until the bridge is reachable
+  over HTTPS with a real cert from outside your LAN — e.g. put it behind the
+  same tunnel/reverse-proxy pattern as Node-RED, or run this Worker as a
+  local-only dev server permanently instead of deploying it.
+
+So this is currently a "run it on your network" tool, not yet a "deploy it
+to Cloudflare's edge" tool. That's a real gap to close later, not a bug.
+
+## Grant model
+
+Two of the five tools are pure reads (`hue_list_*`) and execute
+unconditionally — no grant needed, matching the read tier from the
+Node-RED server.
+
+The two write tools, `hue_rename_light` and `hue_set_light_state`, require a
+`grant` argument shaped like `hue-metadata-grant.json`:
+
+```json
+{
+  "grantId": "grant_example_hue_metadata",
+  "scope": "APPLY_HUE_METADATA_ONLY",
+  "systems": ["hue"],
+  "allowedOperations": ["metadata_write"],
+  "allowedTargets": ["Beta Bedroom"],
+  "forbiddenSystems": ["home_assistant", "node_red", "homekit", "google_home", "filesystem"],
+  "forbiddenOperations": ["restart", "reload", "delete", "deploy"],
+  "expires": "after_single_execution",
+  "postAuditRequired": true
+}
+```
+
+`src/grant.ts` checks the grant against the actual operation and the light's
+*current* name before calling the Hue API — not after. A grant scoped to
+`"Beta Bedroom"` cannot rename or change state on any other light, and a
+single-execution grant is consumed on first successful use.
+
+This mirrors agentic-control-plane's rule that natural-language permission
+is never accepted by the executor — only a typed grant matching system,
+operation, and target is honored.
+
+## Tools
+
+| Tool | Effect | Grant required |
+|---|---|---|
+| `hue_list_lights` | Read all lights | No |
+| `hue_list_rooms` | Read all rooms | No |
+| `hue_list_zones` | Read all zones | No |
+| `hue_list_scenes` | Read all scenes | No |
+| `hue_rename_light` | Rename one light | Yes — `metadata_write` |
+| `hue_set_light_state` | On/off + brightness | Yes — `state_write` |
+
+## Audit log
+
+Every call — read or write, allowed or blocked — writes one entry to the
+`AUDIT_LOG` KV namespace: timestamp, tool name, args, grant id (if any), and
+outcome (`executed` / `blocked` / `failed`). A blocked write is logged with
+the specific reason (e.g. "Target not in allowedTargets") before the error
+is returned to the caller, so a denied action is still traceable.
+
+## Setup
+
+```bash
+npm install
+npx wrangler kv namespace create AUDIT_LOG
+# paste the returned id into wrangler.toml under [[kv_namespaces]]
+
+cp .dev.vars.example .dev.vars
+# fill in HUE_BRIDGE_IP, HUE_APP_KEY (from hue_v2_rename_lights.py --create-key),
+# and a generated MCP_AUTH_TOKEN
+
+npm run dev
+```
+
+Verify locally:
+
+```bash
+curl http://localhost:8787/health
+# -> ok
+
+curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer <your MCP_AUTH_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+Connect it in Claude as a local/custom MCP connector pointing at
+`http://localhost:8787/mcp` while `wrangler dev` is running.

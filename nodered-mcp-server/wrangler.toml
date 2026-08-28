@@ -1,0 +1,23 @@
+name = "nodered-mcp-server"
+main = "src/index.ts"
+compatibility_date = "2026-07-28"
+compatibility_flags = ["nodejs_compat"]
+
+# No Durable Object binding needed: this server uses the stateless
+# createMcpHandler path (current recommended approach as of MCP spec
+# 2026-07-28 / Agents SDK). Each request gets a fresh MCP server instance;
+# no session state is kept in the Worker itself. Node-RED's own `rev` field
+# on the flow set is what protects against concurrent-edit conflicts.
+
+# --- Non-secret config (safe to commit) ---
+[vars]
+# Public hostname Node-RED is reachable at through the Cloudflare Tunnel.
+# e.g. "https://nodered.yourdomain.com" -- no trailing slash.
+NODE_RED_BASE_URL = "https://nodered.yourdomain.com"
+
+# --- Secrets (set with `wrangler secret put <NAME>`, never committed) ---
+# NODE_RED_USERNAME        - adminAuth username configured in Node-RED settings.js
+# NODE_RED_PASSWORD        - adminAuth password (plaintext here; Node-RED hashes it server-side on login)
+# MCP_AUTH_TOKEN           - shared bearer token this Worker requires from callers (e.g. Claude's MCP connector config)
+# CF_ACCESS_CLIENT_ID      - optional, if the hostname is also behind Cloudflare Access with a service-token policy
+# CF_ACCESS_CLIENT_SECRET  - optional, pairs with CF_ACCESS_CLIENT_ID

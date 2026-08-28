@@ -1,0 +1,707 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: **/node_modules/**, **/.venv/**, **/dist/**, **/build/**, **/*.lock
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+src/
+  grant.ts
+  hue-client.ts
+  index.ts
+  tools.ts
+  types.ts
+.dev.vars.example
+package.json
+README.md
+tsconfig.json
+wrangler.toml
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/grant.ts">
+import type { Grant, HueOperation, AuditEntry } from "./types";
+
+export class GrantViolation extends Error {}
+
+/**
+ * Checks a proposed action against a Grant, following the same shape as
+ * hue-metadata-grant.json: explicit system, explicit operation, explicit
+ * target allowlist, explicit forbidden lists, and an expiry.
+ *
+ * This mirrors agentic-control-plane's policy kernel (typed grant required,
+ * natural-language permission never accepted) but scoped down to Hue only,
+ * and it actually executes rather than always returning dry_run_only.
+ */
+export function checkGrant(
+  grant: Grant,
+  operation: HueOperation,
+  target: string
+): void {
+  if (!grant.systems.includes("hue")) {
+    throw new GrantViolation(`Grant does not cover system "hue"`);
+  }
+
+  if (grant.forbiddenSystems.includes("hue")) {
+    throw new GrantViolation(`"hue" is explicitly forbidden by this grant`);
+  }
+
+  if (!grant.allowedOperations.includes(operation)) {
+    throw new GrantViolation(
+      `Operation "${operation}" is not in allowedOperations [${grant.allowedOperations.join(", ")}]`
+    );
+  }
+
+  if (grant.forbiddenOperations.includes(operation)) {
+    throw new GrantViolation(`Operation "${operation}" is explicitly forbidden by this grant`);
+  }
+
+  const targetAllowed =
+    grant.allowedTargets.includes("*") || grant.allowedTargets.includes(target);
+  if (!targetAllowed) {
+    throw new GrantViolation(
+      `Target "${target}" is not in allowedTargets [${grant.allowedTargets.join(", ")}]`
+    );
+  }
+
+  if (grant.expires === "after_single_execution" && grant.usedAt) {
+    throw new GrantViolation(`Grant "${grant.grantId}" was already consumed at ${grant.usedAt}`);
+  }
+
+  if (grant.expires !== "after_single_execution") {
+    const expiry = new Date(grant.expires);
+    if (!Number.isNaN(expiry.getTime()) && expiry.getTime() < Date.now()) {
+      throw new GrantViolation(`Grant "${grant.grantId}" expired at ${grant.expires}`);
+    }
+  }
+}
+
+export function newAuditEntry(
+  tool: string,
+  args: unknown,
+  result: AuditEntry["result"],
+  detail?: string,
+  grantId?: string
+): AuditEntry {
+  return {
+    event_id: crypto.randomUUID(),
+    timestamp: new Date().toISOString(),
+    tool,
+    grant_id: grantId,
+    args,
+    result,
+    detail,
+  };
+}
+</file>
+
+<file path="src/hue-client.ts">
+import type { Env, HueLight } from "./types";
+
+async function hueRequest<T>(
+  env: Env,
+  method: "GET" | "PUT",
+  path: string,
+  body?: unknown
+): Promise<T> {
+  const url = `https://${env.HUE_BRIDGE_IP}${path}`;
+
+  // The Hue Bridge uses a local/self-signed certificate. Cloudflare Workers'
+  // fetch cannot disable TLS verification per-request the way Node's
+  // `rejectUnauthorized: false` does, so a locally-run (wrangler dev) Worker
+  // on the same LAN as the bridge is the supported path for now. A deployed
+  // Worker would need the bridge fronted by something with a valid cert
+  // (e.g. a reverse proxy on the same box as your Node-RED tunnel).
+  const response = await fetch(url, {
+    method,
+    headers: {
+      "content-type": "application/json",
+      "hue-application-key": env.HUE_APP_KEY,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  const text = await response.text();
+  let parsed: unknown;
+  try {
+    parsed = text ? JSON.parse(text) : {};
+  } catch {
+    parsed = { raw: text };
+  }
+
+  if (!response.ok) {
+    throw new Error(`Hue API ${response.status}: ${JSON.stringify(parsed)}`);
+  }
+
+  const asRecord = parsed as { errors?: unknown[] };
+  if (asRecord.errors && asRecord.errors.length > 0) {
+    throw new Error(`Hue API errors: ${JSON.stringify(asRecord.errors)}`);
+  }
+
+  return parsed as T;
+}
+
+export class HueClient {
+  constructor(private env: Env) {}
+
+  lights() {
+    return hueRequest<{ data: HueLight[] }>(this.env, "GET", "/clip/v2/resource/light");
+  }
+
+  rooms() {
+    return hueRequest<{ data: unknown[] }>(this.env, "GET", "/clip/v2/resource/room");
+  }
+
+  zones() {
+    return hueRequest<{ data: unknown[] }>(this.env, "GET", "/clip/v2/resource/zone");
+  }
+
+  scenes() {
+    return hueRequest<{ data: unknown[] }>(this.env, "GET", "/clip/v2/resource/scene");
+  }
+
+  bridgeHome() {
+    return hueRequest<{ data: unknown[] }>(this.env, "GET", "/clip/v2/resource/bridge_home");
+  }
+
+  renameLight(lightId: string, newName: string) {
+    return hueRequest(this.env, "PUT", `/clip/v2/resource/light/${lightId}`, {
+      metadata: { name: newName },
+    });
+  }
+
+  setLightState(lightId: string, on: boolean, brightness?: number) {
+    const body: Record<string, unknown> = { on: { on } };
+    if (brightness !== undefined) {
+      body.dimming = { brightness };
+    }
+    return hueRequest(this.env, "PUT", `/clip/v2/resource/light/${lightId}`, body);
+  }
+
+  async resolveLightId(key: string): Promise<{ id: string; name: string }> {
+    const { data: lights } = await this.lights();
+    const trimmed = key.trim();
+
+    const byId = lights.find((l) => l.id === trimmed);
+    if (byId) return { id: byId.id, name: byId.metadata?.name ?? "<unnamed>" };
+
+    const byV1 = lights.find((l) => l.id_v1 === `/lights/${trimmed}`);
+    if (byV1) return { id: byV1.id, name: byV1.metadata?.name ?? "<unnamed>" };
+
+    const matches = lights.filter((l) => l.metadata?.name === trimmed);
+    if (matches.length === 1) {
+      return { id: matches[0].id, name: matches[0].metadata?.name ?? "<unnamed>" };
+    }
+    if (matches.length > 1) {
+      throw new Error(`Multiple lights named "${trimmed}"; use the v2 id instead.`);
+    }
+
+    throw new Error(`No light found matching v2 id, v1 id, or exact name: "${trimmed}"`);
+  }
+}
+</file>
+
+<file path="src/index.ts">
+import { HueClient } from "./hue-client";
+import { toolDefinitions, callTool } from "./tools";
+import type { Env } from "./types";
+
+interface WorkerEnv extends Env {
+  AUDIT_LOG: KVNamespace;
+}
+
+function unauthorized() {
+  return new Response("Unauthorized", { status: 401 });
+}
+
+export default {
+  async fetch(request: Request, env: WorkerEnv): Promise<Response> {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/health") {
+      return new Response("ok");
+    }
+
+    if (url.pathname !== "/mcp") {
+      return new Response("Not found", { status: 404 });
+    }
+
+    const authHeader = request.headers.get("authorization") ?? "";
+    const token = authHeader.replace(/^Bearer\s+/i, "");
+    if (!env.MCP_AUTH_TOKEN || token !== env.MCP_AUTH_TOKEN) {
+      return unauthorized();
+    }
+
+    if (request.method !== "POST") {
+      return new Response("Method not allowed", { status: 405 });
+    }
+
+    const body = (await request.json()) as { jsonrpc: string; id: number | string; method: string; params?: any };
+
+    if (body.method === "tools/list") {
+      return Response.json({
+        jsonrpc: "2.0",
+        id: body.id,
+        result: { tools: toolDefinitions },
+      });
+    }
+
+    if (body.method === "tools/call") {
+      const hue = new HueClient(env);
+      try {
+        const result = await callTool(
+          { env, audit: env.AUDIT_LOG, hue },
+          body.params.name,
+          body.params.arguments ?? {}
+        );
+        return Response.json({
+          jsonrpc: "2.0",
+          id: body.id,
+          result: { content: [{ type: "text", text: JSON.stringify(result) }] },
+        });
+      } catch (error) {
+        return Response.json({
+          jsonrpc: "2.0",
+          id: body.id,
+          error: { code: -32000, message: error instanceof Error ? error.message : String(error) },
+        });
+      }
+    }
+
+    return Response.json({
+      jsonrpc: "2.0",
+      id: body.id,
+      error: { code: -32601, message: `Unknown method: ${body.method}` },
+    });
+  },
+};
+</file>
+
+<file path="src/tools.ts">
+import { HueClient } from "./hue-client";
+import { checkGrant, newAuditEntry, GrantViolation } from "./grant";
+import type { Env, Grant, AuditEntry } from "./types";
+
+// D1 or KV would both work for the audit log; this Worker assumes a KV
+// namespace bound as AUDIT_LOG (see wrangler.toml), same shape as
+// Head of Systems' audit.jsonl -- append-only, one entry per call.
+async function writeAudit(kv: KVNamespace, entry: AuditEntry) {
+  await kv.put(`audit:${entry.timestamp}:${entry.event_id}`, JSON.stringify(entry));
+}
+
+export interface ToolContext {
+  env: Env;
+  audit: KVNamespace;
+  hue: HueClient;
+}
+
+export const toolDefinitions = [
+  {
+    name: "hue_list_lights",
+    description: "List all Hue lights with their v2 id, v1 id, name, and current state.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
+    name: "hue_list_rooms",
+    description: "List all Hue rooms.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
+    name: "hue_list_zones",
+    description: "List all Hue zones.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
+    name: "hue_list_scenes",
+    description: "List all Hue scenes.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
+    name: "hue_rename_light",
+    description:
+      "Rename one light. Destructive-but-reversible: requires a Grant whose allowedOperations includes " +
+      "'metadata_write' and whose allowedTargets covers the light's current name.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        lightKey: { type: "string", description: "Light's v2 id, v1 id, or current exact name" },
+        newName: { type: "string" },
+        grant: { type: "object", description: "A Grant object, e.g. the shape of hue-metadata-grant.json" },
+      },
+      required: ["lightKey", "newName", "grant"],
+      additionalProperties: false,
+    },
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  {
+    name: "hue_set_light_state",
+    description:
+      "Turn a light on/off and optionally set brightness. Requires a Grant whose allowedOperations " +
+      "includes 'state_write' and whose allowedTargets covers the light's current name.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        lightKey: { type: "string" },
+        on: { type: "boolean" },
+        brightness: { type: "number", minimum: 0, maximum: 100 },
+        grant: { type: "object" },
+      },
+      required: ["lightKey", "on", "grant"],
+      additionalProperties: false,
+    },
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true },
+  },
+] as const;
+
+export async function callTool(ctx: ToolContext, name: string, args: any) {
+  const { hue, audit } = ctx;
+
+  switch (name) {
+    case "hue_list_lights": {
+      const result = await hue.lights();
+      await writeAudit(audit, newAuditEntry(name, args, "executed"));
+      return result;
+    }
+
+    case "hue_list_rooms": {
+      const result = await hue.rooms();
+      await writeAudit(audit, newAuditEntry(name, args, "executed"));
+      return result;
+    }
+
+    case "hue_list_zones": {
+      const result = await hue.zones();
+      await writeAudit(audit, newAuditEntry(name, args, "executed"));
+      return result;
+    }
+
+    case "hue_list_scenes": {
+      const result = await hue.scenes();
+      await writeAudit(audit, newAuditEntry(name, args, "executed"));
+      return result;
+    }
+
+    case "hue_rename_light": {
+      const grant = args.grant as Grant;
+      const { id, name: currentName } = await hue.resolveLightId(args.lightKey);
+      try {
+        checkGrant(grant, "metadata_write", currentName);
+      } catch (error) {
+        if (error instanceof GrantViolation) {
+          await writeAudit(
+            audit,
+            newAuditEntry(name, args, "blocked", error.message, grant.grantId)
+          );
+          throw error;
+        }
+        throw error;
+      }
+      const result = await hue.renameLight(id, args.newName);
+      grant.usedAt = new Date().toISOString();
+      await writeAudit(
+        audit,
+        newAuditEntry(
+          name,
+          { lightId: id, from: currentName, to: args.newName },
+          "executed",
+          undefined,
+          grant.grantId
+        )
+      );
+      return result;
+    }
+
+    case "hue_set_light_state": {
+      const grant = args.grant as Grant;
+      const { id, name: currentName } = await hue.resolveLightId(args.lightKey);
+      try {
+        checkGrant(grant, "state_write", currentName);
+      } catch (error) {
+        if (error instanceof GrantViolation) {
+          await writeAudit(
+            audit,
+            newAuditEntry(name, args, "blocked", error.message, grant.grantId)
+          );
+          throw error;
+        }
+        throw error;
+      }
+      const result = await hue.setLightState(id, args.on, args.brightness);
+      grant.usedAt = new Date().toISOString();
+      await writeAudit(
+        audit,
+        newAuditEntry(
+          name,
+          { lightId: id, on: args.on, brightness: args.brightness },
+          "executed",
+          undefined,
+          grant.grantId
+        )
+      );
+      return result;
+    }
+
+    default:
+      throw new Error(`Unknown tool: ${name}`);
+  }
+}
+</file>
+
+<file path="src/types.ts">
+export interface Env {
+  HUE_BRIDGE_IP: string;
+  HUE_APP_KEY: string;
+  MCP_AUTH_TOKEN: string;
+  CF_ACCESS_CLIENT_ID?: string;
+  CF_ACCESS_CLIENT_SECRET?: string;
+}
+
+/**
+ * Grant shape, matching the pattern established in hue-metadata-grant.json
+ * and the wider agentic-control-plane authority model:
+ * narrow scope, explicit allow/forbid lists, single-use or time-bound expiry.
+ */
+export interface Grant {
+  grantId: string;
+  scope: string;
+  systems: string[];
+  allowedOperations: string[];
+  allowedTargets: string[]; // light/room/zone names or ids this grant covers; "*" means unrestricted within scope
+  forbiddenSystems: string[];
+  forbiddenOperations: string[];
+  expires: "after_single_execution" | string; // ISO date, or the single-execution sentinel
+  postAuditRequired: boolean;
+  usedAt?: string; // set once consumed, for single-execution grants
+}
+
+export type HueOperation =
+  | "read"
+  | "metadata_write"
+  | "state_write"
+  | "scene_recall";
+
+export interface HueLight {
+  id: string;
+  id_v1?: string;
+  metadata?: { name?: string };
+  on?: { on: boolean };
+  dimming?: { brightness: number };
+}
+
+export interface AuditEntry {
+  event_id: string;
+  timestamp: string;
+  tool: string;
+  grant_id?: string;
+  args: unknown;
+  result: "allowed" | "blocked" | "executed" | "failed";
+  detail?: string;
+}
+</file>
+
+<file path=".dev.vars.example">
+HUE_BRIDGE_IP=192.168.1.x
+HUE_APP_KEY=your-hue-app-key-from-hue_v2_rename_lights.py---create-key
+MCP_AUTH_TOKEN=generate-with-openssl-rand-hex-32
+</file>
+
+<file path="package.json">
+{
+  "name": "hue-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "wrangler": "^3.90.0",
+    "@cloudflare/workers-types": "^4.20260101.0"
+  }
+}
+</file>
+
+<file path="README.md">
+# hue-mcp-server
+
+A remote MCP server exposing your Philips Hue bridge as tools, following the
+exact pattern of `nodered-mcp-server`: typed tools with `readOnlyHint`/
+`destructiveHint` annotations, a bearer-token gate, and every call written to
+an append-only audit log before it returns.
+
+## What's different from nodered-mcp-server
+
+Node-RED's admin API sits behind your Cloudflare Tunnel, so a *deployed*
+Worker can reach it from Cloudflare's cloud. The Hue Bridge uses a
+self-signed local certificate and has no tunnel in front of it here, so:
+
+- **Local dev (`npm run dev` / `wrangler dev`) works today** — it runs as a
+  process on your machine, on your LAN, and can reach the bridge directly at
+  `https://<bridge-ip>`, same as `hue_v2_rename_lights.py` does.
+- **A deployed Worker cannot reach the bridge** until the bridge is reachable
+  over HTTPS with a real cert from outside your LAN — e.g. put it behind the
+  same tunnel/reverse-proxy pattern as Node-RED, or run this Worker as a
+  local-only dev server permanently instead of deploying it.
+
+So this is currently a "run it on your network" tool, not yet a "deploy it
+to Cloudflare's edge" tool. That's a real gap to close later, not a bug.
+
+## Grant model
+
+Two of the five tools are pure reads (`hue_list_*`) and execute
+unconditionally — no grant needed, matching the read tier from the
+Node-RED server.
+
+The two write tools, `hue_rename_light` and `hue_set_light_state`, require a
+`grant` argument shaped like `hue-metadata-grant.json`:
+
+```json
+{
+  "grantId": "grant_example_hue_metadata",
+  "scope": "APPLY_HUE_METADATA_ONLY",
+  "systems": ["hue"],
+  "allowedOperations": ["metadata_write"],
+  "allowedTargets": ["Beta Bedroom"],
+  "forbiddenSystems": ["home_assistant", "node_red", "homekit", "google_home", "filesystem"],
+  "forbiddenOperations": ["restart", "reload", "delete", "deploy"],
+  "expires": "after_single_execution",
+  "postAuditRequired": true
+}
+```
+
+`src/grant.ts` checks the grant against the actual operation and the light's
+*current* name before calling the Hue API — not after. A grant scoped to
+`"Beta Bedroom"` cannot rename or change state on any other light, and a
+single-execution grant is consumed on first successful use.
+
+This mirrors agentic-control-plane's rule that natural-language permission
+is never accepted by the executor — only a typed grant matching system,
+operation, and target is honored.
+
+## Tools
+
+| Tool | Effect | Grant required |
+|---|---|---|
+| `hue_list_lights` | Read all lights | No |
+| `hue_list_rooms` | Read all rooms | No |
+| `hue_list_zones` | Read all zones | No |
+| `hue_list_scenes` | Read all scenes | No |
+| `hue_rename_light` | Rename one light | Yes — `metadata_write` |
+| `hue_set_light_state` | On/off + brightness | Yes — `state_write` |
+
+## Audit log
+
+Every call — read or write, allowed or blocked — writes one entry to the
+`AUDIT_LOG` KV namespace: timestamp, tool name, args, grant id (if any), and
+outcome (`executed` / `blocked` / `failed`). A blocked write is logged with
+the specific reason (e.g. "Target not in allowedTargets") before the error
+is returned to the caller, so a denied action is still traceable.
+
+## Setup
+
+```bash
+npm install
+npx wrangler kv namespace create AUDIT_LOG
+# paste the returned id into wrangler.toml under [[kv_namespaces]]
+
+cp .dev.vars.example .dev.vars
+# fill in HUE_BRIDGE_IP, HUE_APP_KEY (from hue_v2_rename_lights.py --create-key),
+# and a generated MCP_AUTH_TOKEN
+
+npm run dev
+```
+
+Verify locally:
+
+```bash
+curl http://localhost:8787/health
+# -> ok
+
+curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer <your MCP_AUTH_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+Connect it in Claude as a local/custom MCP connector pointing at
+`http://localhost:8787/mcp` while `wrangler dev` is running.
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "types": ["@cloudflare/workers-types"],
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts"]
+}
+</file>
+
+<file path="wrangler.toml">
+name = "hue-mcp-server"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+# Bind a KV namespace for the append-only audit log. Create it with:
+#   npx wrangler kv namespace create AUDIT_LOG
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "AUDIT_LOG"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+# Non-secret. Set HUE_BRIDGE_IP here or as a secret if you'd rather not
+# have it in the repo.
+# HUE_BRIDGE_IP = "192.168.1.x"
+</file>
+
+</files>

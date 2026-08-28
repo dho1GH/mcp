@@ -1,0 +1,15 @@
+name = "hue-mcp-server"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+# Bind a KV namespace for the append-only audit log. Create it with:
+#   npx wrangler kv namespace create AUDIT_LOG
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "AUDIT_LOG"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+# Non-secret. Set HUE_BRIDGE_IP here or as a secret if you'd rather not
+# have it in the repo.
+# HUE_BRIDGE_IP = "192.168.1.x"
