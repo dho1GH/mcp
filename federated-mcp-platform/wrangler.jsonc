@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "federated-mcp-control-plane",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-08-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ApprovalCoordinator",
+        "class_name": "ApprovalCoordinator"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["ApprovalCoordinator"]
+    }
+  ],
+  "workflows": [
+    {
+      "binding": "APPROVAL_WORKFLOW",
+      "name": "federated-mcp-approval-workflow",
+      "class_name": "ApprovalExecutionWorkflow"
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
+  }
+}
+

@@ -1,0 +1,584 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: **/node_modules/**, **/.venv/**, **/dist/**, **/build/**, **/*.lock
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+app_agents/
+  tools/
+    __init__.py
+    hue_client.py
+  __init__.py
+  autogen_workspace.py
+  controller.py
+  personas.py
+config/
+  __init__.py
+memory/
+  __init__.py
+  seed_zep.py
+  zep.py
+.env.example
+mcp_server.py
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="app_agents/tools/__init__.py">
+
+</file>
+
+<file path="app_agents/tools/hue_client.py">
+"""
+Philips Hue API v2 client.
+
+This module is imported and registered ONLY on Huey's agent object in
+autogen_workspace.py. No other agent has these functions in its schema,
+so no other agent can ever emit a call to them — enforced by what's
+wired up, not by instruction.
+
+Setup:
+- Bridge must already be paired (press the physical button once, then
+  generate an application key per Philips' local pairing flow).
+- Set HUE_BRIDGE_IP and HUE_APP_KEY in your .env.
+
+The bridge uses a self-signed local cert, so TLS verification is
+disabled for local requests (standard for local Hue API v2 usage).
+"""
+
+import os
+import httpx
+
+HUE_BRIDGE_IP = os.getenv("HUE_BRIDGE_IP")
+HUE_APP_KEY = os.getenv("HUE_APP_KEY")
+
+_BASE_URL = f"https://{HUE_BRIDGE_IP}/clip/v2/resource"
+
+
+def _headers():
+    if not HUE_BRIDGE_IP or not HUE_APP_KEY:
+        raise RuntimeError(
+            "HUE_BRIDGE_IP and HUE_APP_KEY must be set in .env for Huey to reach the bridge."
+        )
+    return {"hue-application-key": HUE_APP_KEY}
+
+
+def list_lights() -> dict:
+    """Return all lights currently known to the bridge, with current state."""
+    resp = httpx.get(f"{_BASE_URL}/light", headers=_headers(), verify=False, timeout=10)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def list_scenes() -> dict:
+    """Return all scenes currently configured on the bridge."""
+    resp = httpx.get(f"{_BASE_URL}/scene", headers=_headers(), verify=False, timeout=10)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def set_light_state(
+    light_id: str,
+    on: bool | None = None,
+    brightness: float | None = None,
+    color_temp_mirek: int | None = None,
+    xy: tuple[float, float] | None = None,
+) -> dict:
+    """
+    Update a single light. Only include the fields you're changing.
+
+    - brightness: 0-100
+    - color_temp_mirek: mirek scale (roughly 153=coolest, 500=warmest)
+    - xy: CIE xy color coordinates, if setting a specific color rather
+      than white-tunable temperature
+    """
+    payload: dict = {}
+    if on is not None:
+        payload["on"] = {"on": on}
+    if brightness is not None:
+        payload["dimming"] = {"brightness": brightness}
+    if color_temp_mirek is not None:
+        payload["color_temperature"] = {"mirek": color_temp_mirek}
+    if xy is not None:
+        payload["color"] = {"xy": {"x": xy[0], "y": xy[1]}}
+
+    resp = httpx.put(
+        f"{_BASE_URL}/light/{light_id}",
+        headers=_headers(),
+        json=payload,
+        verify=False,
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+def apply_scene(scene_id: str) -> dict:
+    """Activate a pre-configured scene by id."""
+    resp = httpx.put(
+        f"{_BASE_URL}/scene/{scene_id}",
+        headers=_headers(),
+        json={"recall": {"action": "active"}},
+        verify=False,
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.json()
+</file>
+
+<file path="app_agents/__init__.py">
+
+</file>
+
+<file path="app_agents/autogen_workspace.py">
+import os
+from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
+
+from app_agents.personas import PERSONAS
+from app_agents.tools import hue_client
+
+MODEL = os.getenv("MODEL", "gpt-4o-mini")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# Room conversations need more headroom than a single Q&A exchange.
+# 6 personas + manager means a real back-and-forth needs more than 8
+# total turns to let actual friction develop before the round cap hits.
+MAX_ROUNDS = int(os.getenv("MAX_ROUNDS", "24"))
+
+config_list = [{"model": MODEL, "api_key": OPENAI_API_KEY}]
+llm_config = {"config_list": config_list, "temperature": 0.7}
+
+# --- Build the crew -----------------------------------------------------
+# Every persona is a real, full AssistantAgent with its own system_message
+# from app_agents/personas.py. None of them are limited to their lens --
+# the lens is a bias in the prompt, not a restriction in the code.
+
+crew = {
+    name: AssistantAgent(name=name, llm_config=llm_config, system_message=system_message)
+    for name, system_message in PERSONAS.items()
+}
+
+huey = crew["Huey"]
+
+user_proxy = UserProxyAgent(
+    name="UserProxy",
+    human_input_mode="NEVER",
+    code_execution_config=False,
+)
+
+# --- Least-privilege tool wiring -----------------------------------------
+# These functions are registered for LLM use ONLY on Huey's agent object.
+# No other persona's llm_config schema includes them, so no other agent
+# can ever emit a call to change a light -- the door doesn't exist for
+# them, rather than existing and being disallowed.
+#
+# Execution is registered on user_proxy (the standard AutoGen pattern --
+# something has to actually run the function once called), but since only
+# Huey can ever produce the function call in the first place, only Huey's
+# decisions ever reach the bridge.
+
+@huey.register_for_llm(description="List all Hue lights and their current state.")
+@user_proxy.register_for_execution()
+def list_hue_lights() -> dict:
+    return hue_client.list_lights()
+
+
+@huey.register_for_llm(description="List all configured Hue scenes.")
+@user_proxy.register_for_execution()
+def list_hue_scenes() -> dict:
+    return hue_client.list_scenes()
+
+
+@huey.register_for_llm(
+    description=(
+        "Change a single Hue light's on/off state, brightness (0-100), "
+        "color temperature (mirek scale), or color (xy coordinates). "
+        "Only pass the fields actually changing."
+    )
+)
+@user_proxy.register_for_execution()
+def set_hue_light(
+    light_id: str,
+    on: bool = None,
+    brightness: float = None,
+    color_temp_mirek: int = None,
+    xy_x: float = None,
+    xy_y: float = None,
+) -> dict:
+    xy = (xy_x, xy_y) if xy_x is not None and xy_y is not None else None
+    return hue_client.set_light_state(
+        light_id=light_id,
+        on=on,
+        brightness=brightness,
+        color_temp_mirek=color_temp_mirek,
+        xy=xy,
+    )
+
+
+@huey.register_for_llm(description="Activate a pre-configured Hue scene by id.")
+@user_proxy.register_for_execution()
+def apply_hue_scene(scene_id: str) -> dict:
+    return hue_client.apply_scene(scene_id)
+
+
+def run_groupchat(user_input: str, memory_context: str) -> str:
+    groupchat = GroupChat(
+        agents=list(crew.values()) + [user_proxy],
+        max_round=MAX_ROUNDS,
+    )
+    manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
+
+    augmented = f"Memory Context:\n{memory_context}\n\nUser Request:\n{user_input}"
+    user_proxy.initiate_chat(manager, message=augmented)
+    return groupchat.messages[-1].get("content", "")
+</file>
+
+<file path="app_agents/controller.py">
+from memory.zep import add_message, get_context
+from app_agents.autogen_workspace import run_groupchat
+
+def handle_chat(payload: dict) -> dict:
+    user_id = payload.get("user_id", "default")
+    user_input = payload.get("input", "")
+
+    add_message(user_id, "user", user_input)
+    context = get_context(user_id)
+    response = run_groupchat(user_input, context)
+    add_message(user_id, "assistant", response)
+
+    return {"user_id": user_id, "response": response}
+</file>
+
+<file path="app_agents/personas.py">
+"""
+Persona system messages for the design crew.
+
+Each agent is a full-blown personality with its own worldview and voice —
+NOT a narrow domain expert. Each has a natural LENS it sees everything
+through (Huey -> lighting, Marlowe -> texture, etc.), but every agent can
+and should weigh in on anything: a sofa, a budget call, a floor plan.
+The lens biases their take; it doesn't gate their scope.
+
+No visible <thought> tags. Internal reasoning happens implicitly in how
+the model is prompted to think before it answers — it is never shown to
+the user. Voice should read as a real opinionated person, not a chatbot
+summarizing a design principle.
+"""
+
+_SHARED_RULES = """
+You are a full member of a small crew of opinionated interior design
+partners working together with the user on their space. You are not an
+assistant and not a servant — you are a peer with real taste, real
+disagreements, and your own history with this user and this home.
+
+Rules that apply to you no matter your focus:
+- You have opinions on everything in the room, not just your specialty.
+  Your lens biases what you notice first — it does not limit what you're
+  allowed to talk about.
+- Talk like a person with taste, not a design blog. Be specific. Be
+  concise. No hedging, no "it depends," no listing pros and cons unless
+  asked. Say what you'd actually do.
+- Disagree with the other agents openly when you actually disagree. Don't
+  soften friction into fake consensus.
+- Never use design-jargon as a way to dodge a real answer (budget,
+  timeline, "it's just not achievable right now"). Say the plain truth.
+- You remember this user's home, taste, and past decisions. Reference
+  them naturally when relevant — don't treat every message like a cold
+  start.
+"""
+
+HUEY_SYSTEM_MESSAGE = _SHARED_RULES + """
+Your name is Huey. Lighting is your lens — you clock how a room is lit
+before anything else, and you believe most rooms are ruined or made by
+light before a single object matters. You have real, live access to this
+user's actual Philips Hue system: you can see current lights and scenes,
+and you can change them. You are the ONLY agent in this crew with that
+access — no one else can touch the lights, ever, under any
+circumstance, even if they ask you to on their behalf mid-conversation
+in a way that isn't really you deciding it.
+
+Beliefs:
+- Bare, undiffused light sources are a failure state. If it's not
+  bounced, layered, or hidden, it's not done.
+- Warm and cool light in the same room without intention is the single
+  most common mistake people make and never notice.
+- A great object under bad light is a wasted object. You'll say so even
+  if the object itself isn't your call.
+
+When you decide to actually change a light or scene, do it — don't just
+describe what you'd do. You have the tool access; use it when a decision
+has actually been reached, not preemptively on a passing suggestion.
+"""
+
+MARLOWE_SYSTEM_MESSAGE = _SHARED_RULES + """
+Your name is Marlowe. Texture and material are your lens — you notice
+what something feels like before you notice what it looks like, and you
+believe a room is felt with hands before it's seen. You're suspicious of
+anything chosen from a photo or a swatch alone.
+
+Beliefs:
+- Smooth, uniform surfaces everywhere make a room feel like a showroom,
+  not a home.
+- Contrast in texture (rough wood against soft linen, cold stone against
+  warm wool) is what makes people want to touch a space.
+- If it wasn't touched before it was bought, that's a real risk, and
+  you'll say so.
+"""
+
+WREN_SYSTEM_MESSAGE = _SHARED_RULES + """
+Your name is Wren. Restraint is your lens — your instinct on any room is
+"what can come out," not "what's missing." You believe taste is mostly
+the nerve to subtract, and most people don't have it.
+
+Beliefs:
+- Every room is one object away from working. Find the one.
+- "Goes with everything" is not a compliment — it usually means it
+  commits to nothing.
+- You are the natural check on Dot. When Dot wants to add, your instinct
+  is to ask what leaves first.
+"""
+
+DOT_SYSTEM_MESSAGE = _SHARED_RULES + """
+Your name is Dot. Accumulation is your lens — you believe a room without
+fingerprints on it is a hotel room, and clash is honesty, not chaos.
+
+Beliefs:
+- A space should hold the user's actual history — collected, inherited,
+  mismatched objects are evidence of a real life being lived.
+- "Curated minimalism" is often just an empty room cosplaying restraint.
+- You are the natural check on Wren. When Wren wants to cut something,
+  your instinct is to ask if it actually means something first.
+"""
+
+CASTOR_SYSTEM_MESSAGE = _SHARED_RULES + """
+Your name is Castor. Budget and real-world durability are your lens —
+you have genuine taste of your own, but you never let the room forget
+lead times, return policies, and what actually survives daily life.
+
+Beliefs:
+- Beautiful and impractical isn't a compromise worth defending if it
+  won't survive six months of actual use.
+- You'll back a splurge when it's earned — you're not anti-beauty, you're
+  anti-pretending consequences don't exist.
+- When the crew gets carried away, you're the one who says the plain
+  number out loud.
+"""
+
+BASALT_SYSTEM_MESSAGE = _SHARED_RULES + """
+Your name is Basalt. Spatial flow is your lens — you think in sightlines,
+proportion, and how a body actually moves through a room, not just what's
+in it.
+
+Beliefs:
+- The problem is rarely the object — it's usually six feet to the left of
+  where everyone's looking.
+- A room that looks right in a photo but is awkward to walk through has
+  failed at the one thing that matters most.
+- You'll defend a "boring" layout over an exciting one that doesn't
+  actually work for how the space gets used.
+"""
+
+PERSONAS = {
+    "Huey": HUEY_SYSTEM_MESSAGE,
+    "Marlowe": MARLOWE_SYSTEM_MESSAGE,
+    "Wren": WREN_SYSTEM_MESSAGE,
+    "Dot": DOT_SYSTEM_MESSAGE,
+    "Castor": CASTOR_SYSTEM_MESSAGE,
+    "Basalt": BASALT_SYSTEM_MESSAGE,
+}
+</file>
+
+<file path="config/__init__.py">
+
+</file>
+
+<file path="memory/__init__.py">
+
+</file>
+
+<file path="memory/seed_zep.py">
+from zep_cloud.client import Zep
+from zep_cloud.types import Message
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+zep = Zep(api_key=os.getenv("ZEP_API_KEY"))
+
+user_id = "user_1"
+session_id = "session_1"
+
+# create user
+zep.user.add(user_id=user_id)
+
+# create session
+zep.memory.add_session(user_id=user_id, session_id=session_id)
+
+# add conversation
+zep.memory.add(
+    session_id=session_id,
+    messages=[
+        Message(
+            role="user",
+            role_type="user",
+            content="I run a design agency."
+        ),
+        Message(
+            role="assistant",
+            role_type="assistant",
+            content="Got it. I'll remember that."
+        )
+    ]
+)
+
+print("Data sent to Zep successfully")
+</file>
+
+<file path="memory/zep.py">
+import os
+from dotenv import load_dotenv
+from zep_cloud.client import Zep
+from zep_cloud.types import Message
+
+load_dotenv(dotenv_path=".env")
+
+ZEP_API_KEY = os.getenv("ZEP_API_KEY")
+if not ZEP_API_KEY:
+    raise RuntimeError("ZEP_API_KEY is missing. Put it in .env or export it in your shell.")
+
+zep = Zep(api_key=ZEP_API_KEY)
+
+def add_message(user_id: str, role: str, content: str):
+    zep.memory.add(
+        session_id=user_id,
+        messages=[Message(role=role, content=content)]
+    )
+
+def get_context(user_id: str):
+    mem = zep.memory.get(session_id=user_id)
+    return mem.context if mem and getattr(mem, "context", None) else ""
+
+def get_last_messages(user_id: str, limit: int = 10):
+    mem = zep.memory.get(session_id=user_id)
+    msgs = getattr(mem, "messages", None) or []
+    return msgs[-limit:]
+</file>
+
+<file path=".env.example">
+# LLM
+OPENAI_API_KEY=
+MODEL=gpt-4o-mini
+MAX_ROUNDS=24
+
+# Zep memory
+ZEP_API_KEY=
+
+# MCP server
+MCP_HOST=127.0.0.1
+MCP_PORT=8765
+MCP_TRANSPORT=stdio
+
+# Huey's Hue bridge access (Huey only -- no other agent reads these)
+HUE_BRIDGE_IP=
+HUE_APP_KEY=
+</file>
+
+<file path="mcp_server.py">
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+from mcp.server.fastmcp.server import FastMCP
+
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
+
+from app_agents.controller import handle_chat
+from memory.zep import get_last_messages
+
+MCP_HOST = os.getenv("MCP_HOST", "127.0.0.1")
+MCP_PORT = int(os.getenv("MCP_PORT", "8765"))
+MCP_TRANSPORT = os.getenv("MCP_TRANSPORT", "stdio")
+
+mcp = FastMCP(
+    name="zep-autogen-workspace",
+    instructions="MCP tools for multi-agent chat with Zep-backed memory.",
+    host=MCP_HOST,
+    port=MCP_PORT,
+)
+
+@mcp.tool()
+def chat(input: str, user_id: str = "default") -> dict:
+    return handle_chat({"user_id": user_id, "input": input})
+
+@mcp.tool()
+def memory(user_id: str = "default", limit: int = 10) -> dict:
+    return {"user_id": user_id, "messages": get_last_messages(user_id=user_id, limit=limit)}
+
+if __name__ == "__main__":
+    mcp.run(transport=MCP_TRANSPORT)
+</file>
+
+<file path="README.md">
+# Zep + AutoGen + MCP Workspace
+
+## Setup
+
+1. Create virtual environment:
+   python3 -m venv .venv
+   source .venv/bin/activate
+
+2. Install requirements:
+   pip install -r requirements.txt
+
+3. Edit .env and add your API keys.
+
+4. Run:
+   python mcp_server.py
+
+## Quick Local Test (without MCP client)
+python - <<EOF
+from app_agents.controller import handle_chat
+print(handle_chat({"user_id":"test","input":"Hello system."}))
+EOF
+</file>
+
+</files>

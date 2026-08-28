@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hue MCP — Live Test Reference</title>
+<style>
+  :root {
+    --bg: #12141a;
+    --panel: #1a1d26;
+    --panel-2: #22262f;
+    --border: #2e3340;
+    --text: #e6e8ec;
+    --muted: #8b91a0;
+    --accent: #6ee0c4;
+    --warn: #e0b76e;
+    --danger: #e07070;
+    --read: #6ea8e0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 32px;
+    line-height: 1.5;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .step {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    min-width: 150px;
+    flex: 1;
+  }
+  .step .n { font-size: 11px; color: var(--accent); font-weight: 600; letter-spacing: .04em; }
+  .step .t { font-size: 13.5px; margin-top: 4px; font-weight: 600; }
+  .step .d { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .arrow { display: flex; align-items: center; color: var(--muted); font-size: 18px; }
+  section { margin-bottom: 28px; }
+  h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 12px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--panel-2); color: var(--muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .badge.read { background: rgba(110,168,224,0.15); color: var(--read); }
+  .badge.write { background: rgba(224,183,110,0.15); color: var(--warn); }
+  .badge.destructive { background: rgba(224,112,112,0.15); color: var(--danger); }
+  code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  pre {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    overflow-x: auto;
+    margin: 6px 0 0;
+    position: relative;
+  }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+    font-size: 11px; padding: 3px 8px; border-radius: 6px; cursor: pointer;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+  details { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; }
+  summary { padding: 12px 14px; cursor: pointer; font-size: 13.5px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--muted); font-size: 16px; }
+  details[open] summary::after { content: "–"; }
+  .details-body { padding: 0 14px 14px; }
+  .checklist { display: flex; flex-direction: column; gap: 8px; }
+  .checklist label { display: flex; align-items: center; gap: 10px; font-size: 13.5px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+  .checklist label:has(input:checked) { border-color: var(--accent); background: rgba(110,224,196,0.06); }
+  .checklist input { width: 16px; height: 16px; accent-color: var(--accent); }
+  .log-area {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .log-row { display: grid; grid-template-columns: 90px 110px 1fr 90px; gap: 8px; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .log-row:last-child { border-bottom: none; }
+  .log-row.head { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 10.5px; letter-spacing: .04em; }
+  .result-executed { color: var(--accent); }
+  .result-blocked { color: var(--danger); }
+  .add-row { display: flex; gap: 6px; margin-top: 10px; }
+  .add-row select, .add-row input {
+    background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
+    border-radius: 6px; padding: 6px 8px; font-size: 12px;
+  }
+  .add-row input[type=text] { flex: 1; }
+  .add-row button { background: var(--accent); color: #0a0d10; border: none; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>Hue MCP Server — Live Test Reference</h1>
+<div class="sub">Keep this open while running <code>wrangler dev</code>. Work through it left to right, top to bottom.</div>
+
+<div class="flow">
+  <div class="step"><div class="n">1</div><div class="t">You, in chat</div><div class="d">Ask for an action in plain language</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><div class="n">2</div><div class="t">Claude proposes</div><div class="d">States exact tool + args before calling</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><div class="n">3</div><div class="t">tools/call</div><div class="d">JSON-RPC hits your local Worker</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><div class="n">4</div><div class="t">Grant check</div><div class="d">Reads skip this. Writes are checked first.</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><div class="n">5</div><div class="t">Hue Bridge</div><div class="d">Only reached if grant passes</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><div class="n">6</div><div class="t">Audit + report</div><div class="d">KV log written, result told back to you</div></div>
+</div>
+
+<section>
+  <h2>Setup checklist</h2>
+  <div class="checklist" id="setup-checklist"></div>
+</section>
+
+<section>
+  <h2>Tool reference</h2>
+  <table>
+    <tr><th>Tool</th><th>Type</th><th>Grant op needed</th><th>Notes</th></tr>
+    <tr><td><code>hue_list_lights</code></td><td><span class="badge read">read</span></td><td>—</td><td>Get id/name/state for every light</td></tr>
+    <tr><td><code>hue_list_rooms</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_zones</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_scenes</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_motion_sensors</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_buttons</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_temperature_sensors</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_light_level_sensors</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_entertainment_areas</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_behavior_scripts</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_list_behavior_instances</code></td><td><span class="badge read">read</span></td><td>—</td><td></td></tr>
+    <tr><td><code>hue_rename_light</code></td><td><span class="badge write">write</span></td><td><code>metadata_write</code></td><td>Target = light's <em>current</em> name</td></tr>
+    <tr><td><code>hue_set_light_state</code></td><td><span class="badge destructive">write</span></td><td><code>state_write</code></td><td>on/off, brightness, xy color, mirek temp</td></tr>
+    <tr><td><code>hue_recall_scene</code></td><td><span class="badge destructive">write</span></td><td><code>scene_recall</code></td><td>Target = scene name</td></tr>
+    <tr><td><code>hue_set_group_state</code></td><td><span class="badge destructive">write</span></td><td><code>state_write</code></td><td>Target = grouped_light id</td></tr>
+    <tr><td><code>hue_set_light_effect</code></td><td><span class="badge destructive">write</span></td><td><code>state_write</code></td><td>e.g. sparkle, candle, fire, no_effect</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Copy-paste test calls</h2>
+
+  <details open>
+    <summary>1 — health + list tools</summary>
+    <div class="details-body">
+      <pre><button class="copy-btn" onclick="copyBlock(this)">copy</button>curl http://localhost:8787/health
+
+curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer $MCP_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'</pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>2 — read: list lights (no grant)</summary>
+    <div class="details-body">
+      <pre><button class="copy-btn" onclick="copyBlock(this)">copy</button>curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer $MCP_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc":"2.0","id":2,"method":"tools/call",
+    "params":{"name":"hue_list_lights","arguments":{}}
+  }'</pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>3 — write: rename light (grant should ALLOW)</summary>
+    <div class="details-body">
+      <div class="sub" style="margin:0 0 6px">Match <code>allowedTargets</code> to the light's real current name first.</div>
+      <pre><button class="copy-btn" onclick="copyBlock(this)">copy</button>curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer $MCP_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc":"2.0","id":3,"method":"tools/call",
+    "params":{
+      "name":"hue_rename_light",
+      "arguments":{
+        "lightKey":"Beta Bedroom",
+        "newName":"Beta Bedroom Lamp",
+        "grant":{
+          "grantId":"test-001",
+          "scope":"APPLY_HUE_METADATA_ONLY",
+          "systems":["hue"],
+          "allowedOperations":["metadata_write"],
+          "allowedTargets":["Beta Bedroom"],
+          "forbiddenSystems":["home_assistant","node_red"],
+          "forbiddenOperations":["restart","reload","delete","deploy"],
+          "expires":"after_single_execution",
+          "postAuditRequired":true
+        }
+      }
+    }
+  }'</pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>4 — write: rename light (grant should BLOCK — wrong target)</summary>
+    <div class="details-body">
+      <div class="sub" style="margin:0 0 6px">Same as above but <code>allowedTargets</code> deliberately doesn't include the light — confirms the block path and audit log work.</div>
+      <pre><button class="copy-btn" onclick="copyBlock(this)">copy</button>curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer $MCP_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc":"2.0","id":4,"method":"tools/call",
+    "params":{
+      "name":"hue_rename_light",
+      "arguments":{
+        "lightKey":"Beta Bedroom",
+        "newName":"Should Not Apply",
+        "grant":{
+          "grantId":"test-002",
+          "scope":"APPLY_HUE_METADATA_ONLY",
+          "systems":["hue"],
+          "allowedOperations":["metadata_write"],
+          "allowedTargets":["Some Other Light"],
+          "forbiddenSystems":[],
+          "forbiddenOperations":[],
+          "expires":"after_single_execution",
+          "postAuditRequired":true
+        }
+      }
+    }
+  }'</pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>5 — write: color + brightness (state_write)</summary>
+    <div class="details-body">
+      <pre><button class="copy-btn" onclick="copyBlock(this)">copy</button>curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer $MCP_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc":"2.0","id":5,"method":"tools/call",
+    "params":{
+      "name":"hue_set_light_state",
+      "arguments":{
+        "lightKey":"Beta Bedroom Lamp",
+        "on":true,
+        "brightness":40,
+        "xy":{"x":0.4,"y":0.4},
+        "grant":{
+          "grantId":"test-003",
+          "scope":"HUE_STATE_ONLY",
+          "systems":["hue"],
+          "allowedOperations":["state_write"],
+          "allowedTargets":["Beta Bedroom Lamp"],
+          "forbiddenSystems":[],
+          "forbiddenOperations":[],
+          "expires":"after_single_execution",
+          "postAuditRequired":true
+        }
+      }
+    }
+  }'</pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>6 — write: recall a scene</summary>
+    <div class="details-body">
+      <pre><button class="copy-btn" onclick="copyBlock(this)">copy</button>curl -X POST http://localhost:8787/mcp \
+  -H "Authorization: Bearer $MCP_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc":"2.0","id":6,"method":"tools/call",
+    "params":{
+      "name":"hue_recall_scene",
+      "arguments":{
+        "sceneKey":"Relax",
+        "grant":{
+          "grantId":"test-004",
+          "scope":"HUE_SCENE_ONLY",
+          "systems":["hue"],
+          "allowedOperations":["scene_recall"],
+          "allowedTargets":["Relax"],
+          "forbiddenSystems":[],
+          "forbiddenOperations":[],
+          "expires":"after_single_execution",
+          "postAuditRequired":true
+        }
+      }
+    }
+  }'</pre>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2>Session log — track what you actually ran</h2>
+  <div class="log-area">
+    <div class="log-row head"><div>Time</div><div>Tool</div><div>Note</div><div>Result</div></div>
+    <div id="log-rows"></div>
+    <div class="add-row">
+      <select id="log-tool">
+        <option>hue_list_lights</option>
+        <option>hue_list_rooms</option>
+        <option>hue_list_zones</option>
+        <option>hue_list_scenes</option>
+        <option>hue_list_motion_sensors</option>
+        <option>hue_list_buttons</option>
+        <option>hue_list_temperature_sensors</option>
+        <option>hue_list_light_level_sensors</option>
+        <option>hue_list_entertainment_areas</option>
+        <option>hue_list_behavior_scripts</option>
+        <option>hue_list_behavior_instances</option>
+        <option>hue_rename_light</option>
+        <option>hue_set_light_state</option>
+        <option>hue_recall_scene</option>
+        <option>hue_set_group_state</option>
+        <option>hue_set_light_effect</option>
+      </select>
+      <input type="text" id="log-note" placeholder="e.g. renamed Beta Bedroom → Lamp">
+      <select id="log-result">
+        <option value="executed">executed</option>
+        <option value="blocked">blocked</option>
+        <option value="failed">failed</option>
+      </select>
+      <button onclick="addLog()">Add</button>
+    </div>
+  </div>
+</section>
+
+<script>
+const setupItems = [
+  "npm install run inside hue-mcp-server/",
+  "wrangler kv namespace create AUDIT_LOG — id pasted into wrangler.toml",
+  ".dev.vars filled in: HUE_BRIDGE_IP, HUE_APP_KEY, MCP_AUTH_TOKEN",
+  "wrangler dev running — curl /health returns ok",
+  "tools/list returns all 8 tools",
+  "Test 2 (read) returns real light data from your bridge",
+  "Test 3 (write, allowed) actually renames the light",
+  "Test 4 (write, blocked) returns a GrantViolation, light unchanged",
+  "Audit log in KV has an entry for every call made above"
+];
+const ul = document.getElementById('setup-checklist');
+setupItems.forEach((text, i) => {
+  const label = document.createElement('label');
+  label.innerHTML = '<input type="checkbox" id="chk'+i+'"><span>'+text+'</span>';
+  ul.appendChild(label);
+});
+
+function copyBlock(btn) {
+  const pre = btn.parentElement;
+  const text = pre.innerText.replace('copy\n','');
+  navigator.clipboard.writeText(text);
+  btn.innerText = 'copied';
+  setTimeout(()=> btn.innerText = 'copy', 1200);
+}
+
+function addLog() {
+  const tool = document.getElementById('log-tool').value;
+  const note = document.getElementById('log-note').value || '—';
+  const result = document.getElementById('log-result').value;
+  const time = new Date().toLocaleTimeString();
+  const row = document.createElement('div');
+  row.className = 'log-row';
+  row.innerHTML = '<div>'+time+'</div><div>'+tool+'</div><div>'+note+'</div><div class="result-'+result+'">'+result+'</div>';
+  document.getElementById('log-rows').prepend(row);
+  document.getElementById('log-note').value = '';
+}
+</script>
+
+</body>
+</html>
