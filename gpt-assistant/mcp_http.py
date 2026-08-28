@@ -1,15 +1,17 @@
+import os
+
 import uvicorn
 
-from config.settings import get_settings
-from mcp_app import create_mcp_app
+from mcp_server import mcp
 
 
 if __name__ == "__main__":
-    settings = get_settings()
-    mcp = create_mcp_app()
+    host = os.getenv("MCP_HOST", "127.0.0.1")
+    port = int(os.getenv("MCP_PORT", "8765"))
+    reload = os.getenv("MCP_RELOAD", "false").lower() in ("1", "true", "yes")
     uvicorn.run(
         mcp.streamable_http_app(),
-        host=settings.mcp_host,
-        port=settings.mcp_port,
-        reload=settings.mcp_reload,
+        host=host,
+        port=port,
+        reload=reload,
     )

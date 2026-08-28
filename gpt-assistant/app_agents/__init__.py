@@ -1,3 +1,5 @@
-from app_agents.service import get_agent, handle_chat
+"""Persistent assistant seed package."""
 
-__all__ = ["get_agent", "handle_chat"]
+from .persistent_agent import PersistentStateAgent
+
+__all__ = ["PersistentStateAgent"]

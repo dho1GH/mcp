@@ -1,0 +1,12 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+assistant.db
+logs/
+.env
+*.key
+*.pem
+secrets.json
+node_modules/
+.codex_backups/

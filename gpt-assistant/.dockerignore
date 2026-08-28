@@ -1,0 +1,11 @@
+.codex_backups/
+.env
+.app_agents_memory.jsonl
+__pycache__/
+*.pyc
+assistant.db
+path/to/venv/
+
+.create_thread.py
+codebase.md
+.claude/
