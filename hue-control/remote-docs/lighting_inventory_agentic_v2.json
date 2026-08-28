@@ -1,0 +1,6235 @@
+{
+  "schema_version": "2.0.0",
+  "inventory_id": "lighting_inventory_unit_203",
+  "generated_from_schema_version": "1.0",
+  "property": {
+    "property_id": "property_unit_203",
+    "name": "Unit 203",
+    "unit": "203",
+    "floor": 2,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area_sq_ft": 883,
+    "timezone": "Europe/London",
+    "coordinate_system": {
+      "type": "floorplan_normalized",
+      "origin": "top_left",
+      "x_range": [
+        0,
+        1
+      ],
+      "y_range": [
+        0,
+        1
+      ],
+      "floorplan_asset_id": null
+    }
+  },
+  "ontology": {
+    "entity_types": [
+      "property",
+      "room",
+      "zone",
+      "light",
+      "switch",
+      "sensor",
+      "scene",
+      "automation",
+      "issue"
+    ],
+    "controlled_vocabularies": {
+      "lighting_roles": [
+        "general",
+        "ambient",
+        "task",
+        "accent",
+        "decorative",
+        "circulation",
+        "safety",
+        "night"
+      ],
+      "operational_status": [
+        "operational",
+        "degraded",
+        "unreachable",
+        "offline",
+        "retired",
+        "unknown"
+      ],
+      "confidence_scale": "0.0_to_1.0"
+    }
+  },
+  "rooms": [
+    {
+      "room_id": "room_01_bathroom_1",
+      "name": "Bathroom 1",
+      "aliases": [],
+      "floor": 2,
+      "room_type": "bathroom",
+      "zones": [
+        "bathroom"
+      ],
+      "occupancy_sensor_ids": [],
+      "daylight_exposure": "unknown",
+      "notes": null
+    },
+    {
+      "room_id": "room_02_bathroom_2",
+      "name": "Bathroom 2",
+      "aliases": [],
+      "floor": 2,
+      "room_type": "bathroom",
+      "zones": [
+        "bathroom"
+      ],
+      "occupancy_sensor_ids": [],
+      "daylight_exposure": "unknown",
+      "notes": null
+    },
+    {
+      "room_id": "room_03_bedroom_1",
+      "name": "Bedroom 1",
+      "aliases": [],
+      "floor": 2,
+      "room_type": "bedroom",
+      "zones": [
+        "bedroom_1",
+        "bedside"
+      ],
+      "occupancy_sensor_ids": [],
+      "daylight_exposure": "unknown",
+      "notes": null
+    },
+    {
+      "room_id": "room_04_bedroom_2",
+      "name": "Bedroom 2",
+      "aliases": [],
+      "floor": 2,
+      "room_type": "bedroom",
+      "zones": [
+        "bedroom_2",
+        "entry",
+        "wardrobe"
+      ],
+      "occupancy_sensor_ids": [],
+      "daylight_exposure": "unknown",
+      "notes": null
+    },
+    {
+      "room_id": "room_05_hallway",
+      "name": "Hallway",
+      "aliases": [],
+      "floor": 2,
+      "room_type": "hallway",
+      "zones": [
+        "bathroom",
+        "front_door",
+        "hallway"
+      ],
+      "occupancy_sensor_ids": [],
+      "daylight_exposure": "unknown",
+      "notes": null
+    },
+    {
+      "room_id": "room_06_open_plan",
+      "name": "Open Plan",
+      "aliases": [],
+      "floor": 2,
+      "room_type": "open_plan",
+      "zones": [
+        "balcony_approach",
+        "kitchen",
+        "living_area",
+        "open_plan",
+        "sofa_area"
+      ],
+      "occupancy_sensor_ids": [],
+      "daylight_exposure": "unknown",
+      "notes": null
+    },
+    {
+      "room_id": "room_07_utilities_storage_laundry",
+      "name": "Utilities - Storage & Laundry",
+      "aliases": [],
+      "floor": 2,
+      "room_type": "utility",
+      "zones": [
+        "laundry",
+        "storage"
+      ],
+      "occupancy_sensor_ids": [],
+      "daylight_exposure": "unknown",
+      "notes": null
+    }
+  ],
+  "devices": [
+    {
+      "device_id": "light_001",
+      "canonical_name": "Ceiling Bath 4",
+      "display_name": "Ceiling Bath 4",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_01_bathroom_1",
+        "room_name": "Bathroom 1",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 2,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_1",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_002",
+      "canonical_name": "Ceiling Bath 3",
+      "display_name": "Ceiling Bath 3",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_01_bathroom_1",
+        "room_name": "Bathroom 1",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 2,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_1",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_003",
+      "canonical_name": "Ceiling Bath 1",
+      "display_name": "Ceiling Bath 1",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_01_bathroom_1",
+        "room_name": "Bathroom 1",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 2,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_1",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_004",
+      "canonical_name": "Ceiling Bath 2",
+      "display_name": "Ceiling Bath 2",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_01_bathroom_1",
+        "room_name": "Bathroom 1",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 2,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_1",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_005",
+      "canonical_name": "Ceiling Front Door 1",
+      "display_name": "Ceiling Front Door 1",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_05_hallway",
+        "room_name": "Hallway",
+        "zone": "front_door",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "circulation"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 3,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "hallway",
+        "ceiling_light",
+        "front_door"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_006",
+      "canonical_name": "Ceiling Front Door 2",
+      "display_name": "Ceiling Front Door 2",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_05_hallway",
+        "room_name": "Hallway",
+        "zone": "front_door",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "circulation"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 3,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "hallway",
+        "ceiling_light",
+        "front_door"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_007",
+      "canonical_name": "Ceiling Rear Bedroom Hallway",
+      "display_name": "Ceiling Rear Bedroom Hallway",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_05_hallway",
+        "room_name": "Hallway",
+        "zone": "hallway",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "circulation"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 3,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "hallway",
+        "ceiling_light",
+        "hallway"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_008",
+      "canonical_name": "Ceiling Rear Bathroom Hallway",
+      "display_name": "Ceiling Rear Bathroom Hallway",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_05_hallway",
+        "room_name": "Hallway",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "circulation"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 3,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "hallway",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_009",
+      "canonical_name": "Ceiling Front Hallway",
+      "display_name": "Ceiling Front Hallway",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_05_hallway",
+        "room_name": "Hallway",
+        "zone": "hallway",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "circulation"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 3,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "hallway",
+        "ceiling_light",
+        "hallway"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_010",
+      "canonical_name": "Klasnick Table Lamp",
+      "display_name": "Klasnick Table Lamp",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_05_hallway",
+        "room_name": "Hallway",
+        "zone": "hallway",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "table_lamp",
+        "mounting": "portable_table",
+        "portable": true,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "unknown",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "ambient",
+          "circulation"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 3,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.2,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "hallway",
+        "table_lamp",
+        "hallway"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_011",
+      "canonical_name": "Ceiling Storage",
+      "display_name": "Ceiling Storage",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_07_utilities_storage_laundry",
+        "room_name": "Utilities - Storage & Laundry",
+        "zone": "storage",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "task"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 4,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "utilities_storage_laundry",
+        "ceiling_light",
+        "storage"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_012",
+      "canonical_name": "Ceiling Laundry",
+      "display_name": "Ceiling Laundry",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_07_utilities_storage_laundry",
+        "room_name": "Utilities - Storage & Laundry",
+        "zone": "laundry",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "task"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 4,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "utilities_storage_laundry",
+        "ceiling_light",
+        "laundry"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_013",
+      "canonical_name": "Overhead Main Bathroom 3",
+      "display_name": "Overhead Main Bathroom 3",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_02_bathroom_2",
+        "room_name": "Bathroom 2",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 5,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_2",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_014",
+      "canonical_name": "Overhead Main Bathroom 4",
+      "display_name": "Overhead Main Bathroom 4",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_02_bathroom_2",
+        "room_name": "Bathroom 2",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 5,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_2",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_015",
+      "canonical_name": "Overhead Main Bathroom 5",
+      "display_name": "Overhead Main Bathroom 5",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_02_bathroom_2",
+        "room_name": "Bathroom 2",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 5,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_2",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_016",
+      "canonical_name": "Overhead Main Bathroom 1",
+      "display_name": "Overhead Main Bathroom 1",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_02_bathroom_2",
+        "room_name": "Bathroom 2",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 5,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_2",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_017",
+      "canonical_name": "Overhead Main Bathroom 2",
+      "display_name": "Overhead Main Bathroom 2",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_02_bathroom_2",
+        "room_name": "Bathroom 2",
+        "zone": "bathroom",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 5,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bathroom_2",
+        "ceiling_light",
+        "bathroom"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_018",
+      "canonical_name": "Ceiling Living Middle",
+      "display_name": "Ceiling Living Middle",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "living_area",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "living_area"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_019",
+      "canonical_name": "Ceiling Living TR",
+      "display_name": "Ceiling Living TR",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "living_area",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "living_area"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_020",
+      "canonical_name": "Ceiling Living BL",
+      "display_name": "Ceiling Living BL",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "living_area",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "living_area"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_021",
+      "canonical_name": "Ceiling Living 2",
+      "display_name": "Ceiling Living 2",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "living_area",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "living_area"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_022",
+      "canonical_name": "Monica VibeLucci Arc Lamp",
+      "display_name": "Monica VibeLucci Arc Lamp",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "open_plan",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "arc_floor_lamp",
+        "mounting": "portable_floor",
+        "portable": true,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "unknown",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "ambient"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.2,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "arc_floor_lamp",
+        "open_plan"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_023",
+      "canonical_name": "Ceiling Living - Lower Middle",
+      "display_name": "Ceiling Living - Lower Middle",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "living_area",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "living_area"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_024",
+      "canonical_name": "Ceiling Living BR",
+      "display_name": "Ceiling Living BR",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "living_area",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "living_area"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_025",
+      "canonical_name": "Sofa Area Gradient Floor Lamp",
+      "display_name": "Sofa Area Gradient Floor Lamp",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "sofa_area",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "gradient_floor_lamp",
+        "mounting": "portable_floor",
+        "portable": true,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "unknown",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "ambient",
+          "decorative"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": true,
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": false,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unreachable",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.2,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "gradient_floor_lamp",
+        "sofa_area"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_026",
+      "canonical_name": "Fado Bulb Orb Lamp",
+      "display_name": "Fado Bulb Orb Lamp",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "open_plan",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "decorative_table_lamp",
+        "mounting": "portable_table",
+        "portable": true,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "unknown",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "ambient"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": false,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unreachable",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.2,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "table_or_orb_lamp",
+        "open_plan"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_027",
+      "canonical_name": "Ceiling Living - To Balcony 1",
+      "display_name": "Ceiling Living - To Balcony 1",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "balcony_approach",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 9,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "balcony_approach"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_028",
+      "canonical_name": "Ceiling Living - To Balcony 2",
+      "display_name": "Ceiling Living - To Balcony 2",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "balcony_approach",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 6,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "balcony_approach"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_029",
+      "canonical_name": "Signe gradient floor 1",
+      "display_name": "Signe gradient floor 1",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "open_plan",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "gradient_floor_lamp",
+        "mounting": "portable_floor",
+        "portable": true,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "unknown",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "ambient",
+          "decorative"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": true,
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 6,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.2,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "gradient_floor_lamp",
+        "open_plan"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_030",
+      "canonical_name": "Ceiling Kitchen - Above Sink",
+      "display_name": "Ceiling Kitchen - Above Sink",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "kitchen",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "task"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 6,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "kitchen"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_031",
+      "canonical_name": "Ceiling Kitchen - Above Fridge",
+      "display_name": "Ceiling Kitchen - Above Fridge",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_06_open_plan",
+        "room_name": "Open Plan",
+        "zone": "kitchen",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 6,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "open_plan",
+        "ceiling_light",
+        "kitchen"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_032",
+      "canonical_name": "Bedroom Overhead (Lower Corner)",
+      "display_name": "Bedroom Overhead (Lower Corner)",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_04_bedroom_2",
+        "room_name": "Bedroom 2",
+        "zone": "bedroom_2",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 7,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_2",
+        "ceiling_light",
+        "bedroom_2"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_033",
+      "canonical_name": "Wardrobe Overhead (Lower)",
+      "display_name": "Wardrobe Overhead (Lower)",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_04_bedroom_2",
+        "room_name": "Bedroom 2",
+        "zone": "wardrobe",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "task"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 7,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_2",
+        "ceiling_light",
+        "wardrobe"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_034",
+      "canonical_name": "Bedroom Overhead (Lower Entry)",
+      "display_name": "Bedroom Overhead (Lower Entry)",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_04_bedroom_2",
+        "room_name": "Bedroom 2",
+        "zone": "entry",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "circulation"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 7,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_2",
+        "ceiling_light",
+        "entry"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_035",
+      "canonical_name": "Wardrobe Overhead (Above Entry)",
+      "display_name": "Wardrobe Overhead (Above Entry)",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_04_bedroom_2",
+        "room_name": "Bedroom 2",
+        "zone": "wardrobe",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "circulation",
+          "task"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 7,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_2",
+        "ceiling_light",
+        "wardrobe"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_036",
+      "canonical_name": "Bedroom Overhead (Upper Right)",
+      "display_name": "Bedroom Overhead (Upper Right)",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_04_bedroom_2",
+        "room_name": "Bedroom 2",
+        "zone": "bedroom_2",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 7,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_2",
+        "ceiling_light",
+        "bedroom_2"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_037",
+      "canonical_name": "Bedroom Overhead (Upper Left)",
+      "display_name": "Bedroom Overhead (Upper Left)",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_04_bedroom_2",
+        "room_name": "Bedroom 2",
+        "zone": "bedroom_2",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 7,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_2",
+        "ceiling_light",
+        "bedroom_2"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_038",
+      "canonical_name": "Ceiling Bedroom 3",
+      "display_name": "Ceiling Bedroom 3",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedroom_1",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "ceiling_light",
+        "bedroom_1"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_039",
+      "canonical_name": "Ceiling Bedroom 1",
+      "display_name": "Ceiling Bedroom 1",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedroom_1",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "ceiling_light",
+        "bedroom_1"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_040",
+      "canonical_name": "Ceiling Bedroom 5",
+      "display_name": "Ceiling Bedroom 5",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedroom_1",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "ceiling_light",
+        "bedroom_1"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_041",
+      "canonical_name": "Ceiling Bedroom 2",
+      "display_name": "Ceiling Bedroom 2",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedroom_1",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "ceiling_light",
+        "bedroom_1"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_042",
+      "canonical_name": "Small Beige Ola Whitborg Lamp",
+      "display_name": "Small Beige Ola Whitborg Lamp",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedroom_1",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "table_lamp",
+        "mounting": "portable_table",
+        "portable": true,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "unknown",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "ambient"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.2,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "table_lamp",
+        "bedroom_1"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_043",
+      "canonical_name": "Overhead Bedroom Lower Corner 2",
+      "display_name": "Overhead Bedroom Lower Corner 2",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedroom_1",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "ceiling_light",
+        "bedroom_1"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_044",
+      "canonical_name": "Overhead bedroom Lower Corner 1",
+      "display_name": "Overhead bedroom Lower Corner 1",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedroom_1",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "recessed_or_ceiling_fixture",
+        "mounting": "ceiling",
+        "portable": false,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "GU10",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "general"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": null,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unknown",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.45,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "ceiling_light",
+        "bedroom_1"
+      ],
+      "notes": null
+    },
+    {
+      "device_id": "light_045",
+      "canonical_name": "XL Ola Bedside Table Lamp",
+      "display_name": "XL Ola Bedside Table Lamp",
+      "aliases": [],
+      "entity_type": "light",
+      "location": {
+        "property_id": "property_unit_203",
+        "floor": 2,
+        "room_id": "room_03_bedroom_1",
+        "room_name": "Bedroom 1",
+        "zone": "bedside",
+        "position": {
+          "coordinate_system": "floorplan_normalized",
+          "x": null,
+          "y": null,
+          "height_m": null,
+          "orientation_deg": null
+        }
+      },
+      "physical": {
+        "fixture_type": "table_lamp",
+        "mounting": "portable_table",
+        "portable": true,
+        "manufacturer": "Philips Hue",
+        "model": null,
+        "product_id": null,
+        "serial_number": null,
+        "bulb_count": 1,
+        "socket_type": "unknown",
+        "replaceable_lamp": "unknown",
+        "rated_watts": null,
+        "rated_lumens": null,
+        "ip_rating": null
+      },
+      "lighting": {
+        "roles": [
+          "ambient"
+        ],
+        "beam_angle_deg": null,
+        "color_rendering_index": null,
+        "color_temperature_min_k": null,
+        "color_temperature_max_k": null,
+        "default_scene_role": null
+      },
+      "capabilities": {
+        "on_off": true,
+        "dimming": "unknown",
+        "color_temperature": "unknown",
+        "full_color": "unknown",
+        "gradient_segments": "unknown",
+        "effects": "unknown",
+        "power_metering": false,
+        "transition_time": "unknown"
+      },
+      "integration": {
+        "platform": "Philips Hue",
+        "bridge_id": null,
+        "hue_resource_id": null,
+        "zigbee_unique_id": null,
+        "matter_endpoint": null,
+        "home_assistant_entity_id": null,
+        "voice_assistant_names": [],
+        "control_group_ids": [],
+        "scene_ids": [],
+        "switch_ids": [],
+        "sensor_ids": []
+      },
+      "state": {
+        "reachable": false,
+        "on": null,
+        "brightness_pct": null,
+        "color_temperature_k": null,
+        "color_xy": null,
+        "effect": null,
+        "last_seen_at": null,
+        "last_changed_at": null,
+        "state_source": "source_document",
+        "state_freshness": "unknown"
+      },
+      "automation": {
+        "enabled": true,
+        "occupancy_behavior": "unspecified",
+        "daylight_behavior": "unspecified",
+        "night_behavior": "unspecified",
+        "manual_override_policy": "unspecified",
+        "default_transition_ms": null,
+        "quiet_hours_exempt": false,
+        "safety_critical": false,
+        "allowed_actions": [
+          "turn_on",
+          "turn_off",
+          "toggle",
+          "set_brightness",
+          "set_color_temperature",
+          "set_color",
+          "activate_scene"
+        ],
+        "constraints": []
+      },
+      "maintenance": {
+        "operational_status": "unreachable",
+        "installed_at": null,
+        "last_serviced_at": null,
+        "expected_life_hours": null,
+        "estimated_usage_hours": null,
+        "warranty_expires_at": null,
+        "issue_ids": []
+      },
+      "provenance": {
+        "source_file": "Hue lights.pdf",
+        "source_page": 8,
+        "extraction_method": "manual_transcription_from_pdf_and_app_screenshots",
+        "confidence": {
+          "identity": 0.95,
+          "room_assignment": 0.95,
+          "fixture_type": 0.7,
+          "socket_type": 0.2,
+          "capabilities": 0.25,
+          "floorplan_position": 0.0
+        },
+        "verified_by_human": false,
+        "last_verified_at": null
+      },
+      "tags": [
+        "bedroom_1",
+        "table_lamp",
+        "bedside"
+      ],
+      "notes": null
+    }
+  ],
+  "groups": [],
+  "scenes": [],
+  "controllers": [],
+  "sensors": [],
+  "automations": [],
+  "issues": [
+    {
+      "issue_id": "issue_missing_hue_metadata",
+      "type": "data_gap",
+      "severity": "medium",
+      "title": "Hue device identifiers and capabilities not yet imported",
+      "affected_device_ids": [
+        "light_001",
+        "light_002",
+        "light_003",
+        "light_004",
+        "light_005",
+        "light_006",
+        "light_007",
+        "light_008",
+        "light_009",
+        "light_010",
+        "light_011",
+        "light_012",
+        "light_013",
+        "light_014",
+        "light_015",
+        "light_016",
+        "light_017",
+        "light_018",
+        "light_019",
+        "light_020",
+        "light_021",
+        "light_022",
+        "light_023",
+        "light_024",
+        "light_025",
+        "light_026",
+        "light_027",
+        "light_028",
+        "light_029",
+        "light_030",
+        "light_031",
+        "light_032",
+        "light_033",
+        "light_034",
+        "light_035",
+        "light_036",
+        "light_037",
+        "light_038",
+        "light_039",
+        "light_040",
+        "light_041",
+        "light_042",
+        "light_043",
+        "light_044",
+        "light_045"
+      ],
+      "recommended_resolution": "Export Hue bridge resource data and join using canonical name plus room."
+    },
+    {
+      "issue_id": "issue_missing_coordinates",
+      "type": "data_gap",
+      "severity": "low",
+      "title": "Floor-plan coordinates are not yet assigned",
+      "affected_device_ids": [
+        "light_001",
+        "light_002",
+        "light_003",
+        "light_004",
+        "light_005",
+        "light_006",
+        "light_007",
+        "light_008",
+        "light_009",
+        "light_010",
+        "light_011",
+        "light_012",
+        "light_013",
+        "light_014",
+        "light_015",
+        "light_016",
+        "light_017",
+        "light_018",
+        "light_019",
+        "light_020",
+        "light_021",
+        "light_022",
+        "light_023",
+        "light_024",
+        "light_025",
+        "light_026",
+        "light_027",
+        "light_028",
+        "light_029",
+        "light_030",
+        "light_031",
+        "light_032",
+        "light_033",
+        "light_034",
+        "light_035",
+        "light_036",
+        "light_037",
+        "light_038",
+        "light_039",
+        "light_040",
+        "light_041",
+        "light_042",
+        "light_043",
+        "light_044",
+        "light_045"
+      ],
+      "recommended_resolution": "Assign normalized x/y coordinates from the floor plan."
+    }
+  ],
+  "agent_contract": {
+    "identity_rule": "Always act on device_id, group_id, or scene_id; names and aliases are for conversation resolution only.",
+    "ambiguity_policy": "Resolve by room, zone, role, aliases, and recent conversational context. Ask only when more than one materially different target remains.",
+    "state_policy": "Do not present cached state as current unless state_freshness is fresh or a live integration confirms it.",
+    "safety_policy": "Respect automation.constraints, quiet hours, manual override policy, and safety_critical flags.",
+    "missing_data_policy": "Represent unknown values as null or 'unknown'; never infer operational facts without provenance and confidence.",
+    "action_result_policy": "Record requested action, resolved targets, integration response, failures, and final observed state."
+  },
+  "conversation_examples": [
+    {
+      "utterance": "Make the hallway cosy",
+      "resolution": {
+        "room_id": "room_05_hallway",
+        "intent": "activate_scene_or_set_ambient",
+        "target_filter": {
+          "lighting.roles": [
+            "ambient",
+            "circulation"
+          ]
+        },
+        "requires_clarification": false
+      }
+    },
+    {
+      "utterance": "Turn off the two balcony lights",
+      "resolution": {
+        "room_id": "room_06_open_plan",
+        "zone": "balcony_approach",
+        "intent": "turn_off",
+        "requires_clarification": false
+      }
+    },
+    {
+      "utterance": "Why is the sofa lamp not responding?",
+      "resolution": {
+        "candidate_device_ids": [
+          "light_025"
+        ],
+        "intent": "diagnose",
+        "requires_live_state_refresh": true
+      }
+    }
+  ],
+  "source": {
+    "filename": "Hue lights.pdf",
+    "pages": 9,
+    "description": "Lighting inventory transcribed from a floor plan and Philips Hue app screenshots."
+  },
+  "migration_notes": [
+    "All 45 source devices were preserved.",
+    "Unknown technical attributes remain explicit rather than guessed.",
+    "Stable IDs are retained for automations; names remain editable conversational labels.",
+    "Live state, bridge IDs, groups, sensors, scenes, and controller relationships still need ingestion."
+  ]
+}

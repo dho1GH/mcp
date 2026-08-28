@@ -1,0 +1,400 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "filename": "Hue lights.pdf",
+    "pages": 9,
+    "description": "Lighting inventory transcribed from a floor plan and Philips Hue app screenshots."
+  },
+  "property": {
+    "unit": "203",
+    "floor": 2,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area_sq_ft": 883
+  },
+  "floorplan_legend": {
+    "red_marker": "Hue GU10 colour",
+    "yellow_marker": "Hue ambiance",
+    "black_marker": "Hue white",
+    "note": "Markers are shown on page 1, but the PDF does not provide an unambiguous name-to-marker mapping for every device."
+  },
+  "rooms": [
+    "Bathroom 1",
+    "Bathroom 2",
+    "Bedroom 1",
+    "Bedroom 2",
+    "Hallway",
+    "Open Plan",
+    "Utilities - Storage & Laundry"
+  ],
+  "device_count": 45,
+  "devices": [
+    {
+      "id": "light_001",
+      "room": "Bathroom 1",
+      "name": "Ceiling Bath 4",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 2
+    },
+    {
+      "id": "light_002",
+      "room": "Bathroom 1",
+      "name": "Ceiling Bath 3",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 2
+    },
+    {
+      "id": "light_003",
+      "room": "Bathroom 1",
+      "name": "Ceiling Bath 1",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 2
+    },
+    {
+      "id": "light_004",
+      "room": "Bathroom 1",
+      "name": "Ceiling Bath 2",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 2
+    },
+    {
+      "id": "light_005",
+      "room": "Hallway",
+      "name": "Ceiling Front Door 1",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 3
+    },
+    {
+      "id": "light_006",
+      "room": "Hallway",
+      "name": "Ceiling Front Door 2",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 3
+    },
+    {
+      "id": "light_007",
+      "room": "Hallway",
+      "name": "Ceiling Rear Bedroom Hallway",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 3
+    },
+    {
+      "id": "light_008",
+      "room": "Hallway",
+      "name": "Ceiling Rear Bathroom Hallway",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 3
+    },
+    {
+      "id": "light_009",
+      "room": "Hallway",
+      "name": "Ceiling Front Hallway",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 3
+    },
+    {
+      "id": "light_010",
+      "room": "Hallway",
+      "name": "Klasnick Table Lamp",
+      "category": "table_lamp",
+      "status": "unknown",
+      "source_page": 3
+    },
+    {
+      "id": "light_011",
+      "room": "Utilities - Storage & Laundry",
+      "name": "Ceiling Storage",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 4
+    },
+    {
+      "id": "light_012",
+      "room": "Utilities - Storage & Laundry",
+      "name": "Ceiling Laundry",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 4
+    },
+    {
+      "id": "light_013",
+      "room": "Bathroom 2",
+      "name": "Overhead Main Bathroom 3",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 5
+    },
+    {
+      "id": "light_014",
+      "room": "Bathroom 2",
+      "name": "Overhead Main Bathroom 4",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 5
+    },
+    {
+      "id": "light_015",
+      "room": "Bathroom 2",
+      "name": "Overhead Main Bathroom 5",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 5
+    },
+    {
+      "id": "light_016",
+      "room": "Bathroom 2",
+      "name": "Overhead Main Bathroom 1",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 5
+    },
+    {
+      "id": "light_017",
+      "room": "Bathroom 2",
+      "name": "Overhead Main Bathroom 2",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 5
+    },
+    {
+      "id": "light_018",
+      "room": "Open Plan",
+      "name": "Ceiling Living Middle",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_019",
+      "room": "Open Plan",
+      "name": "Ceiling Living TR",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_020",
+      "room": "Open Plan",
+      "name": "Ceiling Living BL",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_021",
+      "room": "Open Plan",
+      "name": "Ceiling Living 2",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_022",
+      "room": "Open Plan",
+      "name": "Monica VibeLucci Arc Lamp",
+      "category": "arc_floor_lamp",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_023",
+      "room": "Open Plan",
+      "name": "Ceiling Living - Lower Middle",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_024",
+      "room": "Open Plan",
+      "name": "Ceiling Living BR",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_025",
+      "room": "Open Plan",
+      "name": "Sofa Area Gradient Floor Lamp",
+      "category": "gradient_floor_lamp",
+      "status": "unreachable",
+      "source_page": 9
+    },
+    {
+      "id": "light_026",
+      "room": "Open Plan",
+      "name": "Fado Bulb Orb Lamp",
+      "category": "table_or_orb_lamp",
+      "status": "unreachable",
+      "source_page": 9
+    },
+    {
+      "id": "light_027",
+      "room": "Open Plan",
+      "name": "Ceiling Living - To Balcony 1",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 9
+    },
+    {
+      "id": "light_028",
+      "room": "Open Plan",
+      "name": "Ceiling Living - To Balcony 2",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 6
+    },
+    {
+      "id": "light_029",
+      "room": "Open Plan",
+      "name": "Signe gradient floor 1",
+      "category": "gradient_floor_lamp",
+      "status": "unknown",
+      "source_page": 6
+    },
+    {
+      "id": "light_030",
+      "room": "Open Plan",
+      "name": "Ceiling Kitchen - Above Sink",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 6
+    },
+    {
+      "id": "light_031",
+      "room": "Open Plan",
+      "name": "Ceiling Kitchen - Above Fridge",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 6
+    },
+    {
+      "id": "light_032",
+      "room": "Bedroom 2",
+      "name": "Bedroom Overhead (Lower Corner)",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 7
+    },
+    {
+      "id": "light_033",
+      "room": "Bedroom 2",
+      "name": "Wardrobe Overhead (Lower)",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 7
+    },
+    {
+      "id": "light_034",
+      "room": "Bedroom 2",
+      "name": "Bedroom Overhead (Lower Entry)",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 7
+    },
+    {
+      "id": "light_035",
+      "room": "Bedroom 2",
+      "name": "Wardrobe Overhead (Above Entry)",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 7
+    },
+    {
+      "id": "light_036",
+      "room": "Bedroom 2",
+      "name": "Bedroom Overhead (Upper Right)",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 7
+    },
+    {
+      "id": "light_037",
+      "room": "Bedroom 2",
+      "name": "Bedroom Overhead (Upper Left)",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 7
+    },
+    {
+      "id": "light_038",
+      "room": "Bedroom 1",
+      "name": "Ceiling Bedroom 3",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 8
+    },
+    {
+      "id": "light_039",
+      "room": "Bedroom 1",
+      "name": "Ceiling Bedroom 1",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 8
+    },
+    {
+      "id": "light_040",
+      "room": "Bedroom 1",
+      "name": "Ceiling Bedroom 5",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 8
+    },
+    {
+      "id": "light_041",
+      "room": "Bedroom 1",
+      "name": "Ceiling Bedroom 2",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 8
+    },
+    {
+      "id": "light_042",
+      "room": "Bedroom 1",
+      "name": "Small Beige Ola Whitborg Lamp",
+      "category": "table_lamp",
+      "status": "unknown",
+      "source_page": 8
+    },
+    {
+      "id": "light_043",
+      "room": "Bedroom 1",
+      "name": "Overhead Bedroom Lower Corner 2",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 8
+    },
+    {
+      "id": "light_044",
+      "room": "Bedroom 1",
+      "name": "Overhead bedroom Lower Corner 1",
+      "category": "ceiling_light",
+      "status": "unknown",
+      "source_page": 8
+    },
+    {
+      "id": "light_045",
+      "room": "Bedroom 1",
+      "name": "XL Ola Bedside Table Lamp",
+      "category": "table_lamp",
+      "status": "unreachable",
+      "source_page": 8
+    }
+  ],
+  "extraction_notes": [
+    "Duplicate overlap between pages 6 and 9 was de-duplicated.",
+    "A status of 'unreachable' is recorded only where it is visibly shown in the source.",
+    "A status of 'unknown' means no connectivity state was shown.",
+    "Device categories are inferred from names and visible Hue app icons.",
+    "Exact floor-plan coordinates and per-device Hue colour class were not assigned because the source does not map every screenshot name to a specific plan marker with certainty."
+  ]
+}

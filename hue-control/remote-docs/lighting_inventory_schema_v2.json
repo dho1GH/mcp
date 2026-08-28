@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/agentic-lighting-inventory-v2.schema.json",
+  "title": "Agentic Lighting Inventory",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "inventory_id",
+    "property",
+    "rooms",
+    "devices",
+    "agent_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "inventory_id": {
+      "type": "string"
+    },
+    "property": {
+      "type": "object",
+      "required": [
+        "property_id",
+        "timezone"
+      ]
+    },
+    "rooms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/room"
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/light"
+      }
+    },
+    "groups": {
+      "type": "array"
+    },
+    "scenes": {
+      "type": "array"
+    },
+    "controllers": {
+      "type": "array"
+    },
+    "sensors": {
+      "type": "array"
+    },
+    "automations": {
+      "type": "array"
+    },
+    "issues": {
+      "type": "array"
+    },
+    "agent_contract": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "room": {
+      "type": "object",
+      "required": [
+        "room_id",
+        "name",
+        "room_type",
+        "zones"
+      ],
+      "properties": {
+        "room_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "room_type": {
+          "type": "string"
+        },
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "light": {
+      "type": "object",
+      "required": [
+        "device_id",
+        "canonical_name",
+        "entity_type",
+        "location",
+        "physical",
+        "capabilities",
+        "integration",
+        "state",
+        "automation",
+        "maintenance",
+        "provenance"
+      ],
+      "properties": {
+        "device_id": {
+          "type": "string"
+        },
+        "canonical_name": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entity_type": {
+          "const": "light"
+        },
+        "location": {
+          "type": "object"
+        },
+        "physical": {
+          "type": "object"
+        },
+        "lighting": {
+          "type": "object"
+        },
+        "capabilities": {
+          "type": "object"
+        },
+        "integration": {
+          "type": "object"
+        },
+        "state": {
+          "type": "object"
+        },
+        "automation": {
+          "type": "object"
+        },
+        "maintenance": {
+          "type": "object"
+        },
+        "provenance": {
+          "type": "object"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
