@@ -1,0 +1,14 @@
+python-dotenv
+fastapi
+uvicorn
+zep-cloud
+# AG2 Classic — the maintained distribution of the autogen.* namespace this
+# codebase uses (ConversableAgent/AssistantAgent/UserProxyAgent/GroupChat/
+# GroupChatManager). NOT pyautogen (now a proxy package pointing at the
+# incompatible async autogen-agentchat) and NOT ag2>=1.0 (a from-scratch
+# rewrite — different agent model, different orchestration, different imports).
+autogen
+mcp<2  # both mcp_server.py and hue_mcp_server.py use the v1 FastMCP API, renamed to MCPServer in v2
+openai
+httpx
+pydantic
