@@ -1,5 +1,4 @@
 import https from "node:https";
-import { createClient } from "@1password/sdk";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -17,14 +16,17 @@ async function loadHueConfig(): Promise<{ bridgeIp: string; appKey: string }> {
   let values: Record<string, string> = {};
 
   if (token) {
+    const { createClient } = await import("@1password/sdk");
     const client = await createClient({
       auth: token,
       integrationName: "itsjeff.org hue-control",
       integrationVersion: "v1.0.0",
     });
     const environmentId = fromLocalEnv("OP_ENVIRONMENT_ID") ?? DEFAULT_OP_ENVIRONMENT_ID;
-    const response = await client.environments.getVariables(environmentId);
-    values = Object.fromEntries(response.variables.map((variable) => [variable.name, variable.value]));
+    const response = await (client as any).environments.getVariables(environmentId);
+    values = Object.fromEntries(
+      response.variables.map((variable: { name: string; value: string }) => [variable.name, variable.value]),
+    );
   }
 
   const bridgeIp = values.HUE_BRIDGE_IP ?? fromLocalEnv("HUE_BRIDGE_IP");
