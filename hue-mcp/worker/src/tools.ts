@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 import { HueProxy } from "./hue-proxy.js";
+import { newAuditEntry, writeAudit } from "./audit.js";
 import type { Env } from "./types.js";
 
 function textResult(text: string, structuredContent?: unknown) {
@@ -18,8 +19,53 @@ function errorResult(err: unknown) {
   };
 }
 
+type ToolHandler = (args: Record<string, unknown>) => Promise<unknown>;
+
+function audited(
+  kv: KVNamespace,
+  toolName: string,
+  handler: ToolHandler,
+): (args: Record<string, unknown>) => Promise<ReturnType<typeof textResult> | ReturnType<typeof errorResult>> {
+  return async (args: Record<string, unknown>) => {
+    const start = Date.now();
+    try {
+      const data = await handler(args);
+      const entry = newAuditEntry(toolName, args, "executed", Date.now() - start);
+      await writeAudit(kv, entry);
+      return textResult(JSON.stringify(data, null, 2), data);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const entry = newAuditEntry(toolName, args, "failed", Date.now() - start, message);
+      await writeAudit(kv, entry);
+      return errorResult(err);
+    }
+  };
+}
+
+function auditedText(
+  kv: KVNamespace,
+  toolName: string,
+  handler: (args: Record<string, unknown>) => Promise<{ text: string; data: unknown }>,
+): (args: Record<string, unknown>) => Promise<ReturnType<typeof textResult> | ReturnType<typeof errorResult>> {
+  return async (args: Record<string, unknown>) => {
+    const start = Date.now();
+    try {
+      const { text, data } = await handler(args);
+      const entry = newAuditEntry(toolName, args, "executed", Date.now() - start);
+      await writeAudit(kv, entry);
+      return textResult(text, data);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const entry = newAuditEntry(toolName, args, "failed", Date.now() - start, message);
+      await writeAudit(kv, entry);
+      return errorResult(err);
+    }
+  };
+}
+
 export function registerHueTools(server: McpServer, env: Env): void {
   const hue = new HueProxy(env);
+  const kv = env.AUDIT_LOG;
 
   // =====================================================================
   //  READ TOOLS
@@ -34,14 +80,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getLights();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_lights", () => hue.getLights()),
   );
 
   server.registerTool(
@@ -55,14 +94,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({ id }: { id: string }) => {
-      try {
-        const data = await hue.getLight(id);
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_get_light", ({ id }) => hue.getLight(id as string)),
   );
 
   server.registerTool(
@@ -73,14 +105,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getRooms();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_rooms", () => hue.getRooms()),
   );
 
   server.registerTool(
@@ -92,14 +117,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getZones();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_zones", () => hue.getZones()),
   );
 
   server.registerTool(
@@ -111,14 +129,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getScenes();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_scenes", () => hue.getScenes()),
   );
 
   server.registerTool(
@@ -129,14 +140,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getMotionSensors();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_motion_sensors", () => hue.getMotionSensors()),
   );
 
   server.registerTool(
@@ -147,14 +151,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getButtons();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_buttons", () => hue.getButtons()),
   );
 
   server.registerTool(
@@ -165,14 +162,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getTemperatureSensors();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_temperature_sensors", () => hue.getTemperatureSensors()),
   );
 
   server.registerTool(
@@ -183,14 +173,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getLightLevelSensors();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_light_level_sensors", () => hue.getLightLevelSensors()),
   );
 
   server.registerTool(
@@ -201,14 +184,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getEntertainmentAreas();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_entertainment_areas", () => hue.getEntertainmentAreas()),
   );
 
   server.registerTool(
@@ -219,14 +195,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getBehaviorScripts();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_behavior_scripts", () => hue.getBehaviorScripts()),
   );
 
   server.registerTool(
@@ -237,14 +206,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       inputSchema: {},
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async () => {
-      try {
-        const data = await hue.getBehaviorInstances();
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_list_behavior_instances", () => hue.getBehaviorInstances()),
   );
 
   // =====================================================================
@@ -262,14 +224,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({ key }: { key: string }) => {
-      try {
-        const data = await hue.resolveLight(key);
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_resolve_light", ({ key }) => hue.resolveLight(key as string)),
   );
 
   server.registerTool(
@@ -283,14 +238,7 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({ key }: { key: string }) => {
-      try {
-        const data = await hue.resolveScene(key);
-        return textResult(JSON.stringify(data, null, 2), data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    audited(kv, "hue_resolve_scene", ({ key }) => hue.resolveScene(key as string)),
   );
 
   // =====================================================================
@@ -308,14 +256,10 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({ id, name }: { id: string; name: string }) => {
-      try {
-        const data = await hue.renameLight(id, name);
-        return textResult(`Renamed light ${id} to "${name}"`, data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    auditedText(kv, "hue_rename_light", async (args) => {
+      const data = await hue.renameLight(args.id as string, args.name as string);
+      return { text: `Renamed light ${args.id} to "${args.name}"`, data };
+    }),
   );
 
   server.registerTool(
@@ -334,36 +278,16 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({
-      id,
-      on,
-      brightness,
-      colorTemp,
-      xy_x,
-      xy_y,
-    }: {
-      id: string;
-      on?: boolean;
-      brightness?: number;
-      colorTemp?: number;
-      xy_x?: number;
-      xy_y?: number;
-    }) => {
-      try {
-        const state: Record<string, unknown> = {};
-        if (on !== undefined) state.on = on;
-        if (brightness !== undefined) state.brightness = brightness;
-        if (colorTemp !== undefined) state.colorTemp = colorTemp;
-        if (xy_x !== undefined && xy_y !== undefined) state.xy = { x: xy_x, y: xy_y };
-        if (Object.keys(state).length === 0) {
-          return errorResult(new Error("At least one state field is required"));
-        }
-        const data = await hue.setLightState(id, state);
-        return textResult(`Updated light ${id} state`, data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    auditedText(kv, "hue_set_light_state", async (args) => {
+      const state: Record<string, unknown> = {};
+      if (args.on !== undefined) state.on = args.on;
+      if (args.brightness !== undefined) state.brightness = args.brightness;
+      if (args.colorTemp !== undefined) state.colorTemp = args.colorTemp;
+      if (args.xy_x !== undefined && args.xy_y !== undefined) state.xy = { x: args.xy_x, y: args.xy_y };
+      if (Object.keys(state).length === 0) throw new Error("At least one state field is required");
+      const data = await hue.setLightState(args.id as string, state);
+      return { text: `Updated light ${args.id} state`, data };
+    }),
   );
 
   server.registerTool(
@@ -378,14 +302,10 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({ id, effect }: { id: string; effect: string }) => {
-      try {
-        const data = await hue.setLightEffect(id, effect);
-        return textResult(`Set effect "${effect}" on light ${id}`, data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    auditedText(kv, "hue_set_light_effect", async (args) => {
+      const data = await hue.setLightEffect(args.id as string, args.effect as string);
+      return { text: `Set effect "${args.effect}" on light ${args.id}`, data };
+    }),
   );
 
   server.registerTool(
@@ -399,14 +319,10 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({ id }: { id: string }) => {
-      try {
-        const data = await hue.recallScene(id);
-        return textResult(`Recalled scene ${id}`, data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    auditedText(kv, "hue_recall_scene", async (args) => {
+      const data = await hue.recallScene(args.id as string);
+      return { text: `Recalled scene ${args.id}`, data };
+    }),
   );
 
   server.registerTool(
@@ -422,21 +338,13 @@ export function registerHueTools(server: McpServer, env: Env): void {
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
-    async ({
-      groupedLightId,
-      on,
-      brightness,
-    }: {
-      groupedLightId: string;
-      on: boolean;
-      brightness?: number;
-    }) => {
-      try {
-        const data = await hue.setGroupState(groupedLightId, on, brightness);
-        return textResult(`Updated group ${groupedLightId}`, data);
-      } catch (err) {
-        return errorResult(err);
-      }
-    },
+    auditedText(kv, "hue_set_group_state", async (args) => {
+      const data = await hue.setGroupState(
+        args.groupedLightId as string,
+        args.on as boolean,
+        args.brightness as number | undefined,
+      );
+      return { text: `Updated group ${args.groupedLightId}`, data };
+    }),
   );
 }
