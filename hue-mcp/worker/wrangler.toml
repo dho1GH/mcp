@@ -12,6 +12,12 @@ compatibility_flags = ["nodejs_compat"]
 # e.g. "https://hue-executor.itsjeff.org" — no trailing slash.
 HUE_EXECUTOR_BASE_URL = "https://hue-executor.itsjeff.org"
 
+# --- KV namespace for append-only audit log ---
+# Create with: npx wrangler kv namespace create AUDIT_LOG
+[[kv_namespaces]]
+binding = "AUDIT_LOG"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
 # --- Secrets (set with `wrangler secret put <NAME>`, never committed) ---
 # HUE_EXECUTOR_BEARER_TOKEN  - bearer token the local executor requires
 # MCP_AUTH_TOKEN              - shared bearer token this Worker requires from MCP callers
