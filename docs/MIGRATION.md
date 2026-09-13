@@ -153,10 +153,15 @@ ownership.
    Objects and a Workflow on first publish. Run `pnpm dry-run` and review the
    bindings before the first real deploy.
 
-3. **No tests outside `graphiti_mcp_server` and one `policy.test.ts`.** The
+3. **Three test suites exist, and one of them cannot run.**
+   `graphiti_mcp_server/tests/` (67 passing),
+   `federated-mcp-platform/test/policy.test.ts` (12 passing), and
+   `work-mamaz-main/test/capabilities.test.ts` — a real vitest suite covering
+   capability grant matching and argument validation, which cannot execute
+   because the project has no `package.json`. Everything else has no tests; the
    compile/typecheck jobs catch syntax and type errors but prove nothing about
-   behavior. `nodered-mcp-server` is the most mature Worker and the best
-   candidate for a first real test suite.
+   behavior. `nodered-mcp-server` is the most mature untested Worker and the
+   best candidate for a first suite.
 
 4. **`Zep_Temporal` does not compile.** `src/temporal/worker.ts` and
    `src/temporal/workflows.ts` both import `./activities.js`, which does not
@@ -165,7 +170,54 @@ ownership.
    with no `activities.ts` in it either. The project is wired into CI as a
    non-blocking job so the breakage is visible without blocking merges.
 
-5. **`pnpm-workspace.yaml` has unresolved placeholders** — `allowBuilds` entries
+5. **`work-mamaz-main` cannot be built at all.** There is no `package.json`
+   anywhere at its root, and `wrangler.jsonc` sets `main = "worker/index.ts"`
+   while `worker/` contains only `capabilities.ts`, `executors.ts` and
+   `mcp.ts` — no entry point. It is therefore excluded from CI and from both
+   deploy lists. It also declares five Workflows and a Durable Object binding,
+   so it is substantial work that is currently unreachable. Restoring it needs
+   an entry point and a manifest, not a CI change.
+
+6. **`3dflat-affairs` carries duplicates that were not cleaned up.** Three
+   files at the top level are byte-identical copies of files nested inside
+   `flat-digital-twin-v2/`:
+
+   | Top level | Identical to |
+   |---|---|
+   | `mcp-server-v2.ts` | `flat-digital-twin-v2/src/mcp-server-v2.ts` |
+   | `spatial_graph_v2.json` | `flat-digital-twin-v2/spatial_graph_v2.json` |
+   | `index.html` | `flat-digital-twin-v2/public/index.html` |
+
+   Separately, `src/` holds a genuine v1/v2 lineage that should **not** be
+   collapsed blindly: `mcp-server.ts` (424 lines) vs `mcp-server-v2.ts` (309),
+   and `worker.ts` (84) vs `worker-v2.ts` (79). `wrangler.toml` builds
+   `src/worker-v2.ts`, so v2 is live and v1 is the predecessor.
+
+   These were left in place deliberately. The most recent commit on `main` is
+   "Consolidate 3dflat-affairs and update live apps", which suggests the
+   top-level copies may be an intentional partial consolidation rather than
+   accidental duplication — that is your call to make, not one to guess at.
+
+7. **`3dflat-affairs` fails `tsc` for a one-line config reason.** Its
+   `tsconfig.json` sets `types: ["@cloudflare/workers-types"]` but leaves `lib`
+   at the ES2022 default, which pulls in the DOM lib. The two definition sets
+   clash on `Response`, `Element`, `EventListener` and ~60 others. Adding
+   `"lib": ["ES2022"]` to `compilerOptions` should resolve it. Until then the
+   project is excluded from CI.
+
+8. **Two Workers carry placeholder bindings that will break a real deploy.**
+   Both bundle fine, so `--dry-run` passes and the problem only shows up on a
+   real publish:
+
+   | Worker | Placeholder |
+   |---|---|
+   | `hue-mcp-server-v2` | KV namespace `AUDIT_LOG` is `REPLACE_WITH_KV_NAMESPACE_ID` |
+   | `nodered-mcp-server` | `NODE_RED_BASE_URL` is `https://nodered.yourdomain.com` |
+
+   Create the real KV namespace and set the real Node-RED URL before the first
+   manual deploy. This is a good argument for keeping deploys gated.
+
+9. **`pnpm-workspace.yaml` has unresolved placeholders** — `allowBuilds` entries
    literally read `set this to true or false`, which will need resolving when
    pnpm next prompts on those builds.
 
@@ -186,6 +238,8 @@ than written speculatively:
 | `hue-control` `node --check` | clean |
 | Python byte-compile (4 projects) | clean |
 | `Zep_Temporal` tsc | **fails** — pre-existing, see above |
+| `work-mamaz-main` | **not runnable** — no manifest, no entry point |
+| `3dflat-affairs` tsc | **fails** — tsconfig lib/types clash, see above |
 
 Two fixes came out of that verification and are baked into `ci-python.yml`:
 

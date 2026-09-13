@@ -18,8 +18,8 @@ Cloudflare Workers that front them.
 | `hue-mcp-server` | First cut at exposing a Philips Hue bridge as MCP tools. | Superseded by v2 |
 | `hue-mcp-server-v2` | Current Hue Worker. Fuller tool surface and Hue client than v1. | Current |
 | `federated-mcp-platform` | Control plane for authenticated, human-in-the-loop MCP federation. Side-effecting tools create durable approval requests instead of executing inline. | **Never deployed** |
-| `3dflat-affairs` | Spatial/digital-twin Worker plus the flat's spatial graph seed data. | Prototype |
-| `work-mamaz-main` | `jeffe-os` Worker with workflows and local executors. | Prototype |
+| `3dflat-affairs` | Spatial/digital-twin Worker plus the flat's spatial graph seed data and Cypher schema. | Prototype, has duplicates |
+| `work-mamaz-main` | `jeffe-os` Worker: capability grants, executors, MCP surface, plus a local Hue executor. Has a real vitest suite for the capability grant logic. | **Does not build** — see below |
 
 ### Agent runtimes (Python)
 
@@ -91,3 +91,9 @@ at the top of `deploy-workers.yml` for why.
 
 Deploys require `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as
 repository or organization secrets.
+
+`work-mamaz-main` is excluded from CI and deploys entirely: it has no
+`package.json`, and its `wrangler.jsonc` points `main` at `worker/index.ts`,
+which does not exist. Its `test/capabilities.test.ts` is a genuine vitest suite
+that cannot currently run for the same reason. See
+[`docs/MIGRATION.md`](docs/MIGRATION.md) for the full list of known issues.

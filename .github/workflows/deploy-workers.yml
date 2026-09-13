@@ -16,6 +16,12 @@ name: Deploy Workers
 #   * federated-mcp-platform has never been deployed and provisions Durable
 #     Objects and Workflows on first publish.
 # Resolve both before considering auto-deploy on merge.
+#
+# work-mamaz-main is deliberately absent from both lists. It cannot be built
+# at all right now: it has no package.json, and its wrangler.jsonc sets
+# main = "worker/index.ts", which does not exist (worker/ contains only
+# capabilities.ts, executors.ts and mcp.ts). Add it back once it has an entry
+# point and a manifest.
 
 on:
   push:
@@ -26,7 +32,6 @@ on:
       - 'hue-mcp-server/**'
       - 'hue-mcp-server-v2/**'
       - '3dflat-affairs/**'
-      - 'work-mamaz-main/**'
       - '.github/workflows/deploy-workers.yml'
   workflow_dispatch:
     inputs:
@@ -39,7 +44,6 @@ on:
           - hue-mcp-server-v2
           - federated-mcp-platform
           - 3dflat-affairs/flat-digital-twin-v2
-          - work-mamaz-main
 
 concurrency:
   group: deploy-${{ github.ref }}
@@ -60,7 +64,7 @@ jobs:
         project:
           - nodered-mcp-server
           - hue-mcp-server-v2
-          - work-mamaz-main
+          - 3dflat-affairs/flat-digital-twin-v2
     steps:
       - uses: actions/checkout@v5
 

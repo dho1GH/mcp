@@ -1,5 +1,15 @@
 name: CI (Node / Workers)
 
+# work-mamaz-main and 3dflat-affairs are intentionally absent. Neither can be
+# checked as-is, and leaving them in the path filters would fire every other
+# job in this workflow for nothing:
+#   * work-mamaz-main has no package.json and its wrangler main points at a
+#     worker/index.ts that does not exist.
+#   * 3dflat-affairs fails tsc because its tsconfig sets
+#     types: ["@cloudflare/workers-types"] while leaving lib at the ES2022
+#     default, which pulls in DOM and clashes. Adding "lib": ["ES2022"] fixes
+#     it; do that and then add a job here.
+
 on:
   push:
     branches: [main]
@@ -9,8 +19,6 @@ on:
       - 'hue-mcp-server/**'
       - 'hue-mcp-server-v2/**'
       - 'Zep_Temporal/**'
-      - 'work-mamaz-main/**'
-      - '3dflat-affairs/**'
       - 'hue-control/**'
       - '.github/workflows/ci-node.yml'
   pull_request:
@@ -20,8 +28,6 @@ on:
       - 'hue-mcp-server/**'
       - 'hue-mcp-server-v2/**'
       - 'Zep_Temporal/**'
-      - 'work-mamaz-main/**'
-      - '3dflat-affairs/**'
       - 'hue-control/**'
       - '.github/workflows/ci-node.yml'
 
