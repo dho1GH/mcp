@@ -1,0 +1,138 @@
+name: CI (Node / Workers)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'federated-mcp-platform/**'
+      - 'nodered-mcp-server/**'
+      - 'hue-mcp-server/**'
+      - 'hue-mcp-server-v2/**'
+      - 'Zep_Temporal/**'
+      - 'work-mamaz-main/**'
+      - '3dflat-affairs/**'
+      - 'hue-control/**'
+      - '.github/workflows/ci-node.yml'
+  pull_request:
+    paths:
+      - 'federated-mcp-platform/**'
+      - 'nodered-mcp-server/**'
+      - 'hue-mcp-server/**'
+      - 'hue-mcp-server-v2/**'
+      - 'Zep_Temporal/**'
+      - 'work-mamaz-main/**'
+      - '3dflat-affairs/**'
+      - 'hue-control/**'
+      - '.github/workflows/ci-node.yml'
+
+concurrency:
+  group: ci-node-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # The only Node project with a test suite and a lockfile.
+  federated:
+    name: federated-mcp-platform (vitest + tsc)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: federated-mcp-platform
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: federated-mcp-platform/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      # worker-configuration.d.ts is generated, not committed (see .gitignore).
+      # tsc needs it, so regenerate before typechecking.
+      - name: Generate Worker types
+        run: pnpm run types
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Tests
+        run: pnpm test
+
+  # Remaining Workers have no tests and no lockfile discipline. Typechecking
+  # is what actually catches breakage in them.
+  typecheck:
+    name: typecheck (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - nodered-mcp-server
+          - hue-mcp-server
+          - hue-mcp-server-v2
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install
+        working-directory: ${{ matrix.project }}
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        working-directory: ${{ matrix.project }}
+        run: npx tsc --noEmit
+
+  # hue-control is plain ESM with no package.json, so there is nothing to
+  # typecheck. `node --check` parses each module and catches syntax errors.
+  syntax-check:
+    name: hue-control (node --check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Parse all modules
+        run: |
+          find hue-control/src -name '*.mjs' -print0 \
+            | xargs -0 -n1 node --check
+
+  # Zep_Temporal does not currently compile: src/temporal/worker.ts and
+  # workflows.ts both import './activities.js', which does not exist anywhere
+  # in the repo. This is pre-existing — the module is absent from the tracked
+  # source AND from the Archive.zip that used to sit beside it.
+  #
+  # Kept as a non-blocking job so the breakage stays visible without making
+  # main un-mergeable. Flip continue-on-error to false once activities.ts is
+  # written, and move this project into the typecheck matrix above.
+  zep-temporal:
+    name: Zep_Temporal (typecheck, known-broken)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install
+        working-directory: Zep_Temporal
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        working-directory: Zep_Temporal
+        run: npx tsc --noEmit

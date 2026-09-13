@@ -1,0 +1,101 @@
+name: Deploy Workers
+
+# Two modes, deliberately separated:
+#
+#   push to main  -> `wrangler deploy --dry-run` only. Builds and validates the
+#                    Worker without publishing anything. Zero risk.
+#
+#   manual run    -> a real `wrangler deploy`, and only for the one project you
+#                    pick. Gated on the `production` environment so GitHub
+#                    requires a reviewer before the job starts.
+#
+# Real deploys are NOT automatic on merge, for two reasons specific to this repo:
+#   * hue-mcp-server and hue-mcp-server-v2 both declare name = "hue-mcp-server"
+#     in wrangler.toml, so deploying both would have them overwrite each other
+#     on the same Cloudflare Worker.
+#   * federated-mcp-platform has never been deployed and provisions Durable
+#     Objects and Workflows on first publish.
+# Resolve both before considering auto-deploy on merge.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'federated-mcp-platform/**'
+      - 'nodered-mcp-server/**'
+      - 'hue-mcp-server/**'
+      - 'hue-mcp-server-v2/**'
+      - '3dflat-affairs/**'
+      - 'work-mamaz-main/**'
+      - '.github/workflows/deploy-workers.yml'
+  workflow_dispatch:
+    inputs:
+      project:
+        description: 'Which Worker to deploy for real'
+        required: true
+        type: choice
+        options:
+          - nodered-mcp-server
+          - hue-mcp-server-v2
+          - federated-mcp-platform
+          - 3dflat-affairs/flat-digital-twin-v2
+          - work-mamaz-main
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # Runs on every push to main. Publishes nothing.
+  dry-run:
+    if: github.event_name == 'push'
+    name: dry-run (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - nodered-mcp-server
+          - hue-mcp-server-v2
+          - work-mamaz-main
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install
+        working-directory: ${{ matrix.project }}
+        run: npm install --no-audit --no-fund
+
+      - name: Build without publishing
+        working-directory: ${{ matrix.project }}
+        run: npx wrangler deploy --dry-run
+
+  # Only ever runs when a human triggers it and an environment reviewer approves.
+  deploy:
+    if: github.event_name == 'workflow_dispatch'
+    name: deploy ${{ inputs.project }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install
+        working-directory: ${{ inputs.project }}
+        run: npm install --no-audit --no-fund
+
+      - name: Deploy
+        working-directory: ${{ inputs.project }}
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

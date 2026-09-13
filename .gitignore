@@ -1,0 +1,33 @@
+# Secrets — never commit. Every project here reads config from .env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+.wrangler/
+
+# Cloudflare generated types — regenerate with `wrangler types`
+worker-configuration.d.ts
+
+# AI codebase dumps (repomix/xml packs). These bloat the repo and can
+# carry secrets out of .env-ignored files. Generate them on demand.
+repomix-output.*
+*.repomix.xml
+
+# Archives / OS cruft
+*.zip
+.DS_Store
+__MACOSX/

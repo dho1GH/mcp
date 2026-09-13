@@ -1,0 +1,105 @@
+name: CI (Python)
+
+# Path-filtered: a change to a Worker never starts a Python job.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'graphiti_mcp_server/**'
+      - 'gpt-assistant/**'
+      - 'creative-autogen/**'
+      - 'Huey-hue-variant/**'
+      - 'zep-autogen-workspace/**'
+      - '.github/workflows/ci-python.yml'
+  pull_request:
+    paths:
+      - 'graphiti_mcp_server/**'
+      - 'gpt-assistant/**'
+      - 'creative-autogen/**'
+      - 'Huey-hue-variant/**'
+      - 'zep-autogen-workspace/**'
+      - '.github/workflows/ci-python.yml'
+
+concurrency:
+  group: ci-python-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # graphiti_mcp_server is the only project here with a real test suite.
+  graphiti:
+    name: graphiti_mcp_server (pytest + ruff)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: graphiti_mcp_server
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: graphiti_mcp_server/uv.lock
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Lint (ruff)
+        run: uv run ruff check src tests
+        continue-on-error: true
+
+      - name: Format check (ruff)
+        run: uv run ruff format --check src tests
+        continue-on-error: true
+
+      # Verified locally: this selection is 67 passed, 0 failed.
+      #
+      # PYTHONPATH=tests is required because tests/ contains an __init__.py
+      # (making it a package) while test_async_operations.py and
+      # test_stress_load.py import `test_fixtures` as a top-level module.
+      # Without it, collection fails outright with ModuleNotFoundError.
+      #
+      # The ignored modules all need live external services — Neo4j, FalkorDB,
+      # or a real OPENAI_API_KEY. test_async_operations.py needs an OpenAI key
+      # but is not marked `integration`, so `-m "not integration"` alone does
+      # not deselect it.
+      - name: Unit tests
+        env:
+          PYTHONPATH: tests
+        run: >
+          uv run pytest
+          --ignore=tests/test_live_falkordb_int.py
+          --ignore=tests/test_falkordb_integration.py
+          --ignore=tests/test_comprehensive_integration.py
+          --ignore=tests/test_stress_load.py
+          --ignore=tests/test_async_operations.py
+          -m "not integration"
+
+  # The remaining Python projects have no tests. Byte-compiling every module
+  # catches syntax errors and is nearly free in minutes.
+  compile-check:
+    name: compile check (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - gpt-assistant
+          - creative-autogen
+          - Huey-hue-variant
+          - zep-autogen-workspace
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Byte-compile all modules
+        run: python -m compileall -q "${{ matrix.project }}"
