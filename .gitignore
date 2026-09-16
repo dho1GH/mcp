@@ -22,11 +22,6 @@ dist/
 # Cloudflare generated types — regenerate with `wrangler types`
 worker-configuration.d.ts
 
-# AI codebase dumps (repomix/xml packs). These bloat the repo and can
-# carry secrets out of .env-ignored files. Generate them on demand.
-repomix-output.*
-*.repomix.xml
-
 # Archives / OS cruft
 *.zip
 .DS_Store

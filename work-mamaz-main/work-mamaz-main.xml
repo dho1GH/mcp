@@ -1,0 +1,912 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: **/node_modules/**, **/.venv/**, **/dist/**, **/build/**, **/*.lock
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+assets/
+  template-screenshot.png
+local-executors/
+  hue/
+    src/
+      hue-client.ts
+      server.ts
+    package.json
+    tsconfig.json
+src/
+  vite-env.d.ts
+src-v4-docs/
+  implementation.md
+test/
+  capabilities.test.ts
+worker/
+  capabilities.ts
+  executors.ts
+  mcp.ts
+.gitignore
+wrangler.jsonc
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="local-executors/hue/src/hue-client.ts">
+import https from "node:https";
+import { createClient } from "@1password/sdk";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const DEFAULT_OP_ENVIRONMENT_ID = "vsl3suvn4s2dnekt6hr5fpykl4";
+
+function fromLocalEnv(name: string): string | undefined {
+  const value = process.env[name]?.trim();
+  return value || undefined;
+}
+
+async function loadHueConfig(): Promise<{ bridgeIp: string; appKey: string }> {
+  const token = fromLocalEnv("OP_SERVICE_ACCOUNT_TOKEN");
+  let values: Record<string, string> = {};
+
+  if (token) {
+    const client = await createClient({
+      auth: token,
+      integrationName: "itsjeff.org hue-control",
+      integrationVersion: "v0.2.0",
+    });
+    const environmentId = fromLocalEnv("OP_ENVIRONMENT_ID") ?? DEFAULT_OP_ENVIRONMENT_ID;
+    const response = await client.environments.getVariables(environmentId);
+    values = Object.fromEntries(response.variables.map((variable) => [variable.name, variable.value]));
+  }
+
+  const bridgeIp = values.HUE_BRIDGE_IP ?? fromLocalEnv("HUE_BRIDGE_IP");
+  const appKey = values.HUE_APP_KEY ?? fromLocalEnv("HUE_APP_KEY");
+  if (!bridgeIp) throw new Error("HUE_BRIDGE_IP could not be retrieved from 1Password or env");
+  if (!appKey) throw new Error("HUE_APP_KEY could not be retrieved from 1Password or env");
+  return { bridgeIp, appKey };
+}
+
+function requestJson(config: { bridgeIp: string; appKey: string }, method: string, path: string, body?: unknown): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const payload = body === undefined ? undefined : JSON.stringify(body);
+    const request = https.request({
+      hostname: config.bridgeIp,
+      path,
+      method,
+      rejectUnauthorized: false,
+      timeout: 10_000,
+      headers: {
+        "content-type": "application/json",
+        "hue-application-key": config.appKey,
+        ...(payload ? { "content-length": Buffer.byteLength(payload) } : {}),
+      },
+    }, (response) => {
+      let responseBody = "";
+      response.on("data", (chunk) => { responseBody += chunk; });
+      response.on("end", () => {
+        let parsed: any;
+        try { parsed = responseBody ? JSON.parse(responseBody) : {}; }
+        catch { parsed = { raw: responseBody }; }
+        if ((response.statusCode ?? 500) >= 400) {
+          reject(new Error(`Hue API ${response.statusCode}: ${JSON.stringify(parsed)}`));
+          return;
+        }
+        resolve(parsed);
+      });
+    });
+    request.on("timeout", () => request.destroy(new Error("Hue API request timed out")));
+    request.on("error", reject);
+    if (payload) request.write(payload);
+    request.end();
+  });
+}
+
+export interface HueLight {
+  id: string;
+  name: string;
+  on: boolean;
+  brightness?: number;
+  colorTemp?: number;
+}
+
+export class HueClientService {
+  private config: { bridgeIp: string; appKey: string } | null = null;
+  private async init() { this.config ??= await loadHueConfig(); }
+  private async get(path: string) { await this.init(); return requestJson(this.config!, "GET", path); }
+  private async put(path: string, body: unknown) { await this.init(); return requestJson(this.config!, "PUT", path, body); }
+
+  async getLights(): Promise<HueLight[]> {
+    const response = await this.get("/clip/v2/resource/light");
+    if (!Array.isArray(response.data)) throw new Error("Hue light response did not contain a data array");
+    return response.data.map((light: any) => ({
+      id: light.id,
+      name: light.metadata?.name ?? "Unknown Light",
+      on: light.on?.on ?? false,
+      brightness: light.dimming?.brightness,
+      colorTemp: light.color_temperature?.mirek,
+    }));
+  }
+
+  async getLight(id: string): Promise<HueLight> {
+    const response = await this.get(`/clip/v2/resource/light/${encodeURIComponent(id)}`);
+    const light = response.data?.[0];
+    if (!light) throw new Error(`Hue light not found: ${id}`);
+    return {
+      id: light.id,
+      name: light.metadata?.name ?? "Unknown Light",
+      on: light.on?.on ?? false,
+      brightness: light.dimming?.brightness,
+      colorTemp: light.color_temperature?.mirek,
+    };
+  }
+
+  async renameLight(id: string, name: string): Promise<any> {
+    if (!name.trim()) throw new Error("name is required");
+    return this.put(`/clip/v2/resource/light/${encodeURIComponent(id)}`, { metadata: { name: name.trim() } });
+  }
+
+  async setLightState(id: string, state: { on?: boolean; brightness?: number; colorTemp?: number }): Promise<any> {
+    if (state.brightness !== undefined && (state.brightness < 0 || state.brightness > 100)) throw new Error("brightness must be between 0 and 100");
+    if (state.colorTemp !== undefined && (state.colorTemp < 153 || state.colorTemp > 500)) throw new Error("colorTemp must be between 153 and 500 mireks");
+    const body: Record<string, unknown> = {};
+    if (state.on !== undefined) body.on = { on: state.on };
+    if (state.brightness !== undefined) body.dimming = { brightness: state.brightness };
+    if (state.colorTemp !== undefined) body.color_temperature = { mirek: state.colorTemp };
+    if (Object.keys(body).length === 0) throw new Error("at least one state field is required");
+    return this.put(`/clip/v2/resource/light/${encodeURIComponent(id)}`, body);
+  }
+}
+</file>
+
+<file path="local-executors/hue/src/server.ts">
+import http from "node:http";
+import { HueClientService } from "./hue-client.js";
+
+const hue = new HueClientService();
+const port = Number(process.env.PORT ?? 8788);
+const bearerToken = process.env.EXECUTOR_BEARER_TOKEN?.trim();
+
+function send(response: http.ServerResponse, status: number, body: unknown) {
+  response.writeHead(status, { "content-type": "application/json; charset=utf-8" });
+  response.end(JSON.stringify(body));
+}
+
+async function readBody(request: http.IncomingMessage): Promise<Record<string, unknown>> {
+  let raw = "";
+  for await (const chunk of request) raw += chunk;
+  if (!raw) return {};
+  const value = JSON.parse(raw) as unknown;
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("JSON object required");
+  return value as Record<string, unknown>;
+}
+
+http.createServer(async (request, response) => {
+  try {
+    if (bearerToken && request.headers.authorization !== `Bearer ${bearerToken}`) {
+      send(response, 401, { error: "unauthorized" });
+      return;
+    }
+    const url = new URL(request.url ?? "/", `http://${request.headers.host ?? "localhost"}`);
+    const parts = url.pathname.split("/").filter(Boolean);
+
+    if (request.method === "GET" && url.pathname === "/health") return send(response, 200, { ok: true });
+    if (request.method === "GET" && url.pathname === "/v1/lights") return send(response, 200, await hue.getLights());
+    if (request.method === "GET" && parts.length === 3 && parts[0] === "v1" && parts[1] === "lights") {
+      return send(response, 200, await hue.getLight(decodeURIComponent(parts[2])));
+    }
+    if (request.method === "PUT" && parts.length === 4 && parts[0] === "v1" && parts[1] === "lights") {
+      const lightId = decodeURIComponent(parts[2]);
+      const body = await readBody(request);
+      if (parts[3] === "name") return send(response, 200, await hue.renameLight(lightId, String(body.name ?? "")));
+      if (parts[3] === "state") return send(response, 200, await hue.setLightState(lightId, body));
+    }
+    send(response, 404, { error: "not_found" });
+  } catch (error) {
+    send(response, 500, { error: error instanceof Error ? error.message : "unknown_error" });
+  }
+}).listen(port, "0.0.0.0", () => {
+  console.log(`Hue executor listening on :${port}`);
+});
+</file>
+
+<file path="local-executors/hue/package.json">
+{
+  "name": "jeffe-os-hue-executor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "start": "tsx src/server.ts",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@1password/sdk": "^0.3.1",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  }
+}
+</file>
+
+<file path="local-executors/hue/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"]
+}
+</file>
+
+<file path="src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="src-v4-docs/implementation.md">
+# V4 capability runtime
+
+## Invariants
+
+- Read capabilities execute directly.
+- Every mutation creates `CapabilityExecutionWorkflow`.
+- The workflow checks scoped pre-approval or waits for explicit approval.
+- Mutations execute through a concrete adapter and attempt read-after-write verification.
+- MCP is the assistant-facing capability surface.
+
+## MCP endpoint
+
+`POST /mcp` implements the HTTP JSON-RPC methods used for MCP initialization, tool discovery, and tool calls.
+
+Tools:
+
+- `capability_list`
+- `hue_read_inventory`
+- `hue_rename_light`
+- `hue_set_light_state`
+- `execution_get_status`
+- `execution_approve`
+- `execution_reject`
+
+## Required Worker configuration
+
+Secrets:
+
+- `API_BEARER_TOKEN`
+- `HUE_EXECUTOR_BASE_URL`
+- `HUE_EXECUTOR_BEARER_TOKEN`
+
+Variable:
+
+- `PREAPPROVED_GRANTS_JSON`
+
+Example:
+
+```json
+[
+  {
+    "id": "open-plan-lighting",
+    "capabilityId": "hue.set_light_state",
+    "allowedTargets": ["<hue-light-id>"],
+    "allowedArgumentKeys": ["lightId", "on", "brightness", "colorTemp"],
+    "expiresAt": "2027-01-01T00:00:00Z"
+  }
+]
+```
+
+## Hue executor contract
+
+The mini-PC service under `local-executors/hue` exposes:
+
+- `GET /v1/lights`
+- `GET /v1/lights/:id`
+- `PUT /v1/lights/:id/name`
+- `PUT /v1/lights/:id/state`
+
+Expose it to the Worker through a private Cloudflare Tunnel or Service binding-equivalent route, then set `HUE_EXECUTOR_BASE_URL`.
+</file>
+
+<file path="test/capabilities.test.ts">
+import { describe, expect, it } from "vitest";
+import { findMatchingGrant, getCapability, validateCapabilityArguments } from "../worker/capabilities";
+
+describe("capability execution rules", () => {
+  it("matches a scoped preapproval", () => {
+    const capability = getCapability("hue.set_light_state");
+    expect(capability).toBeDefined();
+    const grant = findMatchingGrant(capability!, { lightId: "light-1", brightness: 40 }, [{
+      id: "grant-1",
+      capabilityId: "hue.set_light_state",
+      allowedTargets: ["light-1"],
+      allowedArgumentKeys: ["lightId", "brightness"],
+    }]);
+    expect(grant?.id).toBe("grant-1");
+  });
+
+  it("does not widen a grant to unapproved arguments", () => {
+    const capability = getCapability("hue.set_light_state")!;
+    const grant = findMatchingGrant(capability, { lightId: "light-1", colorTemp: 300 }, [{
+      id: "grant-1",
+      capabilityId: "hue.set_light_state",
+      allowedTargets: ["light-1"],
+      allowedArgumentKeys: ["lightId", "brightness"],
+    }]);
+    expect(grant).toBeUndefined();
+  });
+
+  it("rejects empty state mutations", () => {
+    expect(validateCapabilityArguments("hue.set_light_state", { lightId: "light-1" }))
+      .toContain("at least one");
+  });
+});
+</file>
+
+<file path="worker/capabilities.ts">
+export type OperationKind = "read" | "mutation";
+export type ApprovalMode = "none" | "required" | "preapproved";
+export type VerificationMode = "response_only" | "read_after_write";
+
+export interface CapabilityDefinition {
+	id: string;
+	title: string;
+	description: string;
+	operation: OperationKind;
+	inputSchema: Record<string, unknown>;
+	approval: ApprovalMode;
+	verification: VerificationMode;
+	executor: string;
+}
+
+export interface ApprovalGrant {
+	id: string;
+	capabilityId: string;
+	allowedTargets?: string[];
+	allowedArgumentKeys?: string[];
+	expiresAt?: string;
+}
+
+const HUE_TARGET = {
+	type: "string",
+	description: "Hue resource id. Resolve it with hue_read_inventory before mutation.",
+};
+
+export const CAPABILITIES: CapabilityDefinition[] = [
+	{
+		id: "capability.list",
+		title: "List capabilities",
+		description: "List assistant-callable capabilities and their execution rules.",
+		operation: "read",
+		inputSchema: { type: "object", properties: {}, additionalProperties: false },
+		approval: "none",
+		verification: "response_only",
+		executor: "registry.list",
+	},
+	{
+		id: "hue.read_inventory",
+		title: "Read Hue inventory",
+		description: "Read Hue lights and their current reported state.",
+		operation: "read",
+		inputSchema: { type: "object", properties: {}, additionalProperties: false },
+		approval: "none",
+		verification: "response_only",
+		executor: "hue.read_inventory",
+	},
+	{
+		id: "hue.rename_light",
+		title: "Rename Hue light",
+		description: "Rename one Hue light and verify the resulting name.",
+		operation: "mutation",
+		inputSchema: {
+			type: "object",
+			properties: {
+				lightId: HUE_TARGET,
+				newName: { type: "string", minLength: 1, maxLength: 64 },
+			},
+			required: ["lightId", "newName"],
+			additionalProperties: false,
+		},
+		approval: "required",
+		verification: "read_after_write",
+		executor: "hue.rename_light",
+	},
+	{
+		id: "hue.set_light_state",
+		title: "Set Hue light state",
+		description: "Set power, brightness, or colour temperature for one Hue light and verify the reported result.",
+		operation: "mutation",
+		inputSchema: {
+			type: "object",
+			properties: {
+				lightId: HUE_TARGET,
+				on: { type: "boolean" },
+				brightness: { type: "number", minimum: 0, maximum: 100 },
+				colorTemp: { type: "number", minimum: 153, maximum: 500 },
+			},
+			required: ["lightId"],
+			additionalProperties: false,
+		},
+		approval: "required",
+		verification: "read_after_write",
+		executor: "hue.set_light_state",
+	},
+];
+
+export function getCapability(id: string): CapabilityDefinition | undefined {
+	return CAPABILITIES.find((capability) => capability.id === id);
+}
+
+export function getMutationTarget(arguments_: Record<string, unknown>): string | undefined {
+	return typeof arguments_.lightId === "string" ? arguments_.lightId : undefined;
+}
+
+export function parseApprovalGrants(raw?: string): ApprovalGrant[] {
+	if (!raw?.trim()) return [];
+	try {
+		const value = JSON.parse(raw) as unknown;
+		return Array.isArray(value) ? (value as ApprovalGrant[]) : [];
+	} catch {
+		return [];
+	}
+}
+
+export function findMatchingGrant(
+	capability: CapabilityDefinition,
+	arguments_: Record<string, unknown>,
+	grants: ApprovalGrant[],
+): ApprovalGrant | undefined {
+	const target = getMutationTarget(arguments_);
+	const argumentKeys = Object.keys(arguments_);
+	const now = Date.now();
+
+	return grants.find((grant) => {
+		if (grant.capabilityId !== capability.id) return false;
+		if (grant.expiresAt && Date.parse(grant.expiresAt) <= now) return false;
+		if (grant.allowedTargets?.length && (!target || !grant.allowedTargets.includes(target))) {
+			return false;
+		}
+		if (
+			grant.allowedArgumentKeys?.length &&
+			argumentKeys.some((key) => !grant.allowedArgumentKeys?.includes(key))
+		) {
+			return false;
+		}
+		return true;
+	});
+}
+
+export function validateCapabilityArguments(
+	capabilityId: string,
+	arguments_: Record<string, unknown>,
+): string | null {
+	if (capabilityId === "hue.rename_light") {
+		if (typeof arguments_.lightId !== "string" || !arguments_.lightId.trim()) return "lightId is required";
+		if (typeof arguments_.newName !== "string" || !arguments_.newName.trim()) return "newName is required";
+		if (arguments_.newName.trim().length > 64) return "newName must be 64 characters or fewer";
+	}
+
+	if (capabilityId === "hue.set_light_state") {
+		if (typeof arguments_.lightId !== "string" || !arguments_.lightId.trim()) return "lightId is required";
+		const hasState = ["on", "brightness", "colorTemp"].some((key) => arguments_[key] !== undefined);
+		if (!hasState) return "at least one of on, brightness, or colorTemp is required";
+		if (arguments_.on !== undefined && typeof arguments_.on !== "boolean") return "on must be a boolean";
+		if (
+			arguments_.brightness !== undefined &&
+			(typeof arguments_.brightness !== "number" || arguments_.brightness < 0 || arguments_.brightness > 100)
+		) return "brightness must be between 0 and 100";
+		if (
+			arguments_.colorTemp !== undefined &&
+			(typeof arguments_.colorTemp !== "number" || arguments_.colorTemp < 153 || arguments_.colorTemp > 500)
+		) return "colorTemp must be between 153 and 500 mireks";
+	}
+	return null;
+}
+</file>
+
+<file path="worker/executors.ts">
+import { CAPABILITIES, type CapabilityDefinition } from "./capabilities";
+
+export interface ExecutorResult {
+	before?: unknown;
+	result: unknown;
+	observedAfter?: unknown;
+	verified: boolean;
+}
+
+function requireHueExecutor(env: Env): { baseUrl: string; token?: string } {
+	const baseUrl = env.HUE_EXECUTOR_BASE_URL?.trim();
+	if (!baseUrl) throw new Error("HUE_EXECUTOR_BASE_URL is not configured");
+	return { baseUrl, token: env.HUE_EXECUTOR_BEARER_TOKEN?.trim() || undefined };
+}
+
+async function hueRequest(
+	env: Env,
+	path: string,
+	init: RequestInit = {},
+): Promise<unknown> {
+	const { baseUrl, token } = requireHueExecutor(env);
+	const url = new URL(path, baseUrl);
+	const response = await fetch(url, {
+		...init,
+		headers: {
+			"content-type": "application/json",
+			...(token ? { authorization: `Bearer ${token}` } : {}),
+			...(init.headers ?? {}),
+		},
+		signal: AbortSignal.timeout(15_000),
+	});
+	const text = await response.text();
+	let body: unknown = {};
+	try { body = text ? JSON.parse(text) : {}; } catch { body = { raw: text }; }
+	if (!response.ok) throw new Error(`Hue executor ${response.status}: ${JSON.stringify(body)}`);
+	return body;
+}
+
+function unwrapLight(value: unknown): Record<string, unknown> | null {
+	if (!value || typeof value !== "object") return null;
+	const record = value as Record<string, unknown>;
+	if (record.data && typeof record.data === "object" && !Array.isArray(record.data)) {
+		return record.data as Record<string, unknown>;
+	}
+	return record;
+}
+
+export async function executeRead(
+	env: Env,
+	capability: CapabilityDefinition,
+	_arguments: Record<string, unknown>,
+): Promise<unknown> {
+	switch (capability.executor) {
+		case "registry.list":
+			return CAPABILITIES;
+		case "hue.read_inventory":
+			return hueRequest(env, "/v1/lights", { method: "GET" });
+		default:
+			throw new Error(`No read executor registered for ${capability.executor}`);
+	}
+}
+
+export async function executeMutation(
+	env: Env,
+	capability: CapabilityDefinition,
+	arguments_: Record<string, unknown>,
+): Promise<ExecutorResult> {
+	const lightId = encodeURIComponent(String(arguments_.lightId));
+	const before = await hueRequest(env, `/v1/lights/${lightId}`, { method: "GET" });
+
+	if (capability.executor === "hue.rename_light") {
+		const result = await hueRequest(env, `/v1/lights/${lightId}/name`, {
+			method: "PUT",
+			body: JSON.stringify({ name: arguments_.newName }),
+		});
+		const observedAfter = await hueRequest(env, `/v1/lights/${lightId}`, { method: "GET" });
+		const afterLight = unwrapLight(observedAfter);
+		return {
+			before,
+			result,
+			observedAfter,
+			verified: afterLight?.name === arguments_.newName,
+		};
+	}
+
+	if (capability.executor === "hue.set_light_state") {
+		const state = {
+			...(arguments_.on !== undefined ? { on: arguments_.on } : {}),
+			...(arguments_.brightness !== undefined ? { brightness: arguments_.brightness } : {}),
+			...(arguments_.colorTemp !== undefined ? { colorTemp: arguments_.colorTemp } : {}),
+		};
+		const result = await hueRequest(env, `/v1/lights/${lightId}/state`, {
+			method: "PUT",
+			body: JSON.stringify(state),
+		});
+		const observedAfter = await hueRequest(env, `/v1/lights/${lightId}`, { method: "GET" });
+		const after = unwrapLight(observedAfter);
+		const verified = Object.entries(state).every(([key, value]) => after?.[key] === value);
+		return { before, result, observedAfter, verified };
+	}
+
+	throw new Error(`No mutation executor registered for ${capability.executor}`);
+}
+</file>
+
+<file path="worker/mcp.ts">
+import { CAPABILITIES, getCapability, validateCapabilityArguments } from "./capabilities";
+import { executeRead } from "./executors";
+
+interface JsonRpcRequest {
+	jsonrpc?: string;
+	id?: string | number | null;
+	method?: string;
+	params?: Record<string, unknown>;
+}
+
+function rpcResult(id: JsonRpcRequest["id"], result: unknown): Response {
+	return Response.json({ jsonrpc: "2.0", id: id ?? null, result });
+}
+
+function rpcError(id: JsonRpcRequest["id"], code: number, message: string, data?: unknown): Response {
+	return Response.json({ jsonrpc: "2.0", id: id ?? null, error: { code, message, data } });
+}
+
+function toolName(capabilityId: string): string {
+	return capabilityId.replaceAll(".", "_");
+}
+
+function capabilityIdFromTool(name: string): string | undefined {
+	return CAPABILITIES.find((capability) => toolName(capability.id) === name)?.id;
+}
+
+function toolContent(value: unknown) {
+	return {
+		content: [{ type: "text", text: JSON.stringify(value, null, 2) }],
+		structuredContent: value,
+	};
+}
+
+async function callCapability(
+	env: Env,
+	name: string,
+	arguments_: Record<string, unknown>,
+): Promise<unknown> {
+	if (name === "execution_get_status") {
+		const executionId = String(arguments_.executionId ?? "");
+		if (!executionId) throw new Error("executionId is required");
+		const stub = env.WORKFLOW_STATUS.get(env.WORKFLOW_STATUS.idFromName(executionId));
+		return stub.getExecution();
+	}
+	if (name === "execution_approve" || name === "execution_reject") {
+		const executionId = String(arguments_.executionId ?? "");
+		if (!executionId) throw new Error("executionId is required");
+		const instance = await env.CAPABILITY_WORKFLOW.get(executionId);
+		await instance.sendEvent({
+			type: "capability-approval",
+			payload: {
+				approved: name === "execution_approve",
+				feedback: typeof arguments_.feedback === "string" ? arguments_.feedback : undefined,
+			},
+		});
+		return { executionId, accepted: true, decision: name === "execution_approve" ? "approved" : "rejected" };
+	}
+
+	const capabilityId = capabilityIdFromTool(name);
+	const capability = capabilityId ? getCapability(capabilityId) : undefined;
+	if (!capability) throw new Error(`Unknown tool: ${name}`);
+	const validationError = validateCapabilityArguments(capability.id, arguments_);
+	if (validationError) throw new Error(validationError);
+
+	if (capability.operation === "read") {
+		return executeRead(env, capability, arguments_);
+	}
+
+	const executionId = crypto.randomUUID();
+	const instance = await env.CAPABILITY_WORKFLOW.create({
+		id: executionId,
+		params: { executionId, capabilityId: capability.id, arguments: arguments_ },
+	});
+	return {
+		executionId,
+		workflowInstanceId: instance.id,
+		capabilityId: capability.id,
+		status: "created",
+	};
+}
+
+export async function handleMcp(request: Request, env: Env): Promise<Response> {
+	if (request.method !== "POST") return new Response("MCP endpoint requires POST", { status: 405 });
+	let message: JsonRpcRequest;
+	try { message = (await request.json()) as JsonRpcRequest; }
+	catch { return rpcError(null, -32700, "Parse error"); }
+
+	if (message.method === "initialize") {
+		return rpcResult(message.id, {
+			protocolVersion: "2025-06-18",
+			capabilities: { tools: { listChanged: false } },
+			serverInfo: { name: "jeffe-os-v4", version: "0.1.0" },
+		});
+	}
+	if (message.method === "notifications/initialized") return new Response(null, { status: 202 });
+	if (message.method === "ping") return rpcResult(message.id, {});
+	if (message.method === "tools/list") {
+		const capabilityTools = CAPABILITIES.map((capability) => ({
+			name: toolName(capability.id),
+			description: capability.description,
+			inputSchema: capability.inputSchema,
+			annotations: {
+				readOnlyHint: capability.operation === "read",
+				destructiveHint: false,
+				idempotentHint: capability.operation === "read",
+				openWorldHint: false,
+			},
+		}));
+		return rpcResult(message.id, {
+			tools: [
+				...capabilityTools,
+				{ name: "execution_get_status", description: "Get the current execution and approval state.", inputSchema: { type: "object", properties: { executionId: { type: "string" } }, required: ["executionId"], additionalProperties: false }, annotations: { readOnlyHint: true } },
+				{ name: "execution_approve", description: "Approve a waiting mutation execution.", inputSchema: { type: "object", properties: { executionId: { type: "string" }, feedback: { type: "string" } }, required: ["executionId"], additionalProperties: false } },
+				{ name: "execution_reject", description: "Reject a waiting mutation execution.", inputSchema: { type: "object", properties: { executionId: { type: "string" }, feedback: { type: "string" } }, required: ["executionId"], additionalProperties: false } },
+			],
+		});
+	}
+	if (message.method === "tools/call") {
+		const name = String(message.params?.name ?? "");
+		const arguments_ = (message.params?.arguments && typeof message.params.arguments === "object")
+			? message.params.arguments as Record<string, unknown>
+			: {};
+		try { return rpcResult(message.id, toolContent(await callCapability(env, name, arguments_))); }
+		catch (error) {
+			return rpcResult(message.id, {
+				content: [{ type: "text", text: error instanceof Error ? error.message : "Tool call failed" }],
+				isError: true,
+			});
+		}
+	}
+	return rpcError(message.id, -32601, "Method not found");
+}
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
+</file>
+
+<file path="wrangler.jsonc">
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "jeffe-os",
+	"main": "worker/index.ts",
+	"compatibility_date": "2025-10-08",
+	"assets": {
+		"directory": "./dist",
+		"not_found_handling": "single-page-application"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"ai": {
+		"binding": "AI"
+	},
+	/**
+	 * Workflows
+	 * Define Workflows to orchestrate multi-step processes
+	 * https://developers.cloudflare.com/workflows/
+	 */
+	"workflows": [
+		{
+			"name": "my-workflow",
+			"binding": "MY_WORKFLOW",
+			"class_name": "MyWorkflow"
+		},
+		{
+			"name": "ai-agent-workflow",
+			"binding": "AI_AGENT_WORKFLOW",
+			"class_name": "AIAgentWorkflow"
+		},
+		{
+			"name": "orchestrator-workflow",
+			"binding": "ORCHESTRATOR_WORKFLOW",
+			"class_name": "OrchestratorWorkflow"
+		},
+		{
+			"name": "agent-workflow",
+			"binding": "AGENT_WORKFLOW",
+			"class_name": "AgentWorkflow"
+		},
+		{
+			"name": "capability-execution-workflow",
+			"binding": "CAPABILITY_WORKFLOW",
+			"class_name": "CapabilityExecutionWorkflow"
+		}
+	],
+	/**
+	 * Durable Objects
+	 * Used for WebSocket state management and real-time updates
+	 * https://developers.cloudflare.com/durable-objects/
+	 */
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "WORKFLOW_STATUS",
+				"class_name": "WorkflowStatusDO"
+			},
+			{
+				"name": "AGGREGATOR_DO",
+				"class_name": "AggregatorDO"
+			}
+		]
+	},
+	/**
+	 * Migrations
+	 * Required for Durable Objects
+	 */
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["WorkflowStatusDO"]
+		},
+		{
+			"tag": "v2",
+			"new_sqlite_classes": ["AggregatorDO"]
+		}
+	],
+	"vars": {
+		"PREAPPROVED_GRANTS_JSON": "[]"
+	},
+	"upload_source_maps": true
+}
+</file>
+
+</files>
