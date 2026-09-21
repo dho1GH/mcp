@@ -14,7 +14,7 @@ Cloudflare Workers that front them.
 
 | Project | What it does | Status |
 |---|---|---|
-| `nodered-mcp-server` | Exposes Node-RED flow management as MCP tools. Stateless `createMcpHandler`, bearer-token gate, append-only audit log. | Most mature Worker here |
+| `nodered-mcp-server` | Exposes Node-RED flow management as MCP tools. Stateless `createMcpHandler`, bearer-token gate, append-only audit log. | Reference implementation — both Hue Workers state they follow its pattern. Best documented; no tests |
 | `hue-mcp-server` | First cut at exposing a Philips Hue bridge as MCP tools. | Superseded by v2 |
 | `hue-mcp-server-v2` | Current Hue Worker. Fuller tool surface and Hue client than v1. | Current |
 | `federated-mcp-platform` | Control plane for authenticated, human-in-the-loop MCP federation. Side-effecting tools create durable approval requests instead of executing inline. | **Never deployed** |
