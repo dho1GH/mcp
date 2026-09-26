@@ -89,6 +89,7 @@ jobs:
           - nodered-mcp-server
           - hue-mcp-server
           - hue-mcp-server-v2
+          - Zep_Temporal
     steps:
       - uses: actions/checkout@v5
 
@@ -120,43 +121,3 @@ jobs:
         run: |
           find hue-control/src -name '*.mjs' -print0 \
             | xargs -0 -n1 node --check
-
-  # Zep_Temporal does not compile: src/temporal/worker.ts and workflows.ts both
-  # import './activities.js', which does not exist anywhere in the repo. This is
-  # pre-existing — the module is absent from the tracked source AND from the
-  # Archive.zip that used to sit beside it.
-  #
-  # This job REPORTS that status rather than asserting the code compiles, so it
-  # exits 0 and writes the current tsc output to the run summary. Job-level
-  # continue-on-error was tried first and rejected: GitHub still marks the check
-  # run as `failure`, which puts a permanent red X on every PR.
-  #
-  # Once activities.ts exists, delete this job and move Zep_Temporal into the
-  # typecheck matrix above, where a failure should genuinely block.
-  zep-temporal:
-    name: Zep_Temporal (status report)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-
-      - name: Install
-        working-directory: Zep_Temporal
-        run: npm install --no-audit --no-fund
-
-      - name: Report typecheck status
-        working-directory: Zep_Temporal
-        run: |
-          echo '## Zep_Temporal typecheck' >> "$GITHUB_STEP_SUMMARY"
-          if npx tsc --noEmit > tsc.log 2>&1; then
-            echo 'Compiles cleanly. This job can now be deleted and the project'  >> "$GITHUB_STEP_SUMMARY"
-            echo 'moved into the blocking typecheck matrix in this workflow.'     >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo 'Still does not compile (known issue, not a regression):'        >> "$GITHUB_STEP_SUMMARY"
-            echo '```'                                                            >> "$GITHUB_STEP_SUMMARY"
-            cat tsc.log                                                           >> "$GITHUB_STEP_SUMMARY"
-            echo '```'                                                            >> "$GITHUB_STEP_SUMMARY"
-          fi
