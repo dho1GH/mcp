@@ -1,0 +1,162 @@
+name: CI (Node / Workers)
+
+# work-mamaz-main and 3dflat-affairs are intentionally absent. Neither can be
+# checked as-is, and leaving them in the path filters would fire every other
+# job in this workflow for nothing:
+#   * work-mamaz-main has no package.json and its wrangler main points at a
+#     worker/index.ts that does not exist.
+#   * 3dflat-affairs fails tsc because its tsconfig sets
+#     types: ["@cloudflare/workers-types"] while leaving lib at the ES2022
+#     default, which pulls in DOM and clashes. Adding "lib": ["ES2022"] fixes
+#     it; do that and then add a job here.
+#
+# Node 22, not 20: federated-mcp-platform pins wrangler 4.120.0 and
+# nodered-mcp-server pins wrangler ^4.4.0, and wrangler 4 refuses to run on
+# Node < 22. federated-mcp-platform's own `engines` field still says ">=20",
+# which is stale — do not pin the runner from it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'federated-mcp-platform/**'
+      - 'nodered-mcp-server/**'
+      - 'hue-mcp-server/**'
+      - 'hue-mcp-server-v2/**'
+      - 'Zep_Temporal/**'
+      - 'hue-control/**'
+      - '.github/workflows/ci-node.yml'
+  pull_request:
+    paths:
+      - 'federated-mcp-platform/**'
+      - 'nodered-mcp-server/**'
+      - 'hue-mcp-server/**'
+      - 'hue-mcp-server-v2/**'
+      - 'Zep_Temporal/**'
+      - 'hue-control/**'
+      - '.github/workflows/ci-node.yml'
+
+concurrency:
+  group: ci-node-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # The only Node project with a test suite and a lockfile.
+  federated:
+    name: federated-mcp-platform (vitest + tsc)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: federated-mcp-platform
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: federated-mcp-platform/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      # worker-configuration.d.ts is generated, not committed (see .gitignore).
+      # tsc needs it, so regenerate before typechecking.
+      - name: Generate Worker types
+        run: pnpm run types
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Tests
+        run: pnpm test
+
+  # Remaining Workers have no tests and no lockfile discipline. Typechecking
+  # is what actually catches breakage in them.
+  typecheck:
+    name: typecheck (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - nodered-mcp-server
+          - hue-mcp-server
+          - hue-mcp-server-v2
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install
+        working-directory: ${{ matrix.project }}
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        working-directory: ${{ matrix.project }}
+        run: npx tsc --noEmit
+
+  # hue-control is plain ESM with no package.json, so there is nothing to
+  # typecheck. `node --check` parses each module and catches syntax errors.
+  syntax-check:
+    name: hue-control (node --check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Parse all modules
+        run: |
+          find hue-control/src -name '*.mjs' -print0 \
+            | xargs -0 -n1 node --check
+
+  # Zep_Temporal does not compile: src/temporal/worker.ts and workflows.ts both
+  # import './activities.js', which does not exist anywhere in the repo. This is
+  # pre-existing — the module is absent from the tracked source AND from the
+  # Archive.zip that used to sit beside it.
+  #
+  # This job REPORTS that status rather than asserting the code compiles, so it
+  # exits 0 and writes the current tsc output to the run summary. Job-level
+  # continue-on-error was tried first and rejected: GitHub still marks the check
+  # run as `failure`, which puts a permanent red X on every PR.
+  #
+  # Once activities.ts exists, delete this job and move Zep_Temporal into the
+  # typecheck matrix above, where a failure should genuinely block.
+  zep-temporal:
+    name: Zep_Temporal (status report)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install
+        working-directory: Zep_Temporal
+        run: npm install --no-audit --no-fund
+
+      - name: Report typecheck status
+        working-directory: Zep_Temporal
+        run: |
+          echo '## Zep_Temporal typecheck' >> "$GITHUB_STEP_SUMMARY"
+          if npx tsc --noEmit > tsc.log 2>&1; then
+            echo 'Compiles cleanly. This job can now be deleted and the project'  >> "$GITHUB_STEP_SUMMARY"
+            echo 'moved into the blocking typecheck matrix in this workflow.'     >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Still does not compile (known issue, not a regression):'        >> "$GITHUB_STEP_SUMMARY"
+            echo '```'                                                            >> "$GITHUB_STEP_SUMMARY"
+            cat tsc.log                                                           >> "$GITHUB_STEP_SUMMARY"
+            echo '```'                                                            >> "$GITHUB_STEP_SUMMARY"
+          fi

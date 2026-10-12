@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: npm
+    directories:
+      - /federated-mcp-platform
+      - /nodered-mcp-server
+      - /hue-mcp-server-v2
+      - /Zep_Temporal
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: uv
+    directory: /graphiti_mcp_server
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
