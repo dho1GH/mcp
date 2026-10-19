@@ -283,6 +283,9 @@ export function registerHueTools(server: McpServer, env: Env): void {
       if (args.on !== undefined) state.on = args.on;
       if (args.brightness !== undefined) state.brightness = args.brightness;
       if (args.colorTemp !== undefined) state.colorTemp = args.colorTemp;
+      if ((args.xy_x !== undefined) !== (args.xy_y !== undefined)) {
+        throw new Error("xy_x and xy_y must be provided together");
+      }
       if (args.xy_x !== undefined && args.xy_y !== undefined) state.xy = { x: args.xy_x, y: args.xy_y };
       if (Object.keys(state).length === 0) throw new Error("At least one state field is required");
       const data = await hue.setLightState(args.id as string, state);
