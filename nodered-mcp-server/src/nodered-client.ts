@@ -83,6 +83,7 @@ export class NodeRedClient {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Node-RED-API-Version": "v2",
           ...this.accessHeaders(),
           ...(init.extraHeaders ?? {}),
         },
@@ -131,8 +132,8 @@ export class NodeRedClient {
     flows: NodeRedNode[],
     rev: string,
     deploymentType: "full" | "nodes" | "flows" | "reload" = "full"
-  ): Promise<FlowsResponse> {
-    return this.request<FlowsResponse>("/flows", {
+  ): Promise<Pick<FlowsResponse, "rev">> {
+    return this.request<Pick<FlowsResponse, "rev">>("/flows", {
       method: "POST",
       body: { flows, rev },
       extraHeaders: { "Node-RED-Deployment-Type": deploymentType },
